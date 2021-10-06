@@ -1,0 +1,10 @@
+{
+	"folders": [
+		{
+			"path": "songlist_mobile"
+		}
+	],
+	"settings": {
+		"java.configuration.updateBuildConfiguration": "interactive"
+	}
+}

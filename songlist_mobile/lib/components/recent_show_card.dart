@@ -1,0 +1,62 @@
+import 'package:flutter/material.dart';
+import 'package:songlist_mobile/models/show.dart';
+import '../../../constants.dart';
+
+class RecentShowCard extends StatelessWidget {
+  const RecentShowCard({
+    Key? key,
+    required this.show,
+  }) : super(key: key);
+
+  final Show show;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        print('tapou');
+      },
+      child: Container(
+        padding: EdgeInsets.all(defaultPadding),
+        decoration: BoxDecoration(
+          color: secondaryColor,
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              show.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const Divider(
+              height: 10,
+              thickness: 5,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "${show.songs.length} Songs",
+                  style: Theme.of(context)
+                      .textTheme
+                      .caption!
+                      .copyWith(color: Colors.white70),
+                ),
+                Text(
+                  show.duration,
+                  style: Theme.of(context)
+                      .textTheme
+                      .caption!
+                      .copyWith(color: Colors.white70),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
