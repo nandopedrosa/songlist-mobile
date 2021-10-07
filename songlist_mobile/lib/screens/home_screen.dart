@@ -9,7 +9,12 @@ import 'package:songlist_mobile/responsive.dart';
 import '../../constants.dart';
 
 // ignore: must_be_immutable
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -29,9 +34,11 @@ class HomeScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Recently Added Songs",
-                            textAlign: TextAlign.start,
-                            style: Theme.of(context).textTheme.subtitle1!),
+                        Text(
+                          "Recently Added Songs",
+                          textAlign: TextAlign.start,
+                          style: Theme.of(context).textTheme.subtitle1!,
+                        ),
                         ElevatedButton.icon(
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.symmetric(
@@ -42,8 +49,11 @@ class HomeScreen extends StatelessWidget {
                           ),
                           onPressed: () {},
                           icon: Icon(Icons.add),
-                          label: Text("Change Me"),
-                        ),
+                          label: Text(
+                            LocalizationService.getInstance()
+                                .getLocalizedString('new_song'),
+                          ),
+                        )
                       ],
                     ),
                     SizedBox(height: defaultPadding),

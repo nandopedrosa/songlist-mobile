@@ -5,9 +5,8 @@ import 'package:songlist_mobile/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:songlist_mobile/screens/songs_screen.dart';
 
-void main() {
+void main() async {
   runApp(SonglistPlusMobileApp(activeScreen: HomeScreen()));
 }
 

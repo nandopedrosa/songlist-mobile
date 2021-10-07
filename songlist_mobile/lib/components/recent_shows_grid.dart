@@ -1,15 +1,21 @@
 import 'package:songlist_mobile/components/recent_show_card.dart';
+import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/models/show.dart';
 import 'package:songlist_mobile/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:songlist_mobile/service/show_service.dart';
 import '../../../constants.dart';
 
-class RecentShowsGrid extends StatelessWidget {
+class RecentShowsGrid extends StatefulWidget {
   const RecentShowsGrid({
     Key? key,
   }) : super(key: key);
 
+  @override
+  _RecentShowsGridState createState() => _RecentShowsGridState();
+}
+
+class _RecentShowsGridState extends State<RecentShowsGrid> {
   @override
   Widget build(BuildContext context) {
     final Size _size = MediaQuery.of(context).size;
@@ -30,7 +36,10 @@ class RecentShowsGrid extends StatelessWidget {
               ),
               onPressed: () {},
               icon: Icon(Icons.add),
-              label: Text("New Show"),
+              label: Text(
+                LocalizationService.getInstance()
+                    .getLocalizedString('new_show'),
+              ),
             ),
           ],
         ),
