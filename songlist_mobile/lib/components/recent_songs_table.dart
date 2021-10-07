@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:songlist_mobile/models/song.dart';
 import 'package:songlist_mobile/service/song_service.dart';
 

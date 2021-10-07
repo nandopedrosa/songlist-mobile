@@ -1,10 +1,14 @@
+import 'package:flutter/material.dart';
+
 import 'package:songlist_mobile/components/header.dart';
 import 'package:songlist_mobile/components/recent_shows_grid.dart';
-import 'package:flutter/material.dart';
 import 'package:songlist_mobile/components/recent_songs_table.dart';
+import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/responsive.dart';
+
 import '../../constants.dart';
 
+// ignore: must_be_immutable
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -38,7 +42,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                           onPressed: () {},
                           icon: Icon(Icons.add),
-                          label: Text("New Song"),
+                          label: Text("Change Me"),
                         ),
                       ],
                     ),
