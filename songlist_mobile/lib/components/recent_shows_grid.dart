@@ -76,10 +76,13 @@ class RecentShowsCardGridView extends StatefulWidget {
 }
 
 class _RecentShowsCardGridViewState extends State<RecentShowsCardGridView> {
-  _RecentShowsCardGridViewState() {
+  @override
+  void initState() {
+    super.initState();
     this.service = ShowService();
     this.recentShows = service.getRecentShows();
   }
+
   late ShowService service;
   late Future<List<ShowDto>> recentShows;
 

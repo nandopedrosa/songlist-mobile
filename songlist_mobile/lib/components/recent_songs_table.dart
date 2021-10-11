@@ -1,5 +1,6 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
+import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/models/song.dart';
 import 'package:songlist_mobile/service/song_service.dart';
 
@@ -16,7 +17,9 @@ class RecentSongsTable extends StatefulWidget {
 }
 
 class _RecentSongsTableState extends State<RecentSongsTable> {
-  _RecentSongsTableState() {
+  @override
+  void initState() {
+    super.initState();
     this.service = SongService();
     this.recentSongs = service.getRecentSongs();
   }
@@ -51,15 +54,17 @@ class _RecentSongsTableState extends State<RecentSongsTable> {
                         showCheckboxColumn: false,
                         columns: [
                           DataColumn(
-                            label: Text("Title"),
+                            label: Text(LocalizationService.instance
+                                .getLocalizedString("title")),
                           ),
                           DataColumn(
-                            label: Text("Artist"),
+                            label: Text(LocalizationService.instance
+                                .getLocalizedString("artist")),
                           ),
                         ],
                         rows: List.generate(
                           snapshot.data!.length,
-                          (index) => recentFileDataRow(snapshot.data![index]),
+                          (index) => tableDataRow(snapshot.data![index]),
                         ),
                       )
                     ];
@@ -76,7 +81,7 @@ class _RecentSongsTableState extends State<RecentSongsTable> {
   }
 }
 
-DataRow recentFileDataRow(Song song) {
+DataRow tableDataRow(Song song) {
   return DataRow(
     onSelectChanged: (value) {
       print("tapped song: " + song.id.toString());

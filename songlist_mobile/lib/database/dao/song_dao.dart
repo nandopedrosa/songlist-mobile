@@ -214,4 +214,44 @@ class SongDao {
 
     return recentSongs;
   }
+
+  Future<List<Song>> getAllSongs() async {
+    // get a reference to the database
+    Database? db = await DatabaseHelper.instance.database;
+    List<Map<String, dynamic>> result = await db!.rawQuery(
+        "select id, title, artist, created_on from song order by title;");
+
+    List<Song> allSongs = List.generate(result.length, (i) {
+      return Song(
+        id: result[i]['id'],
+        title: result[i]['title'],
+        artist: result[i]['artist'],
+        created_on: result[i]['created_on'],
+      );
+    });
+
+    return allSongs;
+  }
+
+  Future<List<Song>> getSongsByTitleOrArtist(String term) async {
+    // get a reference to the database
+    Database? db = await DatabaseHelper.instance.database;
+    List<Map<String, dynamic>> result = await db!.rawQuery("""
+        select id, title, artist, created_on 
+        from song 
+        where lower(title) like ? or lower(artist) like ? 
+        order by title;
+        """, ['%$term%', '%$term%']);
+
+    List<Song> songs = List.generate(result.length, (i) {
+      return Song(
+        id: result[i]['id'],
+        title: result[i]['title'],
+        artist: result[i]['artist'],
+        created_on: result[i]['created_on'],
+      );
+    });
+
+    return songs;
+  }
 }

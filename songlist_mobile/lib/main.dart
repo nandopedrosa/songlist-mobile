@@ -25,10 +25,18 @@ class SonglistPlusMobileApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Songlist Plus',
       theme: ThemeData.dark().copyWith(
+        cardTheme: CardTheme(
+            shape: RoundedRectangleBorder(
+                borderRadius: const BorderRadius.all(Radius.circular(10)))),
+        dataTableTheme: DataTableThemeData(),
         scaffoldBackgroundColor: bgColor,
-        textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
-            .apply(bodyColor: Colors.white),
+        textTheme:
+            GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme).apply(
+          bodyColor: Colors.white,
+          displayColor: Colors.white,
+        ),
         canvasColor: secondaryColor,
+        cardColor: secondaryColor,
       ),
       home: MultiProvider(
         providers: [
@@ -36,6 +44,7 @@ class SonglistPlusMobileApp extends StatelessWidget {
             create: (context) => MenuController(),
           ),
         ],
+        //child: MainScreen(activeScreen: AllSongsScreen()),
         child: MainScreen(activeScreen: this.activeScreen),
       ),
     );

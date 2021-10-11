@@ -8,4 +8,22 @@ class SongService {
     Future<List<Song>> recentSongs = this._dao.getRecentSongs();
     return recentSongs;
   }
+
+  Future<List<Song>> getAllSongs() {
+    Future<List<Song>> allSongs = this._dao.getAllSongs();
+    return allSongs;
+  }
+
+  Future<List<Song>> getSongsByTitleOrArtist(String term) {
+    Future<List<Song>> songs;
+
+    if (term.isEmpty) {
+      songs = getAllSongs();
+    } else {
+      term = term.toLowerCase().trim();
+      songs = this._dao.getSongsByTitleOrArtist(term);
+    }
+
+    return songs;
+  }
 }

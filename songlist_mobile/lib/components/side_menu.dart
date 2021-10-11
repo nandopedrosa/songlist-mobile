@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:songlist_mobile/main.dart';
+import 'package:songlist_mobile/screens/all_songs_screen.dart';
 import 'package:songlist_mobile/screens/home_screen.dart';
-import 'package:songlist_mobile/screens/songs_screen.dart';
 
 class SideMenu extends StatelessWidget {
   const SideMenu({
@@ -43,7 +43,7 @@ class SideMenu extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        SonglistPlusMobileApp(activeScreen: SongsScreen())),
+                        SonglistPlusMobileApp(activeScreen: AllSongsScreen())),
               );
             },
           ),
