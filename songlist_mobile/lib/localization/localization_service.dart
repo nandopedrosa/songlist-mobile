@@ -2,16 +2,10 @@ import 'package:songlist_mobile/localization/localization_strings.dart';
 import 'dart:io';
 
 class LocalizationService {
-  //Singleton implementation
-  static LocalizationService _instance = LocalizationService._();
-
   //Private constructor
   LocalizationService._();
-
-  //Get singleton instance
-  static LocalizationService getInstance() {
-    return _instance;
-  }
+  //Singleton implementation
+  static final LocalizationService instance = LocalizationService._();
 
   String _preferredLanguage = '';
 

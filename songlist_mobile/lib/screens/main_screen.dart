@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'package:songlist_mobile/components/side_menu.dart';
 import 'package:songlist_mobile/controllers/MenuController.dart';
 import 'package:songlist_mobile/responsive.dart';
-import 'package:songlist_mobile/screens/home_screen.dart';
 
 class MainScreen extends StatelessWidget {
   final Widget activeScreen;

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:songlist_mobile/components/header.dart';
 import 'package:songlist_mobile/components/recent_shows_grid.dart';
 import 'package:songlist_mobile/components/recent_songs_table.dart';
@@ -35,7 +34,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Recently Added Songs",
+                          LocalizationService.instance
+                              .getLocalizedString("recent_songs"),
                           textAlign: TextAlign.start,
                           style: Theme.of(context).textTheme.subtitle1!,
                         ),
@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           onPressed: () {},
                           icon: Icon(Icons.add),
                           label: Text(
-                            LocalizationService.getInstance()
+                            LocalizationService.instance
                                 .getLocalizedString('new_song'),
                           ),
                         )

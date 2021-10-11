@@ -1,10 +1,11 @@
 import 'package:songlist_mobile/database/dao/show_dao.dart';
-import 'package:songlist_mobile/models/show.dart';
+import 'package:songlist_mobile/database/dto/show_dto.dart';
 
 class ShowService {
-  static List<Show> getRecentShows() {
-    List<Show> recentShows = [];
-    recentShows = ShowDao.getRecentShows();
+  ShowDao _dao = ShowDao();
+
+  Future<List<ShowDto>> getRecentShows() async {
+    Future<List<ShowDto>> recentShows = this._dao.getRecentShows();
     return recentShows;
   }
 }

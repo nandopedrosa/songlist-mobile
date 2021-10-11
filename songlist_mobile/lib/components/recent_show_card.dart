@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:songlist_mobile/models/show.dart';
+import 'package:songlist_mobile/database/dto/show_dto.dart';
 import '../../../constants.dart';
 
 class RecentShowCard extends StatelessWidget {
@@ -8,7 +8,7 @@ class RecentShowCard extends StatelessWidget {
     required this.show,
   }) : super(key: key);
 
-  final Show show;
+  final ShowDto show;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class RecentShowCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "${show.songs.length} Songs",
+                  "${show.getNumberOfSongs} Songs",
                   style: Theme.of(context)
                       .textTheme
                       .caption!

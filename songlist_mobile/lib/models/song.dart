@@ -1,58 +1,66 @@
 class Song {
-  int? _id;
-  late String _title;
-  String? _artist;
-  String? _key;
-  int? _tempo;
-  String? _duration;
-  String? _lyrics;
-  String? _notes;
+  int? id;
+  String title;
+  String artist;
+  String? key;
+  int? tempo;
+  String? duration;
+  String? lyrics;
+  String? notes;
+  // ignore: non_constant_identifier_names
+  String created_on;
 
   Song(
-    this._id,
-    this._title,
-    this._artist,
-    this._key,
-    this._tempo,
-    this._duration,
-    this._lyrics,
-    this._notes,
-  );
+      {this.id,
+      required this.title,
+      required this.artist,
+      this.key,
+      this.tempo,
+      this.duration,
+      this.lyrics,
+      this.notes,
+      // ignore: non_constant_identifier_names
+      required this.created_on});
 
-  get id => this._id;
+  get getCreatedOn => this.created_on;
 
-  set id(value) => this._id = value;
+  // ignore: non_constant_identifier_names
+  set setCreatedOn(String created_on) => this.created_on = created_on;
 
-  get title => this._title;
+  get getId => this.id;
 
-  set title(value) => this._title = value;
+  set setId(id) => this.id = id;
 
-  get artist => this._artist;
+  get getTitle => this.title;
 
-  set artist(value) => this._artist = value;
+  set setTitle(title) => this.title = title;
 
-  get key => this._key;
+  get getArtist => this.artist;
 
-  set key(value) => this._key = value;
+  set setArtist(artist) => this.artist = artist;
 
-  get tempo => this._tempo;
+  get getKey => this.key;
 
-  set tempo(value) => this._tempo = value;
+  set setKey(key) => this.key = key;
 
-  get duration => this._duration;
+  get getTempo => this.tempo;
 
-  set duration(value) => this._duration = value;
+  set setTempo(tempo) => this.tempo = tempo;
 
-  get lyrics => this._lyrics;
+  get getDuration => this.duration;
 
-  set lyrics(value) => this._lyrics = value;
+  set setDuration(duration) => this.duration = duration;
 
-  get notes => this._notes;
+  get getLyrics => this.lyrics;
 
-  set notes(value) => this._notes = value;
+  set setLyrics(lyrics) => this.lyrics = lyrics;
+
+  get getNotes => this.notes;
+
+  set setNotes(notes) => this.notes = notes;
 
   @override
   String toString() {
-    return 'Song(_id: $id, _title: $title, _artist: $artist, _key: $key, _tempo: $tempo, _duration: $duration, _lyrics: $lyrics, _notes: $notes)';
+    return 'Song(id: $id, title: $title, artist: $artist)';
   }
 }

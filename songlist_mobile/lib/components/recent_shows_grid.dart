@@ -1,6 +1,6 @@
 import 'package:songlist_mobile/components/recent_show_card.dart';
+import 'package:songlist_mobile/database/dto/show_dto.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
-import 'package:songlist_mobile/models/show.dart';
 import 'package:songlist_mobile/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:songlist_mobile/service/show_service.dart';
@@ -24,7 +24,8 @@ class _RecentShowsGridState extends State<RecentShowsGrid> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Recently Added Shows",
+            Text(
+                LocalizationService.instance.getLocalizedString('recent_shows'),
                 style: Theme.of(context).textTheme.subtitle1!),
             ElevatedButton.icon(
               style: TextButton.styleFrom(
@@ -37,8 +38,7 @@ class _RecentShowsGridState extends State<RecentShowsGrid> {
               onPressed: () {},
               icon: Icon(Icons.add),
               label: Text(
-                LocalizationService.getInstance()
-                    .getLocalizedString('new_show'),
+                LocalizationService.instance.getLocalizedString('new_show'),
               ),
             ),
           ],
@@ -59,31 +59,59 @@ class _RecentShowsGridState extends State<RecentShowsGrid> {
 }
 
 // ignore: must_be_immutable
-class RecentShowsCardGridView extends StatelessWidget {
+class RecentShowsCardGridView extends StatefulWidget {
   RecentShowsCardGridView(
-      {Key? key, int crossAxisCount = 4, double childAspectRatio = 1}) {
+      {Key? key, int crossAxisCount = 4, double childAspectRatio = 1})
+      : super(key: key) {
     this.crossAxisCount = crossAxisCount;
     this.childAspectRatio = childAspectRatio;
-    this.recentShows = ShowService.getRecentShows();
   }
 
   late int crossAxisCount;
   late double childAspectRatio;
-  late List<Show> recentShows;
+
+  @override
+  _RecentShowsCardGridViewState createState() =>
+      _RecentShowsCardGridViewState();
+}
+
+class _RecentShowsCardGridViewState extends State<RecentShowsCardGridView> {
+  _RecentShowsCardGridViewState() {
+    this.service = ShowService();
+    this.recentShows = service.getRecentShows();
+  }
+  late ShowService service;
+  late Future<List<ShowDto>> recentShows;
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      physics: NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: recentShows.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: crossAxisCount,
-        crossAxisSpacing: defaultPadding,
-        mainAxisSpacing: defaultPadding,
-        childAspectRatio: childAspectRatio,
-      ),
-      itemBuilder: (context, index) => RecentShowCard(show: recentShows[index]),
-    );
+    return FutureBuilder<List<ShowDto>>(
+        future: this.recentShows,
+        builder: (BuildContext context, AsyncSnapshot<List<ShowDto>> snapshot) {
+          List<Widget> children = [];
+
+          //Snapshot is ASYNC, we have to check if it has data before accessing it
+          if (snapshot.hasData) {
+            children = <Widget>[
+              GridView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: snapshot.data!.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: widget.crossAxisCount,
+                  crossAxisSpacing: defaultPadding,
+                  mainAxisSpacing: defaultPadding,
+                  childAspectRatio: widget.childAspectRatio,
+                ),
+                itemBuilder: (context, index) =>
+                    RecentShowCard(show: snapshot.data![index]),
+              ),
+            ];
+          }
+
+          return Column(
+            children: children,
+          );
+        });
   }
 }
