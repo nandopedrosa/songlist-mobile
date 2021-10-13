@@ -4,7 +4,7 @@ import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/models/song.dart';
 import 'package:songlist_mobile/service/song_service.dart';
 
-import '../../../constants.dart';
+import '../util/constants.dart';
 
 // ignore: must_be_immutable
 class RecentSongsTable extends StatefulWidget {

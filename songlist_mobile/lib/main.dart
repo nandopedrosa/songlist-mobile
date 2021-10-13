@@ -1,4 +1,4 @@
-import 'package:songlist_mobile/constants.dart';
+import 'package:songlist_mobile/util/constants.dart';
 import 'package:songlist_mobile/controllers/MenuController.dart';
 import 'package:songlist_mobile/screens/home_screen.dart';
 import 'package:songlist_mobile/screens/main_screen.dart';

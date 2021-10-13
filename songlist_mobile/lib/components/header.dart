@@ -1,5 +1,5 @@
 import 'package:songlist_mobile/controllers/MenuController.dart';
-import 'package:songlist_mobile/responsive.dart';
+import 'package:songlist_mobile/util/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

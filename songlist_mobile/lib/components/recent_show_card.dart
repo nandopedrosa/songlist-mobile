@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:songlist_mobile/database/dto/show_dto.dart';
-import '../../../constants.dart';
+import '../util/constants.dart';
 
 class RecentShowCard extends StatelessWidget {
   const RecentShowCard({

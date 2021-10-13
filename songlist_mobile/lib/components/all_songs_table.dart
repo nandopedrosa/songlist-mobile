@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/models/song.dart';
 import 'package:songlist_mobile/service/song_service.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import '../constants.dart';
+import '../util/constants.dart';
 
 // ignore: must_be_immutable
 class AllSongsTable extends StatefulWidget {
