@@ -5,6 +5,7 @@ import 'package:songlist_mobile/util/validation.dart';
 
 class SongService {
   SongDao _dao = SongDao();
+  static const int _recentSongsLimit = 4;
 
   Validation validate(Song song) {
     Validation validation = Validation(isValid: true, messages: []);
@@ -30,8 +31,21 @@ class SongService {
     return validation;
   }
 
+  Future<int> save(Song song) {
+    if (song.id == null) {
+      return this._dao.insert(song);
+    } else {
+      return this._dao.update(song);
+    }
+  }
+
+  void delete(int id) {
+    this._dao.delete(id);
+  }
+
   Future<List<Song>> getRecentSongs() {
-    Future<List<Song>> recentSongs = this._dao.getRecentSongs();
+    Future<List<Song>> recentSongs =
+        this._dao.getRecentSongs(_recentSongsLimit);
     return recentSongs;
   }
 

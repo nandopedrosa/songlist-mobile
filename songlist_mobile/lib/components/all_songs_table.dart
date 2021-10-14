@@ -94,7 +94,7 @@ class _AllSongsTableState extends State<AllSongsTable> {
                     PaginatedDataTable(
                       columnSpacing: 48.0,
                       showCheckboxColumn: false,
-                      rowsPerPage: 2,
+                      rowsPerPage: rowsPerPage,
                       source: AllSongsData(snapshot.data),
                       columns: [
                         DataColumn(

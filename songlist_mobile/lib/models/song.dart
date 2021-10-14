@@ -22,6 +22,20 @@ class Song {
       // ignore: non_constant_identifier_names
       required this.created_on});
 
+  static Map<String, dynamic> toMap(Song song) {
+    final Map<String, dynamic> songMap = Map();
+    songMap['id'] = song.id;
+    songMap['title'] = song.title;
+    songMap['artist'] = song.artist;
+    songMap['key'] = song.key;
+    songMap['tempo'] = song.tempo;
+    songMap['duration'] = song.duration;
+    songMap['lyrics'] = song.lyrics;
+    songMap['notes'] = song.notes;
+    songMap['created_on'] = song.created_on;
+    return songMap;
+  }
+
   get getCreatedOn => this.created_on;
 
   // ignore: non_constant_identifier_names

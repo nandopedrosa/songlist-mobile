@@ -4,7 +4,6 @@ import 'package:songlist_mobile/database/database_helper.dart';
 
 class SongDao {
   static const String _tableName = 'song';
-  static const int _recentSongsLimit = 4;
 
   static const String tableSql = """
       CREATE TABLE "$_tableName" (
@@ -197,11 +196,11 @@ class SongDao {
   But she doesn''t see, she doesn''t see, no she just doesn''t see</p>', 'Bossa nova' , '2016-01-01 13:20:05');
   """;
 
-  Future<List<Song>> getRecentSongs() async {
+  Future<List<Song>> getRecentSongs(int recentSongsLimit) async {
     // get a reference to the database
     Database? db = await DatabaseHelper.instance.database;
     List<Map<String, dynamic>> result = await db!.rawQuery(
-        'select id, title, artist, created_on from song order by created_on desc LIMIT $_recentSongsLimit;');
+        'select id, title, artist, created_on from song order by created_on desc LIMIT $recentSongsLimit;');
 
     List<Song> recentSongs = List.generate(result.length, (i) {
       return Song(
@@ -234,8 +233,8 @@ class SongDao {
   }
 
   Future<List<Song>> getSongsByTitleOrArtist(String term) async {
-    // get a reference to the database
     Database? db = await DatabaseHelper.instance.database;
+
     List<Map<String, dynamic>> result = await db!.rawQuery("""
         select id, title, artist, created_on 
         from song 
@@ -253,5 +252,23 @@ class SongDao {
     });
 
     return songs;
+  }
+
+  Future<int> insert(Song song) async {
+    Database? db = await DatabaseHelper.instance.database;
+    Map<String, dynamic> songMap = Song.toMap(song);
+    return db!.insert(_tableName, songMap);
+  }
+
+  Future<int> update(Song song) async {
+    Database? db = await DatabaseHelper.instance.database;
+    Map<String, dynamic> songMap = Song.toMap(song);
+    return db!
+        .update(_tableName, songMap, where: "id = ?", whereArgs: [song.id]);
+  }
+
+  void delete(int id) async {
+    Database? db = await DatabaseHelper.instance.database;
+    db!.delete(_tableName, where: "id = ?", whereArgs: [id]);
   }
 }

@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 builder: (context) => SonglistPlusMobileApp(
                                   activeScreen: EditSongScreen(
                                     headerTitle: LocalizationService.instance
-                                        .getLocalizedString('new_song'),
+                                        .getLocalizedString('song'),
                                   ),
                                 ),
                               ),

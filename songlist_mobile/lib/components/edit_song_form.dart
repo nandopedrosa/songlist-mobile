@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:songlist_mobile/components/delete_button.dart';
+import 'package:songlist_mobile/components/go_back_button.dart';
+import 'package:songlist_mobile/components/modal_dialog.dart';
 import 'package:songlist_mobile/components/save_button.dart';
 import 'package:songlist_mobile/components/text_area_editor.dart';
 import 'package:songlist_mobile/components/text_field_editor.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
+import 'package:songlist_mobile/main.dart';
 import 'package:songlist_mobile/models/song.dart';
+import 'package:songlist_mobile/screens/all_songs_screen.dart';
 import 'package:songlist_mobile/service/song_service.dart';
+import 'package:songlist_mobile/components/toast_message.dart';
 import 'package:songlist_mobile/util/validation.dart';
-import '../util/constants.dart';
 
 // ignore: must_be_immutable
 class EditSongForm extends StatefulWidget {
@@ -42,7 +47,7 @@ class _EditSongForm extends State<EditSongForm> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext formContext) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -82,17 +87,25 @@ class _EditSongForm extends State<EditSongForm> {
               LocalizationService.instance.getLocalizedString('lyrics/chords'),
         ),
         SaveButton(
-          onPressed: this.saveSong,
+          onPressed: this.saveOrUpdateSong,
         ),
+        GoBackButton(onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    SonglistPlusMobileApp(activeScreen: AllSongsScreen())),
+          );
+        }),
+        if (this.songId != null) DeleteButton(onPressed: this.delete),
       ],
     );
   }
 
-  void saveSong() {
+  void saveOrUpdateSong() {
     var now = new DateTime.now();
     var formatter = new DateFormat('yyyy-MM-dd HH:mm:ss');
     String nowFormattedDate = formatter.format(now);
-
     Song song = Song(
         title: this._titleController.text,
         artist: this._artistController.text,
@@ -105,41 +118,56 @@ class _EditSongForm extends State<EditSongForm> {
         notes: this._notesController.text,
         created_on: nowFormattedDate);
 
+    //We are updating
+    if (this.songId != null) {
+      song.id = songId;
+    }
+
     Validation validation = service.validate(song);
 
     if (validation.isValid) {
+      this.service.save(song).then((id) => afterSaveOrUpdate(id));
     } else {
       showDialog(
           barrierDismissible: false,
           context: context,
           builder: (BuildContext context) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.all(Radius.circular(defaultPadding))),
-              backgroundColor: secondaryColor,
-              title: Text(
-                'Please, correct the errors below:',
-                style: TextStyle(fontSize: defaultFontSize),
-              ),
-              content: Text(
-                validation.getMessagesMultiline(),
-                style:
-                    TextStyle(fontSize: defaultFontSize, color: Colors.white54),
-              ),
-              actions: [
-                TextButton(
-                  style: TextButton.styleFrom(
-                    textStyle: const TextStyle(fontSize: defaultFontSize),
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
+            return ModalDialog(
+              type: ModalDialogType.error,
+              title: LocalizationService.instance
+                  .getLocalizedString('found_errors'),
+              message: validation.getMessagesMultiline(),
+              dismissButtonText: "OK",
             );
           });
     }
+  }
+
+  void afterSaveOrUpdate(int id) {
+    if (this.songId == null) {
+      ToastMessage.showToast(LocalizationService.instance
+          .getLocalizedString('song_successfully_created'));
+    } else {
+      ToastMessage.showToast(LocalizationService.instance
+          .getLocalizedString('song_successfully_updated'));
+    }
+
+    setState(() {
+      this.songId = id;
+    });
+  }
+
+  void delete() {
+    this.service.delete(this.songId!);
+
+    ToastMessage.showToast(LocalizationService.instance
+        .getLocalizedString('song_successfully_deleted'));
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              SonglistPlusMobileApp(activeScreen: AllSongsScreen())),
+    );
   }
 }
