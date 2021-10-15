@@ -96,7 +96,10 @@ class _AllSongsTableState extends State<AllSongsTable> {
                       columnSpacing: defaultPadding,
                       headingRowHeight: dataTableHeadingRowHeight,
                       showCheckboxColumn: false,
-                      rowsPerPage: rowsPerPage,
+                      //Remove empty rows if the data length is less than rows per page
+                      rowsPerPage: snapshot.data!.length > defaultRowsPerPage
+                          ? defaultRowsPerPage
+                          : snapshot.data!.length,
                       source: AllSongsData(snapshot.data, context),
                       columns: [
                         DataColumn(

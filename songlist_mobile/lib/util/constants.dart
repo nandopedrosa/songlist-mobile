@@ -15,4 +15,4 @@ const formFieldPadding = 8.0;
 const dataTableHeadingRowHeight = 72.0;
 
 //Misc
-const int rowsPerPage = 8;
+const int defaultRowsPerPage = 8;
