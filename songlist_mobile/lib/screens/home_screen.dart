@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     RecentShowsGrid(),
                     SizedBox(height: defaultPadding * 3),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
                           LocalizationService.instance
@@ -41,31 +41,34 @@ class _HomeScreenState extends State<HomeScreen> {
                           textAlign: TextAlign.start,
                           style: Theme.of(context).textTheme.subtitle1!,
                         ),
-                        ElevatedButton.icon(
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: defaultPadding,
-                              vertical: defaultPadding /
-                                  (Responsive.isMobile(context) ? 2 : 1),
+                        Padding(
+                          padding: EdgeInsets.only(left: defaultPadding),
+                          child: ElevatedButton.icon(
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: defaultPadding,
+                                vertical: defaultPadding /
+                                    (Responsive.isMobile(context) ? 2 : 1),
+                              ),
                             ),
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SonglistPlusMobileApp(
-                                  activeScreen: EditSongScreen(
-                                    headerTitle: LocalizationService.instance
-                                        .getLocalizedString('song'),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SonglistPlusMobileApp(
+                                    activeScreen: EditSongScreen(
+                                      headerTitle: LocalizationService.instance
+                                          .getLocalizedString('song'),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
-                          },
-                          icon: Icon(Icons.add),
-                          label: Text(
-                            LocalizationService.instance
-                                .getLocalizedString('new_song'),
+                              );
+                            },
+                            icon: Icon(Icons.add),
+                            label: Text(
+                              LocalizationService.instance
+                                  .getLocalizedString('new_song'),
+                            ),
                           ),
                         )
                       ],

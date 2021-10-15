@@ -25,19 +25,20 @@ class SonglistPlusMobileApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Songlist Plus',
       theme: ThemeData.dark().copyWith(
-        cardTheme: CardTheme(
-            shape: RoundedRectangleBorder(
-                borderRadius: const BorderRadius.all(Radius.circular(10)))),
-        dataTableTheme: DataTableThemeData(),
-        scaffoldBackgroundColor: bgColor,
-        textTheme:
-            GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme).apply(
-          bodyColor: Colors.white,
-          displayColor: Colors.white,
-        ),
-        canvasColor: secondaryColor,
-        cardColor: secondaryColor,
-      ),
+          //Card theme is used for DataTables and PaginatedDataTables
+          cardTheme: CardTheme(
+              shape: RoundedRectangleBorder(
+                  borderRadius: const BorderRadius.all(Radius.circular(10)))),
+          dataTableTheme: DataTableThemeData(),
+          scaffoldBackgroundColor: bgColor,
+          textTheme:
+              GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme).apply(
+            bodyColor: Colors.white,
+            displayColor: Colors.white,
+          ),
+          canvasColor: secondaryColor,
+          cardColor: secondaryColor,
+          hintColor: Colors.white),
       home: MultiProvider(
         providers: [
           ChangeNotifierProvider(

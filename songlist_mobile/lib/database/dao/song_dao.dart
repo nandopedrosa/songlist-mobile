@@ -19,6 +19,8 @@ class SongDao {
       PRIMARY KEY("id" AUTOINCREMENT));      
     """;
 
+  static const String dropTableSql = "DROP TABLE IF EXISTS $_tableName";
+
   //The app comes with pre-loaded songs to illustrate features to the user
   static const String insertRecentSong1 = """
     INSERT INTO "song" ("title", "artist", "key", "tempo", "duration", "lyrics", "notes", "created_on") 

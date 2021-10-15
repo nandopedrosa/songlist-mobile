@@ -1,3 +1,5 @@
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:songlist_mobile/localization/localization_strings.dart';
 import 'dart:io';
 
@@ -35,5 +37,16 @@ class LocalizationService {
     String localizedString = LocalizationStrings.localizedStrings[key]![index];
 
     return localizedString;
+  }
+
+  //Param: ISO8601 formatted date (YYY-MM-DD HH:MM)
+  //Return: July 10, 1996, HH24:MM
+  String getFullLocalizedDateAndTime(String iso8601Date) {
+    String platformLocaleName = Platform.localeName;
+    initializeDateFormatting(platformLocaleName, null);
+    var parsedDate = DateTime.parse(iso8601Date);
+    var formatter = new DateFormat.yMd(platformLocaleName).add_Hm();
+    String result = formatter.format(parsedDate);
+    return result;
   }
 }

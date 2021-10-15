@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:songlist_mobile/database/dto/show_dto.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
-import 'package:songlist_mobile/models/song.dart';
-import 'package:songlist_mobile/service/song_service.dart';
+import 'package:songlist_mobile/service/show_service.dart';
 import 'package:songlist_mobile/util/responsive.dart';
 import '../util/constants.dart';
 
 // ignore: must_be_immutable
-class AllSongsTable extends StatefulWidget {
-  const AllSongsTable({
+class AllShowsTable extends StatefulWidget {
+  const AllShowsTable({
     Key? key,
   }) : super(key: key);
 
   @override
-  _AllSongsTableState createState() => _AllSongsTableState();
+  _AllShowsTableState createState() => _AllShowsTableState();
 }
 
-class _AllSongsTableState extends State<AllSongsTable> {
+class _AllShowsTableState extends State<AllShowsTable> {
   final searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    this.service = SongService();
-    this.songs = service.getAllSongs();
+    this.service = ShowService();
+    this.shows = service.getAllShows();
   }
 
-  late SongService service;
-  late Future<List<Song>> songs;
+  late ShowService service;
+  late Future<List<ShowDto>> shows;
 
   @override
   Widget build(BuildContext context) {
@@ -83,10 +83,10 @@ class _AllSongsTableState extends State<AllSongsTable> {
         ),
         SizedBox(
           width: double.infinity,
-          child: FutureBuilder<List<Song>>(
-              future: this.songs,
-              builder:
-                  (BuildContext context, AsyncSnapshot<List<Song>> snapshot) {
+          child: FutureBuilder<List<ShowDto>>(
+              future: this.shows,
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<ShowDto>> snapshot) {
                 List<Widget> children = [];
 
                 //Snapshot is ASYNC, we have to check if it has data before accessing it
@@ -97,15 +97,15 @@ class _AllSongsTableState extends State<AllSongsTable> {
                       headingRowHeight: dataTableHeadingRowHeight,
                       showCheckboxColumn: false,
                       rowsPerPage: rowsPerPage,
-                      source: AllSongsData(snapshot.data, context),
+                      source: AllShowsData(snapshot.data, context),
                       columns: [
                         DataColumn(
                           label: Text(LocalizationService.instance
-                              .getLocalizedString("title")),
+                              .getLocalizedString("name")),
                         ),
                         DataColumn(
                           label: Text(LocalizationService.instance
-                              .getLocalizedString("artist")),
+                              .getLocalizedString("when")),
                         ),
                       ],
                     )
@@ -124,40 +124,49 @@ class _AllSongsTableState extends State<AllSongsTable> {
 
   void _search(String term) {
     this.setState(() {
-      this.songs = this.service.getSongsByTitleOrArtist(term);
+      this.shows = this.service.getShowsByName(term);
     });
   }
 
   void _clear() {
     this.setState(() {
       this.searchController.text = '';
-      this.songs = this.service.getAllSongs();
+      this.shows = this.service.getAllShows();
     });
   }
 }
 
-class AllSongsData extends DataTableSource {
-  AllSongsData(List<Song>? data, BuildContext tableContext) {
+class AllShowsData extends DataTableSource {
+  AllShowsData(List<ShowDto>? data, BuildContext tableContext) {
     this._data = data;
     this.tableContext = tableContext;
   }
-
   late BuildContext tableContext;
-  List<Song>? _data;
+  List<ShowDto>? _data;
 
   bool get isRowCountApproximate => false;
   int get rowCount => _data!.length;
   int get selectedRowCount => 0;
   DataRow getRow(int index) {
     return DataRow(cells: [
-      DataCell(Container(
+      DataCell(
+        Container(
+            width: Responsive.getTableCellWidth(2, tableContext),
+            child: Text(
+              _data![index].name,
+              style: TextStyle(color: Colors.white70),
+            )),
+      ),
+      DataCell(
+        //Date format: July 10, 1996, HH24:MM
+        Container(
           width: Responsive.getTableCellWidth(2, tableContext),
-          child: Text(_data![index].title,
-              style: TextStyle(color: Colors.white70)))),
-      DataCell(Container(
-          width: Responsive.getTableCellWidth(2, tableContext),
-          child: Text(_data![index].artist,
-              style: TextStyle(color: Colors.white70)))),
+          child: Text(
+              LocalizationService.instance
+                  .getFullLocalizedDateAndTime(_data![index].when),
+              style: TextStyle(color: Colors.white70)),
+        ),
+      ),
     ]);
   }
 }

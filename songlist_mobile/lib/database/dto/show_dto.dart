@@ -2,14 +2,20 @@ class ShowDto {
   int id;
   String name;
   String duration;
-  int? numberOfSongs;
+  String when;
+  int numberOfSongs;
 
   ShowDto({
     required this.id,
     required this.name,
     required this.duration,
-    this.numberOfSongs,
+    required this.when,
+    required this.numberOfSongs,
   });
+
+  get getWhen => this.when;
+
+  set setWhen(when) => this.when = when;
 
   get getId => this.id;
 

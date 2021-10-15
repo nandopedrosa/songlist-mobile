@@ -12,7 +12,12 @@ class Responsive extends StatelessWidget {
     required this.desktop,
   }) : super(key: key);
 
-// This size work fine on my design, maybe you need some customization depends on your design
+  //Distribute table cell widths evenly based on the screen width and number of cells
+  static double getTableCellWidth(int numberOfCells, BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    //Leave 10% space for some padding
+    return (screenWidth / numberOfCells) * 0.9;
+  }
 
   // This isMobile, isTablet, isDesktop helep us later
   static bool isMobile(BuildContext context) =>

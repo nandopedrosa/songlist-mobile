@@ -22,23 +22,26 @@ class _RecentShowsGridState extends State<RecentShowsGrid> {
     return Column(
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
                 LocalizationService.instance.getLocalizedString('recent_shows'),
                 style: Theme.of(context).textTheme.subtitle1!),
-            ElevatedButton.icon(
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.symmetric(
-                  horizontal: defaultPadding,
-                  vertical:
-                      defaultPadding / (Responsive.isMobile(context) ? 2 : 1),
+            Padding(
+              padding: EdgeInsets.only(left: defaultPadding),
+              child: ElevatedButton.icon(
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: defaultPadding,
+                    vertical:
+                        defaultPadding / (Responsive.isMobile(context) ? 2 : 1),
+                  ),
                 ),
-              ),
-              onPressed: () {},
-              icon: Icon(Icons.add),
-              label: Text(
-                LocalizationService.instance.getLocalizedString('new_show'),
+                onPressed: () {},
+                icon: Icon(Icons.add),
+                label: Text(
+                  LocalizationService.instance.getLocalizedString('new_show'),
+                ),
               ),
             ),
           ],
