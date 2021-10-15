@@ -5,7 +5,7 @@ class Show {
   String name;
   String? when;
   String? pay;
-  String? duration;
+  String duration;
   String? address;
   String? contact;
   String? notes;
@@ -18,13 +18,28 @@ class Show {
     required this.name,
     this.when,
     this.pay,
-    this.duration,
+    this.duration = '00:00',
     this.address,
     this.contact,
     this.notes,
     // ignore: non_constant_identifier_names
     required this.created_on,
   });
+
+  static Map<String, dynamic> toMap(Show show) {
+    final Map<String, dynamic> showMap = Map();
+    showMap['id'] = show.id;
+    showMap['name'] = show.name;
+    showMap['when'] = show.when;
+    showMap['pay'] = show.pay;
+    showMap['address'] = show.address;
+    showMap['contact'] = show.contact;
+    showMap['notes'] = show.notes;
+    showMap['duration'] = show.duration;
+    showMap['created_on'] = show.created_on;
+    showMap['number_of_songs'] = show.songs.length;
+    return showMap;
+  }
 
   void addSong(Song song) {
     this.songs.add(song);

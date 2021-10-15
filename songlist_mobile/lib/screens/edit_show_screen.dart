@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:songlist_mobile/components/edit_song_form.dart';
+import 'package:songlist_mobile/components/edit_show_form.dart';
 import 'package:songlist_mobile/components/header.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
-
 import '../util/constants.dart';
 
 // ignore: must_be_immutable
-class EditSongScreen extends StatefulWidget {
-  int? songId;
+class EditShowScreen extends StatefulWidget {
+  int? showId;
 
-  EditSongScreen({
+  EditShowScreen({
     Key? key,
-    this.songId,
+    this.showId,
   }) : super(key: key);
 
   @override
-  _EditSongScreen createState() => _EditSongScreen(songId);
+  _EditShowScreen createState() => _EditShowScreen(showId);
 }
 
-class _EditSongScreen extends State<EditSongScreen> {
-  int? songId;
+class _EditShowScreen extends State<EditShowScreen> {
+  int? showId;
 
-  _EditSongScreen(this.songId);
+  _EditShowScreen(this.showId);
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +30,14 @@ class _EditSongScreen extends State<EditSongScreen> {
         child: Column(
           children: [
             Header(
-                title: LocalizationService.instance.getLocalizedString('song')),
+              title: LocalizationService.instance.getLocalizedString('show'),
+            ),
             Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Expanded(
                 flex: 5,
                 child: Column(
                   children: [
-                    EditSongForm(songId: songId),
+                    EditShowForm(showId: showId),
                   ],
                 ),
               )

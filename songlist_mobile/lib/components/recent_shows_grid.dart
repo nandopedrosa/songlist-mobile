@@ -1,6 +1,8 @@
 import 'package:songlist_mobile/components/recent_show_card.dart';
 import 'package:songlist_mobile/database/dto/show_dto.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
+import 'package:songlist_mobile/main.dart';
+import 'package:songlist_mobile/screens/edit_show_screen.dart';
 import 'package:songlist_mobile/util/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:songlist_mobile/service/show_service.dart';
@@ -37,7 +39,16 @@ class _RecentShowsGridState extends State<RecentShowsGrid> {
                         defaultPadding / (Responsive.isMobile(context) ? 2 : 1),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SonglistPlusMobileApp(
+                        activeScreen: EditShowScreen(),
+                      ),
+                    ),
+                  );
+                },
                 icon: Icon(Icons.add),
                 label: Text(
                   LocalizationService.instance.getLocalizedString('new_show'),

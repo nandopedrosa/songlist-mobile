@@ -43,6 +43,10 @@ class SongService {
     this._dao.delete(id);
   }
 
+  Future<Song> find(int id) {
+    return this._dao.find(id);
+  }
+
   Future<List<Song>> getRecentSongs() {
     Future<List<Song>> recentSongs =
         this._dao.getRecentSongs(_recentSongsLimit);

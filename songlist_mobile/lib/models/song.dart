@@ -36,6 +36,18 @@ class Song {
     return songMap;
   }
 
+  factory Song.fromMap(Map<String, dynamic> json) => Song(
+        id: json["id"],
+        title: json["title"],
+        artist: json["artist"],
+        key: json["key"],
+        tempo: json["tempo"],
+        duration: json["duration"],
+        lyrics: json["lyrics"],
+        notes: json["notes"],
+        created_on: json["created_on"],
+      );
+
   get getCreatedOn => this.created_on;
 
   // ignore: non_constant_identifier_names

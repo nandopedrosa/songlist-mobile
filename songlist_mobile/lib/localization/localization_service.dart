@@ -40,7 +40,7 @@ class LocalizationService {
   }
 
   //Param: ISO8601 formatted date (YYY-MM-DD HH:MM)
-  //Return: July 10, 1996, HH24:MM
+  //Return: 01/01/1996, HH24:MM
   String getFullLocalizedDateAndTime(String iso8601Date) {
     String platformLocaleName = Platform.localeName;
     initializeDateFormatting(platformLocaleName, null);

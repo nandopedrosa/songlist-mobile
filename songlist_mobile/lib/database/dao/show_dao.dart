@@ -1,4 +1,5 @@
 import 'package:songlist_mobile/database/dto/show_dto.dart';
+import 'package:songlist_mobile/models/show.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:songlist_mobile/database/database_helper.dart';
 
@@ -14,15 +15,13 @@ class ShowDao {
 	address TEXT, 
 	contact TEXT,	
 	notes TEXT, 
-  duration	TEXT NOT NULL DEFAULT '00:00', 
+  duration	TEXT NOT NULL, 
   "created_on" TEXT NOT NULL,
   "number_of_songs"	INTEGER NOT NULL DEFAULT 0,
 	PRIMARY KEY (id));
   """;
 
   static const String dropTableSql = "DROP TABLE IF EXISTS $_tableName";
-
-  static const int _recentShowsLimit = 4;
 
   static const String insertRecentShow1 = """ 
     INSERT INTO $_tableName (name, "when", pay, address, contact, notes, duration, created_on, number_of_songs)
@@ -59,10 +58,10 @@ class ShowDao {
     return allShows;
   }
 
-  Future<List<ShowDto>> getRecentShows() async {
+  Future<List<ShowDto>> getRecentShows(int recentShowsLimit) async {
     Database? db = await DatabaseHelper.instance.database;
     List<Map<String, dynamic>> result = await db!.rawQuery(
-        'select id, name, duration, "when", number_of_songs from show order by created_on desc LIMIT $_recentShowsLimit;');
+        'select id, name, duration, "when", number_of_songs from show order by created_on desc LIMIT $recentShowsLimit;');
 
     //First we get each show
     List<ShowDto> recentShows = [];
@@ -100,5 +99,23 @@ class ShowDao {
     });
 
     return shows;
+  }
+
+  Future<int> insert(Show show) async {
+    Database? db = await DatabaseHelper.instance.database;
+    Map<String, dynamic> songMap = Show.toMap(show);
+    return db!.insert(_tableName, songMap);
+  }
+
+  Future<int> update(Show show) async {
+    Database? db = await DatabaseHelper.instance.database;
+    Map<String, dynamic> songMap = Show.toMap(show);
+    return db!
+        .update(_tableName, songMap, where: "id = ?", whereArgs: [show.id]);
+  }
+
+  void delete(int id) async {
+    Database? db = await DatabaseHelper.instance.database;
+    db!.delete(_tableName, where: "id = ?", whereArgs: [id]);
   }
 }

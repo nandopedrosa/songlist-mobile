@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
+import 'package:songlist_mobile/main.dart';
 import 'package:songlist_mobile/models/song.dart';
+import 'package:songlist_mobile/screens/edit_song_screen.dart';
 import 'package:songlist_mobile/service/song_service.dart';
 import 'package:songlist_mobile/util/responsive.dart';
 import '../util/constants.dart';
@@ -152,15 +154,28 @@ class AllSongsData extends DataTableSource {
   int get rowCount => _data!.length;
   int get selectedRowCount => 0;
   DataRow getRow(int index) {
-    return DataRow(cells: [
-      DataCell(Container(
-          width: Responsive.getTableCellWidth(2, tableContext),
-          child: Text(_data![index].title,
-              style: TextStyle(color: Colors.white70)))),
-      DataCell(Container(
-          width: Responsive.getTableCellWidth(2, tableContext),
-          child: Text(_data![index].artist,
-              style: TextStyle(color: Colors.white70)))),
-    ]);
+    return DataRow(
+        onSelectChanged: (value) {
+          Navigator.push(
+            tableContext,
+            MaterialPageRoute(
+              builder: (context) => SonglistPlusMobileApp(
+                activeScreen: EditSongScreen(
+                  songId: _data![index].id,
+                ),
+              ),
+            ),
+          );
+        },
+        cells: [
+          DataCell(Container(
+              width: Responsive.getTableCellWidth(2, tableContext),
+              child: Text(_data![index].title,
+                  style: TextStyle(color: Colors.white70)))),
+          DataCell(Container(
+              width: Responsive.getTableCellWidth(2, tableContext),
+              child: Text(_data![index].artist,
+                  style: TextStyle(color: Colors.white70)))),
+        ]);
   }
 }

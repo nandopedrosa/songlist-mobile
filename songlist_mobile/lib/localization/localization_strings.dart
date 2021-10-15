@@ -20,9 +20,16 @@ class LocalizationStrings {
     'created_on': ['Created on', 'Criado(a) em'],
     'name': ['Name', 'Nome'],
     'when': ['When', 'Quando'],
+    'pay': ['Payment', 'Pagamento'],
+    'address': ['Address', 'Endereço'],
+    'contact': ['Contact', 'Contato'],
     'save': ['Save', 'Salvar'],
     'back': ['Back', 'Voltar'],
     'delete': ['Delete', 'Excluir'],
+    'name_mandatory': [
+      'The name field is mandatory',
+      'O campo de nome é obrigatório'
+    ],
     'title_mandatory': [
       'The title field is mandatory',
       'O campo de título é obrigatório'
@@ -48,6 +55,18 @@ class LocalizationStrings {
     'song_successfully_deleted': [
       'Song successfully deleted',
       'Música excluída com sucesso'
+    ],
+    'show_successfully_created': [
+      'Show successfully created',
+      'Show criado com sucesso'
+    ],
+    'show_successfully_updated': [
+      'Show successfully updated',
+      'Show atualizado com sucesso'
+    ],
+    'show_successfully_deleted': [
+      'Show successfully deleted',
+      'Show excluído com sucesso'
     ],
   };
 }

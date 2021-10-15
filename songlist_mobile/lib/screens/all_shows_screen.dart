@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:songlist_mobile/components/all_shows_table.dart';
 import 'package:songlist_mobile/components/header.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
+import 'package:songlist_mobile/main.dart';
+import 'package:songlist_mobile/screens/edit_show_screen.dart';
 import 'package:songlist_mobile/util/responsive.dart';
 import '../util/constants.dart';
 
@@ -40,17 +42,14 @@ class _AllShowsScreenState extends State<AllShowsScreen> {
                             ),
                           ),
                           onPressed: () {
-                            /* Navigator.push(
+                            Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => SonglistPlusMobileApp(
-                                  activeScreen: EditShowScreen(
-                                    headerTitle: LocalizationService.instance
-                                        .getLocalizedString('show'),
-                                  ),
+                                  activeScreen: EditShowScreen(),
                                 ),
                               ),
-                            );*/
+                            );
                           },
                           icon: Icon(Icons.add),
                           label: Text(

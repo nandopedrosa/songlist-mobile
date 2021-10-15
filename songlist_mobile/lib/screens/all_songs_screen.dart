@@ -46,10 +46,7 @@ class _AllSongsScreenState extends State<AllSongsScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => SonglistPlusMobileApp(
-                                  activeScreen: EditSongScreen(
-                                    headerTitle: LocalizationService.instance
-                                        .getLocalizedString('new_song'),
-                                  ),
+                                  activeScreen: EditSongScreen(),
                                 ),
                               ),
                             );

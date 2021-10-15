@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:songlist_mobile/database/dto/show_dto.dart';
+import 'package:songlist_mobile/main.dart';
+import 'package:songlist_mobile/screens/edit_show_screen.dart';
 import '../util/constants.dart';
 
 class RecentShowCard extends StatelessWidget {
@@ -14,7 +16,14 @@ class RecentShowCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        print('tapou');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SonglistPlusMobileApp(
+              activeScreen: EditShowScreen(showId: show.id),
+            ),
+          ),
+        );
       },
       child: Container(
         padding: EdgeInsets.all(defaultPadding),

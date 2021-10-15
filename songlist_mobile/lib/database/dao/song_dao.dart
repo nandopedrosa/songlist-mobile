@@ -256,6 +256,13 @@ class SongDao {
     return songs;
   }
 
+  Future<Song> find(int id) async {
+    Database? db = await DatabaseHelper.instance.database;
+    var res = await db!.query(_tableName, where: "id = ?", whereArgs: [id]);
+    Song song = Song.fromMap(res.first);
+    return song;
+  }
+
   Future<int> insert(Song song) async {
     Database? db = await DatabaseHelper.instance.database;
     Map<String, dynamic> songMap = Song.toMap(song);

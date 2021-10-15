@@ -44,6 +44,21 @@ class _EditSongForm extends State<EditSongForm> {
   void initState() {
     super.initState();
     this.service = SongService();
+
+    if (this.songId != null) {
+      service.find(songId!).then((song) => this._updateControllers(song));
+    }
+  }
+
+  //Update the controller values when we fetch the model
+  void _updateControllers(Song song) {
+    this._titleController.text = song.title;
+    this._artistController.text = song.artist;
+    if (song.key != null) this._keyController.text = song.key!;
+    if (song.tempo != null) this._tempoController.text = song.tempo!.toString();
+    if (song.duration != null) this._durationController.text = song.duration!;
+    if (song.notes != null) this._notesController.text = song.notes!;
+    if (song.lyrics != null) this._lyricsController.text = song.lyrics!;
   }
 
   @override

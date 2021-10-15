@@ -1,7 +1,9 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
+import 'package:songlist_mobile/main.dart';
 import 'package:songlist_mobile/models/song.dart';
+import 'package:songlist_mobile/screens/edit_song_screen.dart';
 import 'package:songlist_mobile/service/song_service.dart';
 
 import '../util/constants.dart';
@@ -64,7 +66,8 @@ class _RecentSongsTableState extends State<RecentSongsTable> {
                         ],
                         rows: List.generate(
                           snapshot.data!.length,
-                          (index) => tableDataRow(snapshot.data![index]),
+                          (index) =>
+                              tableDataRow(snapshot.data![index], context),
                         ),
                       )
                     ];
@@ -81,10 +84,17 @@ class _RecentSongsTableState extends State<RecentSongsTable> {
   }
 }
 
-DataRow tableDataRow(Song song) {
+DataRow tableDataRow(Song song, BuildContext tableContext) {
   return DataRow(
     onSelectChanged: (value) {
-      print("tapped song: " + song.id.toString());
+      Navigator.push(
+        tableContext,
+        MaterialPageRoute(
+          builder: (context) => SonglistPlusMobileApp(
+            activeScreen: EditSongScreen(songId: song.id),
+          ),
+        ),
+      );
     },
     cells: [
       DataCell(Text(song.title, style: TextStyle(color: Colors.white70))),
