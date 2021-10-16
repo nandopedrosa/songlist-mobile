@@ -101,6 +101,13 @@ class ShowDao {
     return shows;
   }
 
+  Future<Show> find(int id) async {
+    Database? db = await DatabaseHelper.instance.database;
+    var res = await db!.query(_tableName, where: "id = ?", whereArgs: [id]);
+    Show song = Show.fromMap(res.first);
+    return song;
+  }
+
   Future<int> insert(Show show) async {
     Database? db = await DatabaseHelper.instance.database;
     Map<String, dynamic> songMap = Show.toMap(show);

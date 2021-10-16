@@ -39,6 +39,10 @@ class ShowService {
     this._dao.delete(id);
   }
 
+  Future<Show> find(int id) {
+    return this._dao.find(id);
+  }
+
   Future<List<ShowDto>> getRecentShows() async {
     Future<List<ShowDto>> recentShows =
         this._dao.getRecentShows(_recentShowsLimit);

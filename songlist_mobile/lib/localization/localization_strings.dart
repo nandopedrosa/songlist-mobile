@@ -68,5 +68,6 @@ class LocalizationStrings {
       'Show successfully deleted',
       'Show excluído com sucesso'
     ],
+    'select_date': ['Select date', 'Selecione a data']
   };
 }

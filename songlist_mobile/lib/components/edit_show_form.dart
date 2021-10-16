@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:songlist_mobile/components/delete_button.dart';
 import 'package:songlist_mobile/components/go_back_button.dart';
@@ -12,37 +13,56 @@ import 'package:songlist_mobile/models/show.dart';
 import 'package:songlist_mobile/screens/all_shows_screen.dart';
 import 'package:songlist_mobile/service/show_service.dart';
 import 'package:songlist_mobile/components/toast_message.dart';
+import 'package:songlist_mobile/util/constants.dart';
 import 'package:songlist_mobile/util/validation.dart';
 
 // ignore: must_be_immutable
 class EditShowForm extends StatefulWidget {
   int? showId;
+  String whenLabel;
 
-  EditShowForm({
-    Key? key,
-    this.showId,
-  }) : super(key: key);
+  EditShowForm({Key? key, this.showId, required this.whenLabel})
+      : super(key: key);
 
   @override
-  _EditShowForm createState() => _EditShowForm(showId);
+  _EditShowForm createState() => _EditShowForm(showId, whenLabel);
 }
 
 class _EditShowForm extends State<EditShowForm> {
-  int? showId;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _whenController = TextEditingController();
   final TextEditingController _payController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _contactController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
+  int? showId;
+  late String whenLabel;
   late ShowService service;
 
-  _EditShowForm(this.showId);
+  _EditShowForm(int? showId, String whenLabel) {
+    this.showId = showId;
+    this.whenLabel = whenLabel;
+  }
+
+  //Update the controller values when we fetch the model
+  void _updateControllers(Show show) {
+    this._nameController.text = show.name;
+    if (show.when != null) {
+      this._whenController.text = show.when!;
+    }
+    if (show.pay != null) this._payController.text = show.pay!;
+    if (show.address != null) this._addressController.text = show.address!;
+    if (show.contact != null) this._contactController.text = show.contact!;
+    if (show.notes != null) this._notesController.text = show.notes!;
+  }
 
   @override
   void initState() {
     super.initState();
     this.service = ShowService();
+    if (this.showId != null) {
+      service.find(showId!).then((show) => this._updateControllers(show));
+    }
   }
 
   @override
@@ -54,9 +74,50 @@ class _EditShowForm extends State<EditShowForm> {
           controller: _nameController,
           label: LocalizationService.instance.getLocalizedString('name'),
         ),
-        TextFieldEditor(
-          controller: _whenController,
-          label: LocalizationService.instance.getLocalizedString('when'),
+        Padding(
+          padding: EdgeInsets.only(
+              top: defaultPadding,
+              left: formFieldPadding,
+              right: formFieldPadding),
+          child: Text(
+            LocalizationService.instance.getLocalizedString("when"),
+            textAlign: TextAlign.start,
+            style: Theme.of(context).textTheme.subtitle1!,
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(
+              top: defaultPadding,
+              bottom: defaultPadding,
+              left: formFieldPadding,
+              right: formFieldPadding),
+          child: SizedBox(
+            width: double.infinity,
+            child: OutlinedButton.icon(
+              icon: Padding(
+                  padding: EdgeInsets.only(right: defaultPadding),
+                  child: Icon(Icons.calendar_today, color: Colors.white)),
+              onPressed: () {
+                DatePicker.showDateTimePicker(formContext,
+                    minTime: DateTime.now(),
+                    maxTime: DateTime.now().add(const Duration(days: 365 * 5)),
+                    onConfirm: (date) {
+                  setState(() {
+                    this.whenLabel = LocalizationService.instance
+                        .getFullLocalizedDateAndTime(date.toString());
+                    this._whenController.text = date.toString();
+                  });
+                }, currentTime: DateTime.now(), locale: LocaleType.pt);
+              },
+              style: OutlinedButton.styleFrom(
+                  primary: Colors.white70,
+                  side: BorderSide(color: Colors.white54)),
+              label: Text(
+                this.whenLabel,
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
         ),
         TextFieldEditor(
           controller: _payController,

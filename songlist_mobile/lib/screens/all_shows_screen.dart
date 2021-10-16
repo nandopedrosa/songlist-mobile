@@ -46,7 +46,10 @@ class _AllShowsScreenState extends State<AllShowsScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => SonglistPlusMobileApp(
-                                  activeScreen: EditShowScreen(),
+                                  activeScreen: EditShowScreen(
+                                    whenLabel: LocalizationService.instance
+                                        .getLocalizedString('select_date'),
+                                  ),
                                 ),
                               ),
                             );

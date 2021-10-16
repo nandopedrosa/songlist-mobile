@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:songlist_mobile/database/dto/show_dto.dart';
+import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/main.dart';
 import 'package:songlist_mobile/screens/edit_show_screen.dart';
 import '../util/constants.dart';
@@ -20,7 +21,11 @@ class RecentShowCard extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => SonglistPlusMobileApp(
-              activeScreen: EditShowScreen(showId: show.id),
+              activeScreen: EditShowScreen(
+                showId: show.id,
+                whenLabel: LocalizationService.instance
+                    .getFullLocalizedDateAndTime(show.when),
+              ),
             ),
           ),
         );

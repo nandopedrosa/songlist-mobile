@@ -3,7 +3,6 @@ import 'package:songlist_mobile/database/dto/show_dto.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/main.dart';
 import 'package:songlist_mobile/screens/edit_show_screen.dart';
-import 'package:songlist_mobile/screens/edit_song_screen.dart';
 import 'package:songlist_mobile/service/show_service.dart';
 import 'package:songlist_mobile/util/responsive.dart';
 import '../util/constants.dart';
@@ -162,6 +161,7 @@ class AllShowsData extends DataTableSource {
               builder: (context) => SonglistPlusMobileApp(
                 activeScreen: EditShowScreen(
                   showId: _data![index].id,
+                  whenLabel: _data![index].when,
                 ),
               ),
             ),

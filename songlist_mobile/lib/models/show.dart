@@ -41,6 +41,18 @@ class Show {
     return showMap;
   }
 
+  factory Show.fromMap(Map<String, dynamic> json) => Show(
+        id: json["id"],
+        name: json['name'],
+        when: json['when'],
+        pay: json['pay'],
+        address: json['address'],
+        contact: json['contact'],
+        notes: json['notes'],
+        duration: json['duration'],
+        created_on: json['created_on'],
+      );
+
   void addSong(Song song) {
     this.songs.add(song);
   }
