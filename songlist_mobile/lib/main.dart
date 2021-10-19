@@ -13,10 +13,8 @@ void main() {
 class SonglistPlusMobileApp extends StatelessWidget {
   final Widget activeScreen;
 
-  const SonglistPlusMobileApp({
-    Key? key,
-    required this.activeScreen,
-  }) : super(key: key);
+  const SonglistPlusMobileApp({Key? key, required this.activeScreen})
+      : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -45,7 +43,6 @@ class SonglistPlusMobileApp extends StatelessWidget {
             create: (context) => MenuController(),
           ),
         ],
-        //child: MainScreen(activeScreen: AllSongsScreen()),
         child: MainScreen(activeScreen: this.activeScreen),
       ),
     );

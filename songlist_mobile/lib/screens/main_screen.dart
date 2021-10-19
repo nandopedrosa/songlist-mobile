@@ -7,10 +7,7 @@ import 'package:songlist_mobile/util/responsive.dart';
 class MainScreen extends StatelessWidget {
   final Widget activeScreen;
 
-  const MainScreen({
-    Key? key,
-    required this.activeScreen,
-  }) : super(key: key);
+  const MainScreen({Key? key, required this.activeScreen}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

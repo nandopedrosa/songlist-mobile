@@ -87,6 +87,10 @@ class Song {
 
   @override
   String toString() {
-    return 'Song(id: $id, title: $title, artist: $artist)';
+    if (this.artist.isEmpty) {
+      return '';
+    } else {
+      return this.title + ' ($artist)';
+    }
   }
 }

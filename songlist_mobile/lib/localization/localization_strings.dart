@@ -9,6 +9,7 @@ class LocalizationStrings {
     'all_songs': ['All Songs', 'Todas as Músicas'],
     'song': ['Song', 'Música'],
     'show': ['Show', 'Show'],
+    'setlist': ['Setlist', 'Repertório'],
     'search': ['Search', 'Buscar'],
     'title': ['Title', 'Título'],
     'artist': ['Artist', 'Artista'],
@@ -26,6 +27,7 @@ class LocalizationStrings {
     'save': ['Save', 'Salvar'],
     'back': ['Back', 'Voltar'],
     'delete': ['Delete', 'Excluir'],
+    'organize_setlist': ['Organize Setlist', 'Organizar Repertório'],
     'name_mandatory': [
       'The name field is mandatory',
       'O campo de nome é obrigatório'
@@ -68,6 +70,8 @@ class LocalizationStrings {
       'Show successfully deleted',
       'Show excluído com sucesso'
     ],
-    'select_date': ['Select date', 'Selecione a data']
+    'select_date': ['Select date', 'Selecione a data'],
+    'no_songs': ['No songs added yet', 'Nenhuma música adicionada até agora'],
+    'add_song': ['Add song', 'Adicionar música']
   };
 }

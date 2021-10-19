@@ -20,15 +20,15 @@ class AllSongsTable extends StatefulWidget {
 class _AllSongsTableState extends State<AllSongsTable> {
   final searchController = TextEditingController();
 
+  late SongService service;
+  late Future<List<Song>> songs;
+
   @override
   void initState() {
     super.initState();
     this.service = SongService();
     this.songs = service.getAllSongs();
   }
-
-  late SongService service;
-  late Future<List<Song>> songs;
 
   @override
   Widget build(BuildContext context) {

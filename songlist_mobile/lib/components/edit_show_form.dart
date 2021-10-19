@@ -11,6 +11,8 @@ import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/main.dart';
 import 'package:songlist_mobile/models/show.dart';
 import 'package:songlist_mobile/screens/all_shows_screen.dart';
+import 'package:songlist_mobile/screens/manage_setlist_screen.dart';
+import 'package:songlist_mobile/screens/secondary_screen.dart';
 import 'package:songlist_mobile/service/show_service.dart';
 import 'package:songlist_mobile/components/toast_message.dart';
 import 'package:songlist_mobile/util/constants.dart';
@@ -135,6 +137,54 @@ class _EditShowForm extends State<EditShowForm> {
           controller: this._notesController,
           label: LocalizationService.instance.getLocalizedString('notes'),
         ),
+        Padding(
+          padding: EdgeInsets.only(
+              top: defaultPadding,
+              left: formFieldPadding,
+              right: formFieldPadding),
+          child: Row(
+            children: [
+              if (this.showId != null)
+                Text(
+                  LocalizationService.instance.getLocalizedString("setlist"),
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.subtitle1!,
+                ),
+              if (this.showId != null)
+                IconButton(
+                  icon: const Icon(Icons.arrow_forward_ios),
+                  tooltip: 'Manage setlist',
+                  onPressed: () {
+                    Navigator.push(
+                      formContext,
+                      MaterialPageRoute(
+                        builder: (context) => SecondaryScreen(
+                          activeScreen: ManageSetlistScreen(
+                              showId: this.showId!,
+                              showName: this._nameController.text,
+                              showWhen: this._whenController.text),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+            ],
+          ),
+        ),
+        if (this.showId != null)
+          Padding(
+            padding: EdgeInsets.only(
+                top: defaultPadding,
+                left: formFieldPadding,
+                right: formFieldPadding),
+            child: Text(
+                LocalizationService.instance.getLocalizedString("no_songs"),
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                    fontSize: defaultFontSize,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.white54)),
+          ),
         SaveButton(
           onPressed: this.saveOrUpdateShow,
         ),
