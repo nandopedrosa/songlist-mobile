@@ -70,8 +70,14 @@ class LocalizationStrings {
       'Show successfully deleted',
       'Show excluído com sucesso'
     ],
+    'setlist_saved': [
+      'Setlist successfully saved',
+      'Repertório salvo com sucesso'
+    ],
     'select_date': ['Select date', 'Selecione a data'],
     'no_songs': ['No songs added yet', 'Nenhuma música adicionada até agora'],
+    'one_song': ['One song added', 'Uma música adicionada'],
+    'multiple_songs': ['songs added', 'músicas adicionadas'],
     'add_song': ['Add song', 'Adicionar música']
   };
 }

@@ -13,6 +13,7 @@ import 'package:songlist_mobile/models/show.dart';
 import 'package:songlist_mobile/screens/all_shows_screen.dart';
 import 'package:songlist_mobile/screens/manage_setlist_screen.dart';
 import 'package:songlist_mobile/screens/secondary_screen.dart';
+import 'package:songlist_mobile/service/setlist_service.dart';
 import 'package:songlist_mobile/service/show_service.dart';
 import 'package:songlist_mobile/components/toast_message.dart';
 import 'package:songlist_mobile/util/constants.dart';
@@ -39,7 +40,9 @@ class _EditShowForm extends State<EditShowForm> {
   final TextEditingController _notesController = TextEditingController();
   int? showId;
   late String whenLabel;
-  late ShowService service;
+  late ShowService showService;
+  late SetlistService setlistService;
+  late Future<int> numberOfSongs;
 
   _EditShowForm(int? showId, String whenLabel) {
     this.showId = showId;
@@ -61,9 +64,11 @@ class _EditShowForm extends State<EditShowForm> {
   @override
   void initState() {
     super.initState();
-    this.service = ShowService();
+    this.showService = ShowService();
+    this.setlistService = SetlistService();
     if (this.showId != null) {
-      service.find(showId!).then((show) => this._updateControllers(show));
+      showService.find(showId!).then((show) => this._updateControllers(show));
+      this.numberOfSongs = setlistService.getNumberOfSongs(this.showId!);
     }
   }
 
@@ -177,13 +182,25 @@ class _EditShowForm extends State<EditShowForm> {
                 top: defaultPadding,
                 left: formFieldPadding,
                 right: formFieldPadding),
-            child: Text(
-                LocalizationService.instance.getLocalizedString("no_songs"),
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                    fontSize: defaultFontSize,
-                    fontStyle: FontStyle.italic,
-                    color: Colors.white54)),
+            child: FutureBuilder<int>(
+                future: numberOfSongs,
+                builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+                  List<Widget> children = [];
+                  if (snapshot.hasData) {
+                    children = <Widget>[
+                      Text(getNumberOfSongsInSetlistLabel(snapshot.data!),
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              fontSize: defaultFontSize,
+                              fontStyle: FontStyle.italic,
+                              color: Colors.white54)),
+                    ];
+                  }
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: children,
+                  );
+                }),
           ),
         SaveButton(
           onPressed: this.saveOrUpdateShow,
@@ -199,6 +216,27 @@ class _EditShowForm extends State<EditShowForm> {
         if (this.showId != null) DeleteButton(onPressed: this.delete),
       ],
     );
+  }
+
+  String getNumberOfSongsInSetlistLabel(int numberOfSongs) {
+    if (this.showId == null)
+      return LocalizationService.instance.getLocalizedString('no_songs');
+
+    String numberOfSongsLabel;
+
+    if (numberOfSongs == 0) {
+      numberOfSongsLabel =
+          LocalizationService.instance.getLocalizedString('no_songs');
+    } else if (numberOfSongs == 1) {
+      numberOfSongsLabel =
+          LocalizationService.instance.getLocalizedString('one_song');
+    } else {
+      numberOfSongsLabel = numberOfSongs.toString() +
+          ' ' +
+          LocalizationService.instance.getLocalizedString('multiple_songs');
+    }
+
+    return numberOfSongsLabel;
   }
 
   void saveOrUpdateShow() {
@@ -219,10 +257,10 @@ class _EditShowForm extends State<EditShowForm> {
       show.id = showId;
     }
 
-    Validation validation = service.validate(show);
+    Validation validation = showService.validate(show);
 
     if (validation.isValid) {
-      this.service.save(show).then((id) => afterSaveOrUpdate(id));
+      this.showService.save(show).then((id) => afterSaveOrUpdate(id));
     } else {
       showDialog(
           barrierDismissible: false,
@@ -254,7 +292,7 @@ class _EditShowForm extends State<EditShowForm> {
   }
 
   void delete() {
-    this.service.delete(this.showId!);
+    this.showService.delete(this.showId!);
 
     ToastMessage.showToast(LocalizationService.instance
         .getLocalizedString('show_successfully_deleted'));
