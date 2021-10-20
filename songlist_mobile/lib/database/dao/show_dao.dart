@@ -58,6 +58,14 @@ class ShowDao {
     return allShows;
   }
 
+  Future<String> getDuration(int id) async {
+    Database? db = await DatabaseHelper.instance.database;
+    String sql = "select duration from $_tableName where id = ?";
+    var result = await db!.rawQuery(sql, [id]);
+    Object? totalDuration = result[0]['duration'];
+    return totalDuration!.toString();
+  }
+
   Future<List<ShowDto>> getRecentShows(int recentShowsLimit) async {
     Database? db = await DatabaseHelper.instance.database;
     List<Map<String, dynamic>> result = await db!.rawQuery(
@@ -119,6 +127,12 @@ class ShowDao {
     Map<String, dynamic> songMap = Show.toMap(show);
     return db!
         .update(_tableName, songMap, where: "id = ?", whereArgs: [show.id]);
+  }
+
+  Future<void> updateDuration(int showId, String duration) async {
+    Database? db = await DatabaseHelper.instance.database;
+    String sql = "update $_tableName set duration = ? where id = ?";
+    await db!.rawUpdate(sql, [duration, showId]);
   }
 
   void delete(int id) async {

@@ -27,6 +27,10 @@ class ShowService {
     return validation;
   }
 
+  void updateDuration(int showId, String duration) {
+    this._dao.updateDuration(showId, duration);
+  }
+
   Future<int> save(Show show) {
     if (show.id == null) {
       return this._dao.insert(show);
@@ -41,6 +45,10 @@ class ShowService {
 
   Future<Show> find(int id) {
     return this._dao.find(id);
+  }
+
+  Future<String> getDuration(int id) {
+    return this._dao.getDuration(id);
   }
 
   Future<List<ShowDto>> getRecentShows() async {

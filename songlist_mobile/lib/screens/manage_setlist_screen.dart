@@ -8,6 +8,7 @@ import 'package:songlist_mobile/main.dart';
 import 'package:songlist_mobile/models/song.dart';
 import 'package:songlist_mobile/screens/edit_show_screen.dart';
 import 'package:songlist_mobile/service/setlist_service.dart';
+import 'package:songlist_mobile/service/show_service.dart';
 import 'package:songlist_mobile/service/song_service.dart';
 import 'package:songlist_mobile/util/constants.dart';
 
@@ -37,6 +38,7 @@ class _ManageSetlistScreen extends State<ManageSetlistScreen> {
   final int showId;
   final String showWhen;
   late SongService songService;
+  late ShowService showService;
   late SetlistService setlistService;
   late Future<List<Song>> availableSongs;
   late Future<List<Song>> selectedSongs;
@@ -46,6 +48,7 @@ class _ManageSetlistScreen extends State<ManageSetlistScreen> {
     super.initState();
     this.songService = SongService();
     this.setlistService = SetlistService();
+    this.showService = ShowService();
     this.availableSongs = setlistService.getAvailableSongs(showId);
     this.selectedSongs = setlistService.getSelectedSongs(showId);
   }
@@ -287,8 +290,36 @@ class _ManageSetlistScreen extends State<ManageSetlistScreen> {
   }
 
   void _saveSetlist(List<Song> selectedSongs) {
+    Duration d = Duration(hours: 0, minutes: 0, seconds: 0);
+    for (Song s in selectedSongs) {
+      if (s.duration != null && s.duration!.isNotEmpty) {
+        d = d + s.getDurationObject();
+      }
+    }
+    String totalDuration = _getPrettyTotalDuration(d);
+
     this.setlistService.save(this.showId, selectedSongs);
+    this.showService.updateDuration(this.showId, totalDuration);
+
     ToastMessage.showToast(
         LocalizationService.instance.getLocalizedString('setlist_saved'));
+  }
+
+  String _getPrettyTotalDuration(Duration totalDuration) {
+    String totalDurationRaw = totalDuration.toString();
+    String d = totalDurationRaw.substring(0, totalDurationRaw.indexOf("."));
+
+    if (d.startsWith("0")) {
+      d = d.substring(d.indexOf(":") + 1);
+      d = d.replaceFirst(":", "m:");
+    } else {
+      d = d.substring(d.indexOf(":") + 1);
+      d = d.replaceFirst(":", "m:");
+      d = totalDurationRaw.substring(0, totalDurationRaw.indexOf(":")) +
+          "h:" +
+          d;
+    }
+
+    return d + "s";
   }
 }

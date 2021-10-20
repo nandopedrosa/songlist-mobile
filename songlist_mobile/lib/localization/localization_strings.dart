@@ -28,6 +28,11 @@ class LocalizationStrings {
     'back': ['Back', 'Voltar'],
     'delete': ['Delete', 'Excluir'],
     'organize_setlist': ['Organize Setlist', 'Organizar Repertório'],
+    'total_duration': ['Total duration', 'Duração total'],
+    'duration_format': [
+      'The duration format is mm:ss',
+      'O formato de duração é mm:ss'
+    ],
     'name_mandatory': [
       'The name field is mandatory',
       'O campo de nome é obrigatório'

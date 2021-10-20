@@ -93,4 +93,35 @@ class Song {
       return this.title + ' ($artist)';
     }
   }
+
+  String getPrettyTotalDuration(Duration totalDuration) {
+    String totalDurationRaw = totalDuration.toString();
+    String d = totalDurationRaw.substring(0, totalDurationRaw.indexOf("."));
+
+    if (d.startsWith("0")) {
+      d = d.substring(d.indexOf(":") + 1);
+      d = d.replaceFirst(":", "m:");
+    } else {
+      d = d.substring(d.indexOf(":") + 1);
+      d = d.replaceFirst(":", "m:");
+      d = totalDurationRaw.substring(0, totalDurationRaw.indexOf(":")) +
+          "h:" +
+          d;
+    }
+
+    return d + "s";
+  }
+
+  Duration getDurationObject() {
+    Duration d = Duration(minutes: _getMinutes(), seconds: _getSeconds());
+    return d;
+  }
+
+  int _getMinutes() {
+    return int.parse(this.duration!.substring(0, 2));
+  }
+
+  int _getSeconds() {
+    return int.parse(this.duration!.substring(3, 5));
+  }
 }

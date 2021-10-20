@@ -5,9 +5,7 @@ class SetlistService {
   SetlistDao _dao = SetlistDao();
 
   void save(int showId, List<Song> songs) {
-    if (songs.isNotEmpty) {
-      this._dao.save(showId, songs);
-    }
+    this._dao.save(showId, songs);
   }
 
   Future<int> getNumberOfSongs(int showId) {
@@ -21,7 +19,7 @@ class SetlistService {
   }
 
   //Get all songs that belong to a specific show's setlist
-    Future<List<Song>> getSelectedSongs(int showId) {
+  Future<List<Song>> getSelectedSongs(int showId) {
     Future<List<Song>> selectedSongs = this._dao.getSelectedSongs(showId);
     return selectedSongs;
   }

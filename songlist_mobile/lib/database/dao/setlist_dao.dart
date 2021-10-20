@@ -59,7 +59,7 @@ class SetlistDao {
   Future<List<Song>> getAvailableSongs(int showId) async {
     Database? db = await DatabaseHelper.instance.database;
     String querySql =
-        """select song.id, song.title, song.artist, song.created_on from song 
+        """select song.id, song.title, song.artist, song.duration, song.created_on from song 
         where song.id not in (select setlist.song_id from setlist where show_id = ?) order by song.title""";
     List<Map<String, dynamic>> result = await db!.rawQuery(querySql, [showId]);
 
@@ -68,6 +68,7 @@ class SetlistDao {
         id: result[i]['id'],
         title: result[i]['title'],
         artist: result[i]['artist'],
+        duration: result[i]['duration'],
         created_on: result[i]['created_on'],
       );
     });
@@ -78,7 +79,7 @@ class SetlistDao {
   Future<List<Song>> getSelectedSongs(int showId) async {
     Database? db = await DatabaseHelper.instance.database;
     String querySql =
-        """select song.id, song.title, song.artist, song.created_on from song ,  setlist
+        """select song.id, song.title, song.artist, song.duration, song.created_on from song ,  setlist
            where setlist.song_id = song.id and setlist.show_id =?  order by setlist.song_position """;
     List<Map<String, dynamic>> result = await db!.rawQuery(querySql, [showId]);
 
@@ -87,6 +88,7 @@ class SetlistDao {
         id: result[i]['id'],
         title: result[i]['title'],
         artist: result[i]['artist'],
+        duration: result[i]['duration'],
         created_on: result[i]['created_on'],
       );
     });

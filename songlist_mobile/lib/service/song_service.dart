@@ -22,6 +22,15 @@ class SongService {
           LocalizationService.instance.getLocalizedString('artist_mandatory'));
     }
 
+    if (song.duration != null && song.duration!.isNotEmpty) {
+      final durationRegex = RegExp(r'^[0-9][0-9]:[0-9][0-9]$');
+      if (!durationRegex.hasMatch(song.duration!)) {
+        validation.isValid = false;
+        validation.messages.add(
+            LocalizationService.instance.getLocalizedString('duration_format'));
+      }
+    }
+
     if (song.created_on.isEmpty) {
       validation.isValid = false;
       validation.messages.add(LocalizationService.instance

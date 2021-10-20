@@ -43,6 +43,7 @@ class _EditShowForm extends State<EditShowForm> {
   late ShowService showService;
   late SetlistService setlistService;
   late Future<int> numberOfSongs;
+  late Future<String> totalDuration;
 
   _EditShowForm(int? showId, String whenLabel) {
     this.showId = showId;
@@ -69,7 +70,13 @@ class _EditShowForm extends State<EditShowForm> {
     if (this.showId != null) {
       showService.find(showId!).then((show) => this._updateControllers(show));
       this.numberOfSongs = setlistService.getNumberOfSongs(this.showId!);
+      this.totalDuration = showService.getDuration(this.showId!);
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -202,6 +209,36 @@ class _EditShowForm extends State<EditShowForm> {
                   );
                 }),
           ),
+        if (this.showId != null)
+          FutureBuilder<String>(
+              future: this.totalDuration,
+              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                List<Widget> children = [];
+                if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                  children = <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: defaultPadding,
+                          left: formFieldPadding,
+                          right: formFieldPadding),
+                      child: Text(
+                          LocalizationService.instance
+                                  .getLocalizedString('total_duration') +
+                              ": " +
+                              snapshot.data!,
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              fontSize: defaultFontSize,
+                              fontStyle: FontStyle.italic,
+                              color: Colors.white54)),
+                    )
+                  ];
+                }
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: children,
+                );
+              }),
         SaveButton(
           onPressed: this.saveOrUpdateShow,
         ),
