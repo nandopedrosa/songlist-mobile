@@ -1,34 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:songlist_mobile/database/dto/show_dto.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/main.dart';
-import 'package:songlist_mobile/screens/edit_show_screen.dart';
-import 'package:songlist_mobile/service/show_service.dart';
+import 'package:songlist_mobile/models/song.dart';
+import 'package:songlist_mobile/screens/song/edit_song_screen.dart';
+import 'package:songlist_mobile/service/song_service.dart';
 import 'package:songlist_mobile/util/responsive.dart';
-import '../util/constants.dart';
+import '../../util/constants.dart';
 
 // ignore: must_be_immutable
-class AllShowsTable extends StatefulWidget {
-  const AllShowsTable({
+class AllSongsTable extends StatefulWidget {
+  const AllSongsTable({
     Key? key,
   }) : super(key: key);
 
   @override
-  _AllShowsTableState createState() => _AllShowsTableState();
+  _AllSongsTableState createState() => _AllSongsTableState();
 }
 
-class _AllShowsTableState extends State<AllShowsTable> {
+class _AllSongsTableState extends State<AllSongsTable> {
   final searchController = TextEditingController();
+
+  late SongService service;
+  late Future<List<Song>> songs;
 
   @override
   void initState() {
     super.initState();
-    this.service = ShowService();
-    this.shows = service.getAllShows();
+    this.service = SongService();
+    this.songs = service.getAllSongs();
   }
-
-  late ShowService service;
-  late Future<List<ShowDto>> shows;
 
   @override
   Widget build(BuildContext context) {
@@ -85,10 +85,10 @@ class _AllShowsTableState extends State<AllShowsTable> {
         ),
         SizedBox(
           width: double.infinity,
-          child: FutureBuilder<List<ShowDto>>(
-              future: this.shows,
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<ShowDto>> snapshot) {
+          child: FutureBuilder<List<Song>>(
+              future: this.songs,
+              builder:
+                  (BuildContext context, AsyncSnapshot<List<Song>> snapshot) {
                 List<Widget> children = [];
 
                 //Snapshot is ASYNC, we have to check if it has data before accessing it
@@ -102,15 +102,15 @@ class _AllShowsTableState extends State<AllShowsTable> {
                       rowsPerPage: snapshot.data!.length > defaultRowsPerPage
                           ? defaultRowsPerPage
                           : snapshot.data!.length,
-                      source: AllShowsData(snapshot.data, context),
+                      source: AllSongsData(snapshot.data, context),
                       columns: [
                         DataColumn(
                           label: Text(LocalizationService.instance
-                              .getLocalizedString("name")),
+                              .getLocalizedString("title")),
                         ),
                         DataColumn(
                           label: Text(LocalizationService.instance
-                              .getLocalizedString("when")),
+                              .getLocalizedString("artist")),
                         ),
                       ],
                     )
@@ -129,25 +129,26 @@ class _AllShowsTableState extends State<AllShowsTable> {
 
   void _search(String term) {
     this.setState(() {
-      this.shows = this.service.getShowsByName(term);
+      this.songs = this.service.getSongsByTitleOrArtist(term);
     });
   }
 
   void _clear() {
     this.setState(() {
       this.searchController.text = '';
-      this.shows = this.service.getAllShows();
+      this.songs = this.service.getAllSongs();
     });
   }
 }
 
-class AllShowsData extends DataTableSource {
-  AllShowsData(List<ShowDto>? data, BuildContext tableContext) {
+class AllSongsData extends DataTableSource {
+  AllSongsData(List<Song>? data, BuildContext tableContext) {
     this._data = data;
     this.tableContext = tableContext;
   }
+
   late BuildContext tableContext;
-  List<ShowDto>? _data;
+  List<Song>? _data;
 
   bool get isRowCountApproximate => false;
   int get rowCount => _data!.length;
@@ -159,33 +160,22 @@ class AllShowsData extends DataTableSource {
             tableContext,
             MaterialPageRoute(
               builder: (context) => SonglistPlusMobileApp(
-                activeScreen: EditShowScreen(
-                  showId: _data![index].id,
-                  whenLabel: _data![index].when,
+                activeScreen: EditSongScreen(
+                  songId: _data![index].id,
                 ),
               ),
             ),
           );
         },
         cells: [
-          DataCell(
-            Container(
-                width: Responsive.getTableCellWidth(2, tableContext),
-                child: Text(
-                  _data![index].name,
-                  style: TextStyle(color: Colors.white70),
-                )),
-          ),
-          DataCell(
-            //Date format: July 10, 1996, HH24:MM
-            Container(
+          DataCell(Container(
               width: Responsive.getTableCellWidth(2, tableContext),
-              child: Text(
-                  LocalizationService.instance
-                      .getFullLocalizedDateAndTime(_data![index].when),
-                  style: TextStyle(color: Colors.white70)),
-            ),
-          ),
+              child: Text(_data![index].title,
+                  style: TextStyle(color: Colors.white70)))),
+          DataCell(Container(
+              width: Responsive.getTableCellWidth(2, tableContext),
+              child: Text(_data![index].artist,
+                  style: TextStyle(color: Colors.white70)))),
         ]);
   }
 }

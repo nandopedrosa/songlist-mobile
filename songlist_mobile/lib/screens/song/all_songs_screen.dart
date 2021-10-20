@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:songlist_mobile/components/all_songs_table.dart';
-import 'package:songlist_mobile/components/header.dart';
+import 'package:songlist_mobile/components/song/all_songs_table.dart';
+import 'package:songlist_mobile/components/common/header.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/main.dart';
 import 'package:songlist_mobile/util/responsive.dart';
-import 'package:songlist_mobile/screens/edit_song_screen.dart';
-import '../util/constants.dart';
+import 'package:songlist_mobile/screens/song/edit_song_screen.dart';
+import '../../util/constants.dart';
 
 // ignore: must_be_immutable
 class AllSongsScreen extends StatefulWidget {

@@ -1,12 +1,12 @@
-import 'package:songlist_mobile/components/recent_show_card.dart';
+import 'package:songlist_mobile/components/show/recent_show_card.dart';
 import 'package:songlist_mobile/database/dto/show_dto.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/main.dart';
-import 'package:songlist_mobile/screens/edit_show_screen.dart';
+import 'package:songlist_mobile/screens/show/edit_show_screen.dart';
 import 'package:songlist_mobile/util/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:songlist_mobile/service/show_service.dart';
-import '../util/constants.dart';
+import '../../util/constants.dart';
 
 class RecentShowsGrid extends StatefulWidget {
   const RecentShowsGrid({

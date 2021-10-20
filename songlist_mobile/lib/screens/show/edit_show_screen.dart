@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:songlist_mobile/components/edit_show_form.dart';
-import 'package:songlist_mobile/components/header.dart';
+import 'package:songlist_mobile/components/show/edit_show_form.dart';
+import 'package:songlist_mobile/components/common/header.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
-import '../util/constants.dart';
+import '../../util/constants.dart';
 
 // ignore: must_be_immutable
 class EditShowScreen extends StatefulWidget {

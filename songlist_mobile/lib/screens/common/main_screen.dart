@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:songlist_mobile/components/side_menu.dart';
+import 'package:songlist_mobile/components/common/side_menu.dart';
 import 'package:songlist_mobile/controllers/MenuController.dart';
 import 'package:songlist_mobile/util/responsive.dart';
 

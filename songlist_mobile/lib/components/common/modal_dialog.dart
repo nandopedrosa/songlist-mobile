@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../util/constants.dart';
+import '../../util/constants.dart';
 
 class ModalDialog extends StatelessWidget {
   final String message;

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:songlist_mobile/components/delete_button.dart';
-import 'package:songlist_mobile/components/go_back_button.dart';
-import 'package:songlist_mobile/components/modal_dialog.dart';
-import 'package:songlist_mobile/components/save_button.dart';
-import 'package:songlist_mobile/components/text_area_editor.dart';
-import 'package:songlist_mobile/components/text_field_editor.dart';
+import 'package:songlist_mobile/components/common/delete_button.dart';
+import 'package:songlist_mobile/components/common/go_back_button.dart';
+import 'package:songlist_mobile/components/common/modal_dialog.dart';
+import 'package:songlist_mobile/components/common/save_button.dart';
+import 'package:songlist_mobile/components/common/text_area_editor.dart';
+import 'package:songlist_mobile/components/common/text_field_editor.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/main.dart';
 import 'package:songlist_mobile/models/song.dart';
-import 'package:songlist_mobile/screens/all_songs_screen.dart';
+import 'package:songlist_mobile/screens/song/all_songs_screen.dart';
 import 'package:songlist_mobile/service/song_service.dart';
-import 'package:songlist_mobile/components/toast_message.dart';
+import 'package:songlist_mobile/components/common/toast_message.dart';
 import 'package:songlist_mobile/util/validation.dart';
 
 // ignore: must_be_immutable

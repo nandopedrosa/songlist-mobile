@@ -1,7 +1,7 @@
 import 'package:songlist_mobile/util/constants.dart';
 import 'package:songlist_mobile/controllers/MenuController.dart';
-import 'package:songlist_mobile/screens/home_screen.dart';
-import 'package:songlist_mobile/screens/main_screen.dart';
+import 'package:songlist_mobile/screens/common/home_screen.dart';
+import 'package:songlist_mobile/screens/common/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:songlist_mobile/database/dto/show_dto.dart';
 import 'package:songlist_mobile/main.dart';
-import 'package:songlist_mobile/screens/edit_show_screen.dart';
-import '../util/constants.dart';
+import 'package:songlist_mobile/screens/show/edit_show_screen.dart';
+import '../../util/constants.dart';
 
 class RecentShowCard extends StatelessWidget {
   const RecentShowCard({

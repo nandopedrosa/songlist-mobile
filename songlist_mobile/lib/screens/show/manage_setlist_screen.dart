@@ -1,12 +1,12 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:songlist_mobile/components/back_header.dart';
-import 'package:songlist_mobile/components/save_button.dart';
-import 'package:songlist_mobile/components/toast_message.dart';
+import 'package:songlist_mobile/components/common/back_header.dart';
+import 'package:songlist_mobile/components/common/save_button.dart';
+import 'package:songlist_mobile/components/common/toast_message.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/main.dart';
 import 'package:songlist_mobile/models/song.dart';
-import 'package:songlist_mobile/screens/edit_show_screen.dart';
+import 'package:songlist_mobile/screens/show/edit_show_screen.dart';
 import 'package:songlist_mobile/service/setlist_service.dart';
 import 'package:songlist_mobile/service/show_service.dart';
 import 'package:songlist_mobile/service/song_service.dart';

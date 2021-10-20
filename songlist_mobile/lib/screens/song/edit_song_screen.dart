@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:songlist_mobile/components/edit_song_form.dart';
-import 'package:songlist_mobile/components/header.dart';
+import 'package:songlist_mobile/components/song/edit_song_form.dart';
+import 'package:songlist_mobile/components/common/header.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
 
-import '../util/constants.dart';
+import '../../util/constants.dart';
 
 // ignore: must_be_immutable
 class EditSongScreen extends StatefulWidget {

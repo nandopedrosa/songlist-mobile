@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:songlist_mobile/main.dart';
-import 'package:songlist_mobile/screens/all_shows_screen.dart';
-import 'package:songlist_mobile/screens/all_songs_screen.dart';
-import 'package:songlist_mobile/screens/home_screen.dart';
+import 'package:songlist_mobile/screens/show/all_shows_screen.dart';
+import 'package:songlist_mobile/screens/song/all_songs_screen.dart';
+import 'package:songlist_mobile/screens/common/home_screen.dart';
 
 class SideMenu extends StatelessWidget {
   const SideMenu({
