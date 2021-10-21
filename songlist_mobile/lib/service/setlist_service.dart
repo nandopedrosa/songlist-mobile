@@ -23,4 +23,15 @@ class SetlistService {
     Future<List<Song>> selectedSongs = this._dao.getSelectedSongs(showId);
     return selectedSongs;
   }
+
+  //Get all songs to perform (with lyrics, tempo, key, etc.)
+  Future<List<Song>> getPerformanceSongs(int showId) {
+    Future<List<Song>> selectedSongs = this._dao.getPerformanceSongs(showId);
+    return selectedSongs;
+  }
+
+  Future<Song> getFirstSongInPerformance(int showId) {
+    Future<Song> s = this._dao.getFirstSongInPerformance(showId);
+    return s;
+  }
 }

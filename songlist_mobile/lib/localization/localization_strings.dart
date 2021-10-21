@@ -15,6 +15,7 @@ class LocalizationStrings {
     'artist': ['Artist', 'Artista'],
     'key': ['Key', 'Tom'],
     'tempo': ['Tempo (bpm)', 'Tempo (bpm)'],
+    'tempo_no_bpm': ['Tempo', 'Tempo'],
     'duration': ['Duration', 'Duração'],
     'lyrics/chords': ['Lyrics/Chords', 'Letra/Cifra'],
     'notes': ['Notes', 'Observações'],
@@ -80,9 +81,11 @@ class LocalizationStrings {
       'Repertório salvo com sucesso'
     ],
     'select_date': ['Select date', 'Selecione a data'],
+    'select_song': ['Select song', 'Selecione a música'],
     'no_songs': ['No songs added yet', 'Nenhuma música adicionada até agora'],
     'one_song': ['One song added', 'Uma música adicionada'],
     'multiple_songs': ['songs added', 'músicas adicionadas'],
-    'add_song': ['Add song', 'Adicionar música']
+    'add_song': ['Add song', 'Adicionar música'],
+    'play': ['Play', 'Tocar']
   };
 }

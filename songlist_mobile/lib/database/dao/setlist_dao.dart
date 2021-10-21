@@ -95,4 +95,51 @@ class SetlistDao {
 
     return selectedSongs;
   }
+
+  Future<List<Song>> getPerformanceSongs(int showId) async {
+    Database? db = await DatabaseHelper.instance.database;
+    String querySql =
+        """select song.id, song.title, song.artist, song.lyrics, song.tempo, song.key, song.duration, setlist.song_position, song.created_on from song ,  setlist
+           where setlist.song_id = song.id and setlist.show_id =?  order by setlist.song_position """;
+    List<Map<String, dynamic>> result = await db!.rawQuery(querySql, [showId]);
+
+    List<Song> performSongs = List.generate(result.length, (i) {
+      return Song(
+          id: result[i]['id'],
+          title: result[i]['title'],
+          artist: result[i]['artist'],
+          lyrics: result[i]['lyrics'],
+          tempo: result[i]['tempo'],
+          key: result[i]['key'],
+          duration: result[i]['duration'],
+          created_on: result[i]['created_on'],
+          position: result[i]['song_position'] + 1);
+    });
+    return performSongs;
+  }
+
+  Future<Song> getFirstSongInPerformance(int showId) async {
+    Database? db = await DatabaseHelper.instance.database;
+    String querySql =
+        """select song.id, song.title, song.artist, song.lyrics, song.tempo, song.key, song.duration, song.created_on from song ,  setlist
+           where setlist.song_id = song.id and setlist.show_id =?  order by setlist.song_position limit 1""";
+    List<Map<String, dynamic>> result = await db!.rawQuery(querySql, [showId]);
+
+    //Return empty song if there are no songs in the setlist
+    Song s = Song(title: '', artist: '', created_on: '');
+    if (result.length == 1) {
+      s = Song(
+        id: result[0]['id'],
+        title: result[0]['title'],
+        artist: result[0]['artist'],
+        lyrics: result[0]['lyrics'],
+        tempo: result[0]['tempo'],
+        key: result[0]['key'],
+        duration: result[0]['duration'],
+        created_on: result[0]['created_on'],
+      );
+    }
+
+    return s;
+  }
 }

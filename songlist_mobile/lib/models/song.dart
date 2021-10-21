@@ -9,6 +9,7 @@ class Song {
   String? notes;
   // ignore: non_constant_identifier_names
   String created_on;
+  int? position;
 
   Song(
       {this.id,
@@ -19,6 +20,7 @@ class Song {
       this.duration,
       this.lyrics,
       this.notes,
+      this.position,
       // ignore: non_constant_identifier_names
       required this.created_on});
 
@@ -85,6 +87,10 @@ class Song {
 
   set setNotes(notes) => this.notes = notes;
 
+  get getPosition => this.position;
+
+  set setPosition(position) => this.position = position;
+
   @override
   String toString() {
     if (this.artist.isEmpty) {
@@ -92,6 +98,14 @@ class Song {
     } else {
       return this.title + ' ($artist)';
     }
+  }
+
+  String songAsStringWithPosition() {
+    if (this.artist.isEmpty) {
+      return '';
+    }
+
+    return this.position.toString() + '. ' + this.title + ' ($artist)';
   }
 
   String getPrettyTotalDuration(Duration totalDuration) {

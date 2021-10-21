@@ -7,12 +7,14 @@ import 'package:songlist_mobile/components/common/modal_dialog.dart';
 import 'package:songlist_mobile/components/common/save_button.dart';
 import 'package:songlist_mobile/components/common/text_area_editor.dart';
 import 'package:songlist_mobile/components/common/text_field_editor.dart';
+import 'package:songlist_mobile/components/show/play_button.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/main.dart';
 import 'package:songlist_mobile/models/show.dart';
 import 'package:songlist_mobile/screens/show/all_shows_screen.dart';
 import 'package:songlist_mobile/screens/show/manage_setlist_screen.dart';
 import 'package:songlist_mobile/screens/common/secondary_screen.dart';
+import 'package:songlist_mobile/screens/show/perform_screen.dart';
 import 'package:songlist_mobile/service/setlist_service.dart';
 import 'package:songlist_mobile/service/show_service.dart';
 import 'package:songlist_mobile/components/common/toast_message.dart';
@@ -242,6 +244,19 @@ class _EditShowForm extends State<EditShowForm> {
         SaveButton(
           onPressed: this.saveOrUpdateShow,
         ),
+        if (this.showId != null)
+          PlayButton(onPressed: () {
+            Navigator.push(
+              formContext,
+              MaterialPageRoute(
+                builder: (context) => SecondaryScreen(
+                  activeScreen: PerformScreen(
+                      showId: this.showId!,
+                      showWhen: this._whenController.text),
+                ),
+              ),
+            );
+          }),
         GoBackButton(onPressed: () {
           Navigator.push(
             context,
