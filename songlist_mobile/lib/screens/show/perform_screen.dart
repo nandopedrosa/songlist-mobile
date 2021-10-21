@@ -2,6 +2,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:songlist_mobile/components/common/back_header.dart';
 import 'package:songlist_mobile/components/common/text_form_field_disabled.dart';
+import 'package:songlist_mobile/components/show/setlist_navigation_button.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/main.dart';
 import 'package:songlist_mobile/models/song.dart';
@@ -28,11 +29,13 @@ class _PerformScreen extends State<PerformScreen> {
   final int showId;
   final String showWhen;
   late SetlistService setlistService;
-  late Future<List<Song>> performanceSongs;
+  late Future<List<Song>> performanceSongsFuture;
+  late List<Song> performanceSongsResolved;
   final TextEditingController _songTitleController = TextEditingController();
   final TextEditingController _songLyricsController = TextEditingController();
   final TextEditingController _songTempoController = TextEditingController();
   final TextEditingController _songKeyController = TextEditingController();
+  final _dropDownKey = GlobalKey<DropdownSearchState<Song>>();
 
   void _updateControllers(Song s) {
     String tempoStr =
@@ -51,7 +54,7 @@ class _PerformScreen extends State<PerformScreen> {
   void initState() {
     super.initState();
     this.setlistService = SetlistService();
-    this.performanceSongs = setlistService.getPerformanceSongs(showId);
+    this.performanceSongsFuture = setlistService.getPerformanceSongs(showId);
     setlistService
         .getFirstSongInPerformance(showId)
         .then((value) => _updateControllers(value));
@@ -91,6 +94,25 @@ class _PerformScreen extends State<PerformScreen> {
                             );
                           }),
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: SetlistNavigationButton(
+                                    onPressed: this._previous,
+                                    topPad: 0,
+                                    label: LocalizationService.instance
+                                        .getLocalizedString("previous")),
+                              ),
+                              Expanded(
+                                child: SetlistNavigationButton(
+                                    topPad: 0,
+                                    onPressed: this._next,
+                                    label: LocalizationService.instance
+                                        .getLocalizedString("next")),
+                              ),
+                            ],
+                          ),
+                          Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Expanded(
@@ -99,14 +121,19 @@ class _PerformScreen extends State<PerformScreen> {
                                     children: [
                                       FutureBuilder<List<Song>>(
                                         //Use this to await on multiple futures
-                                        future: this.performanceSongs,
+                                        future: this.performanceSongsFuture,
                                         builder: (BuildContext context,
                                             AsyncSnapshot<List<Song>>
                                                 snapshot) {
                                           List<Widget> children = [];
                                           if (snapshot.hasData) {
+                                            this.performanceSongsResolved =
+                                                snapshot.data!;
                                             children = <Widget>[
                                               DropdownSearch<Song>(
+                                                key: _dropDownKey,
+                                                compareFn: (i, s) =>
+                                                    i?.isEqual(s!) ?? false,
                                                 mode: Mode.MENU,
                                                 items: snapshot.data,
                                                 selectedItem: snapshot.data![0],
@@ -201,6 +228,25 @@ class _PerformScreen extends State<PerformScreen> {
     );
   }
 
-  void next() {}
-  void previous() {}
+  void _next() {
+    Song currentSelectedSong = this._dropDownKey.currentState!.getSelectedItem!;
+    //We go next only if this is not the last song
+    // Position is indexed by 1, NOT by zero
+    if (currentSelectedSong.position! < this.performanceSongsResolved.length) {
+      Song nextSong =
+          this.performanceSongsResolved[currentSelectedSong.position!];
+      this._dropDownKey.currentState!.changeSelectedItem(nextSong);
+    }
+  }
+
+  void _previous() {
+    Song currentSelectedSong = this._dropDownKey.currentState!.getSelectedItem!;
+    //We go previous only if this is not the first song
+    // Position is indexed by 1, NOT by zero
+    if (currentSelectedSong.position! != 1) {
+      Song previousSong =
+          this.performanceSongsResolved[currentSelectedSong.position! - 2];
+      this._dropDownKey.currentState!.changeSelectedItem(previousSong);
+    }
+  }
 }

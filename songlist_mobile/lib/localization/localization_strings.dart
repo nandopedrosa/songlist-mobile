@@ -86,6 +86,8 @@ class LocalizationStrings {
     'one_song': ['One song added', 'Uma música adicionada'],
     'multiple_songs': ['songs added', 'músicas adicionadas'],
     'add_song': ['Add song', 'Adicionar música'],
-    'play': ['Play', 'Tocar']
+    'play': ['Play', 'Tocar'],
+    'previous': ['Previous', 'Anterior'],
+    'next': ['Next', 'Próxima']
   };
 }

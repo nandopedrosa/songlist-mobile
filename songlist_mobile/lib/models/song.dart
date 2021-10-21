@@ -138,4 +138,20 @@ class Song {
   int _getSeconds() {
     return int.parse(this.duration!.substring(3, 5));
   }
+
+  ///custom comparing function to check if two songs are equal - used with the DropdownSearch component
+  bool isEqual(Song s) {
+    return this.id == s.id;
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Song && other.id == id;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode;
+  }
 }
