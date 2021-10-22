@@ -19,9 +19,11 @@ class BackHeader extends StatelessWidget {
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: goBack,
           ),
-          Text(
-            this.title,
-            style: Theme.of(context).textTheme.headline6,
+          Expanded(
+            child: Text(
+              this.title,
+              style: Theme.of(context).textTheme.headline6,
+            ),
           )
         ],
       ),

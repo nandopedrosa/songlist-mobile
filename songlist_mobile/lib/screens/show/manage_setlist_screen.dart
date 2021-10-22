@@ -69,19 +69,21 @@ class _ManageSetlistScreen extends State<ManageSetlistScreen> {
                     padding: EdgeInsets.all(defaultPadding),
                     child: Column(
                       children: [
-                        BackHeader(goBack: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SonglistPlusMobileApp(
-                                activeScreen: EditShowScreen(
-                                  showId: showId,
-                                  whenLabel: showWhen,
+                        BackHeader(
+                            title: showName,
+                            goBack: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SonglistPlusMobileApp(
+                                    activeScreen: EditShowScreen(
+                                      showId: showId,
+                                      whenLabel: showWhen,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          );
-                        }),
+                              );
+                            }),
                         Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -89,21 +91,6 @@ class _ManageSetlistScreen extends State<ManageSetlistScreen> {
                                 flex: 5,
                                 child: Column(
                                   children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            this.showName,
-                                            textAlign: TextAlign.start,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline5!,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
                                     FutureBuilder<List<Song>>(
                                       //Use this to await on multiple futures
                                       future: this.selectedSongs,

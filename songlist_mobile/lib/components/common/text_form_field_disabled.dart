@@ -8,11 +8,13 @@ class TextFormFieldDisabled extends StatelessWidget {
       TextInputType keyBoardType = TextInputType.text,
       int? maxLines = 1,
       double fontSize = defaultFontSize,
+      TextAlign alignment = TextAlign.start,
       Color color = Colors.white})
       : _controller = controller,
         _keyBoardType = keyBoardType,
         _maxLines = maxLines,
         _fontSize = fontSize,
+        _alignment = alignment,
         _color = color,
         super(key: key);
 
@@ -21,12 +23,15 @@ class TextFormFieldDisabled extends StatelessWidget {
   final int? _maxLines;
   final double _fontSize;
   final Color _color;
+  final TextAlign _alignment;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: this._controller,
       keyboardType: this._keyBoardType,
+      textAlign: _alignment,
+      textAlignVertical: TextAlignVertical.top,
       maxLines: this._maxLines,
       style: TextStyle(fontSize: this._fontSize, color: this._color),
       readOnly: true,

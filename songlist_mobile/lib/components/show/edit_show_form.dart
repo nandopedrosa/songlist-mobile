@@ -252,7 +252,8 @@ class _EditShowForm extends State<EditShowForm> {
                 builder: (context) => SecondaryScreen(
                   activeScreen: PerformScreen(
                       showId: this.showId!,
-                      showWhen: this._whenController.text),
+                      showWhen: this._whenController.text,
+                      showName: this._nameController.text),
                 ),
               ),
             );

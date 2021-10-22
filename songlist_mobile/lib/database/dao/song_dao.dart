@@ -24,178 +24,208 @@ class SongDao {
   //The app comes with pre-loaded songs to illustrate features to the user
   static const String insertRecentSong1 = """
     INSERT INTO "song" ("title", "artist", "key", "tempo", "duration", "lyrics", "notes", "created_on") 
-    VALUES ('Imagine', 'John Lennon', 'C', '76', '03:53', '<p>Imagine there''s no heaven<br>
-    It''s easy if you try<br>
-    No hell below us<br>
-    Above us, only sky<br>
-    Imagine all the people<br>
-    Livin'' for today<br>
-    Ah<br>
-    Imagine there''s no countries<br>
-    It isn''t hard to do<br>
-    Nothing to kill or die for<br>
-    And no religion, too<br>
-    Imagine all the people<br>
-    Livin'' life in peace<br>
-    You<br>
-    You may say I''m a dreamer<br>
-    But I''m not the only one<br>
-    I hope someday you''ll join us<br>
-    And the world will be as one<br>
-    Imagine no possessions<br>
-    I wonder if you can<br>
-    No need for greed or hunger<br>
-    A brotherhood of man<br>
-    Imagine all the people<br>
-    Sharing all the world<br>
-    You<br>
-    You may say I''m a dreamer<br>
-    But I''m not the only one<br>
-    I hope someday you''ll join us<br>
-    And the world will live as one</p>', 'Played on piano', '2016-01-01 10:20:05');
+    VALUES ('Imagine', 'John Lennon', 'C', '76', '03:53', 'Imagine there''s no heaven
+It''s easy if you try
+No hell below us
+Above us, only sky
+
+Imagine all the people
+Livin'' for today
+Ah
+
+Imagine there''s no countries
+It isn''t hard to do
+Nothing to kill or die for
+And no religion, too
+
+Imagine all the people
+Livin'' life in peace
+You
+
+You may say I''m a dreamer
+But I''m not the only one
+I hope someday you''ll join us
+And the world will be as one
+
+Imagine no possessions
+I wonder if you can
+No need for greed or hunger
+A brotherhood of man
+
+Imagine all the people
+Sharing all the world
+You
+
+You may say I''m a dreamer
+But I''m not the only one
+I hope someday you''ll join us
+And the world will live as one', 'Played on piano', '2016-01-01 10:20:05');
   """;
 
   static const String insertRecentSong2 = """ 
   INSERT INTO "song" ( "title", "artist", "key", "tempo", "duration", "lyrics", "notes", "created_on") 
-  VALUES ('Hotel California', 'Eagles', 'Bm', '75', '06:31', '<p>On a dark desert highway, cool wind in my hair<br>
-  Warm smell of colitas, rising up through the air<br>
-  Up ahead in the distance, I saw a shimmering light<br>
-  My head grew heavy and my sight grew dim<br>
-  I had to stop for the night<br>
-  There she stood in the doorway;<br>
-  I heard the mission bell<br>
-  And I was thinking to myself,<br>
-  &quot;This could be Heaven or this could be Hell&quot;<br>
-  Then she lit up a candle and she showed me the way<br>
-  There were voices down the corridor,<br>
-  I thought I heard them say...<br>
-  Welcome to the Hotel California<br>
-  Such a lovely place (Such a lovely place)<br>
-  Such a lovely face<br>
-  Plenty of room at the Hotel California<br>
-  Any time of year (Any time of year)<br>
-  You can find it here<br>
-  Her mind is Tiffany-twisted, she got the Mercedes bends<br>
-  She got a lot of pretty, pretty boys she calls friends<br>
-  How they dance in the courtyard, sweet summer sweat.<br>
-  Some dance to remember, some dance to forget<br>
-  So I called up the Captain,<br>
-  &quot;Please bring me my wine&quot;<br>
-  He said, &quot;We haven''t had that spirit here since nineteen sixty nine&quot;<br>
-  And still those voices are calling from far away,<br>
-  Wake you up in the middle of the night<br>
-  Just to hear them say...<br>
-  Welcome to the Hotel California<br>
-  Such a lovely place (Such a lovely place)<br>
-  Such a lovely face<br>
-  They livin'' it up at the Hotel California<br>
-  What a nice surprise (what a nice surprise)<br>
-  Bring your alibis<br>
-  Mirrors on the ceiling,<br>
-  The pink champagne on ice<br>
-  And she said &quot;We are all just prisoners here, of our own device&quot;<br>
-  And in the master''s chambers,<br>
-  They gathered for the feast<br>
-  They stab it with their steely knives,<br>
-  But they just can''t kill the beast<br>
-  Last thing I remember, I was<br>
-  Running for the door<br>
-  I had to find the passage back<br>
-  To the place I was before<br>
-  &quot;Relax, &quot; said the night man,<br>
-  &quot;We are programmed to receive.<br>
-  You can check-out any time you like,<br>
-  But you can never leave! &quot;</p>', 'Great solo', '2016-01-01 11:20:05');
+  VALUES ('Hotel California', 'Eagles', 'Bm', '75', '06:31', 'On a dark desert highway, cool wind in my hair
+Warm smell of colitas, rising up through the air
+Up ahead in the distance, I saw a shimmering light
+My head grew heavy and my sight grew dim
+I had to stop for the night
+There she stood in the doorway;
+I heard the mission bell
+And I was thinking to myself,
+This could be Heaven or this could be Hell
+Then she lit up a candle and she showed me the way
+There were voices down the corridor,
+I thought I heard them say...
+
+Welcome to the Hotel California
+Such a lovely place (Such a lovely place)
+Such a lovely face
+Plenty of room at the Hotel California
+Any time of year (Any time of year)
+You can find it here
+
+Her mind is Tiffany-twisted, she got the Mercedes bends
+She got a lot of pretty, pretty boys she calls friends
+How they dance in the courtyard, sweet summer sweat.
+Some dance to remember, some dance to forget
+
+So I called up the Captain,
+Please bring me my wine
+He said, We haven''t had that spirit here since nineteen sixty nine
+And still those voices are calling from far away,
+Wake you up in the middle of the night
+Just to hear them say...
+
+Welcome to the Hotel California
+Such a lovely place (Such a lovely place)
+Such a lovely face
+They livin'' it up at the Hotel California
+What a nice surprise (what a nice surprise)
+Bring your alibis
+
+Mirrors on the ceiling,
+The pink champagne on ice
+And she said We are all just prisoners here, of our own device
+And in the master''s chambers,
+They gathered for the feast
+They stab it with their steely knives,
+But they just can''t kill the beast
+
+Last thing I remember, I was
+Running for the door
+I had to find the passage back
+To the place I was before
+Relax,  said the night man,
+We are programmed to receive.
+You can check-out any time you like,
+But you can never leave!', 'Great solo', '2016-01-01 11:20:05');
   """;
 
   static String insertRecentSong3 = """ 
   INSERT INTO "song" ("title", "artist", "key", "tempo", "duration", "lyrics", "notes", "created_on") 
-  VALUES ( 'Smells like teen spirit', 'Nirvana', 'F', '117', '04:38', '<p>Load up on guns, bring your friends<br>
-  It''s fun to lose and to pretend<br>
-  She''s over-bored and self-assured<br>
-  Oh no, I know a dirty word<br>
-  Hello, hello, hello, how low<br>
-  Hello, hello, hello, how low<br>
-  Hello, hello, hello, how low<br>
-  Hello, hello, hello<br>
-  With the lights out, it''s less dangerous<br>
-  Here we are now, entertain us<br>
-  I feel stupid and contagious<br>
-  Here we are now, entertain us<br>
-  A mulatto, an albino, a mosquito, my libido<br>
-  Yeah, hey<br>
-  I''m worse at what I do best<br>
-  And for this gift I feel blessed<br>
-  Our little group has always been<br>
-  And always will until the end<br>
-  Hello, hello, hello, how low<br>
-  Hello, hello, hello, how low<br>
-  Hello, hello, hello, how low<br>
-  Hello, hello, hello<br>
-  With the lights out, it''s less dangerous<br>
-  Here we are now, entertain us<br>
-  I feel stupid and contagious<br>
-  Here we are now, entertain us<br>
-  A mulatto, an albino, a mosquito, my libido<br>
-  Yeah, hey<br>
-  And I forget just why I taste<br>
-  Oh yeah, I guess it makes me smile<br>
-  I found it hard, was hard to find<br>
-  Oh well, whatever, never mind<br>
-  Hello, hello, hello, how low<br>
-  Hello, hello, hello, how low<br>
-  Hello, hello, hello, how low<br>
-  Hello, hello, hello<br>
-  With the lights out, it''s less dangerous<br>
-  Here we are now, entertain us<br>
-  I feel stupid and contagious<br>
-  Here we are now, entertain us<br>
-  A mulatto, an albino, a mosquito, my libido<br>
-  A denial, a denial, a denial, a denial, a denial<br>
-  A denial, a denial, a denial, a denial</p>', 'Legendary riff' , '2016-01-01 12:20:05');
+  VALUES ( 'Smells like teen spirit', 'Nirvana', 'F', '117', '04:38', 'Load up on guns, bring your friends
+It''s fun to lose and to pretend
+She''s over-bored and self-assured
+Oh no, I know a dirty word
+
+Hello, hello, hello, how low
+Hello, hello, hello, how low
+Hello, hello, hello, how low
+Hello, hello, hello
+
+With the lights out, it''s less dangerous
+Here we are now, entertain us
+I feel stupid and contagious
+Here we are now, entertain us
+A mulatto, an albino, a mosquito, my libido
+Yeah, hey
+
+I''m worse at what I do best
+And for this gift I feel blessed
+Our little group has always been
+And always will until the end
+
+Hello, hello, hello, how low
+Hello, hello, hello, how low
+Hello, hello, hello, how low
+Hello, hello, hello
+
+With the lights out, it''s less dangerous
+Here we are now, entertain us
+I feel stupid and contagious
+Here we are now, entertain us
+A mulatto, an albino, a mosquito, my libido
+Yeah, hey
+
+And I forget just why I taste
+Oh yeah, I guess it makes me smile
+I found it hard, was hard to find
+Oh well, whatever, never mind
+
+Hello, hello, hello, how low
+Hello, hello, hello, how low
+Hello, hello, hello, how low
+Hello, hello, hello
+
+With the lights out, it''s less dangerous
+Here we are now, entertain us
+I feel stupid and contagious
+Here we are now, entertain us
+A mulatto, an albino, a mosquito, my libido
+A denial, a denial, a denial, a denial, a denial
+A denial, a denial, a denial, a denial', 'Legendary riff' , '2016-01-01 12:20:05');
   """;
 
   static String insertRecentSong4 = """
   INSERT INTO "song" ("title", "artist", "key", "tempo", "duration", "lyrics", "notes", "created_on") 
-  VALUES ( 'Girl from Ipanema', 'Tom Jobim', 'F', '145', '04:03', '<p>Olha que coisa mais linda mais cheia de gra&ccedil;a<br>
-  &Eacute; ela menina que vem que passa<br>
-  Num doce balan&ccedil;o caminho do mar<br>
-  Mo&ccedil;a do corpo dourado do sol de Ipanema<br>
-  O seu balan&ccedil;ado &eacute; mais que um poema<br>
-  &Eacute; a coisa mais linda que eu j&aacute; vi passar<br>
-  Ah, porque estou t&atilde;o sozinho<br>
-  Ah, porque tudo &eacute; t&atilde;o triste<br>
-  Ah, a beleza que existe<br>
-  A beleza que n&atilde;o &eacute; s&oacute; minha<br>
-  Que tamb&eacute;m passa sozinha<br>
-  Ah, se ela soubesse<br>
-  Que quando ela passa<br>
-  O mundo sorrindo se enche de gra&ccedil;a<br>
-  E fica mais lindo por causa do amor<br>
-  Tall and tan and young and lovely<br>
-  The girl from Ipanema goes walking<br>
-  And when she passes Each one she passes goes, ah<br>
-  When she walks, she''s like a samba<br>
-  That swings so cool and sways so gently<br>
-  That when she passes Each one she passes goes, ah<br>
-  Oh, but he watches so sadly<br>
-  How can he tell her he loves her<br>
-  Yes, he would give his heart gladly<br>
-  But each day, when she walks to the sea<br>
-  She looks straight ahead, not at him<br>
-  Tall, and tan, and young, and lovely<br>
-  The girl from Ipanema goes walking<br>
-  And when she passes He smiles, but she doesn''t see<br>
-  Oh, but he sees her so sadly<br>
-  How can he tell her he loves her<br>
-  Yes, he would give his heart gladly<br>
-  But each day, when she walks to the sea<br>
-  She looks straight ahead, not at him<br>
-  Tall, and tan, and young, and lovely<br>
-  The girl from Ipanema goes walking<br>
-  And when she passes he smiles, but she doesn''t see<br>
-  She just doesn''t see, no she just doesn''t see<br>
-  But she doesn''t see, she doesn''t see, no she just doesn''t see</p>', 'Bossa nova' , '2016-01-01 13:20:05');
+  VALUES ( 'Girl from Ipanema', 'Tom Jobim', 'F', '145', '04:03', 'Olha que coisa mais linda mais cheia de graça
+É ela menina que vem que passa
+Num doce balanço caminho do mar
+
+Moça do corpo dourado do sol de Ipanema
+O seu balançado é mais que um poema
+É a coisa mais linda que eu já vi passar
+
+Ah, porque estou tão sozinho
+Ah, porque tudo é tão triste
+Ah, a beleza que existe
+A beleza que não é só minha
+Que também passa sozinha
+
+Ah, se ela soubesse
+Que quando ela passa
+O mundo sorrindo se enche de graça
+E fica mais lindo por causa do amor
+
+Tall and tan and young and lovely
+The girl from Ipanema goes walking
+And when she passes Each one she passes goes, ah
+
+When she walks, she''s like a samba
+That swings so cool and sways so gently
+That when she passes Each one she passes goes, ah
+
+Oh, but he watches so sadly
+How can he tell her he loves her
+Yes, he would give his heart gladly
+But each day, when she walks to the sea
+She looks straight ahead, not at him
+
+Tall, and tan, and young, and lovely
+The girl from Ipanema goes walking
+And when she passes He smiles, but she doesn''t see
+
+Oh, but he sees her so sadly
+How can he tell her he loves her
+Yes, he would give his heart gladly
+But each day, when she walks to the sea
+She looks straight ahead, not at him
+
+Tall, and tan, and young, and lovely
+The girl from Ipanema goes walking
+And when she passes he smiles, but she doesn''t see
+She just doesn''t see, no she just doesn''t see
+But she doesn''t see, she doesn''t see, no she just doesn''t see', 'Bossa nova' , '2016-01-01 13:20:05');
   """;
 
   Future<List<Song>> getRecentSongs(int recentSongsLimit) async {

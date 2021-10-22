@@ -9,30 +9,42 @@ import 'package:songlist_mobile/models/song.dart';
 import 'package:songlist_mobile/screens/show/edit_show_screen.dart';
 import 'package:songlist_mobile/service/setlist_service.dart';
 import 'package:songlist_mobile/util/constants.dart';
+import 'package:songlist_mobile/util/responsive.dart';
 
 // ignore: must_be_immutable
 class PerformScreen extends StatefulWidget {
   final int showId;
   final String showWhen;
+  final String showName;
 
-  const PerformScreen({Key? key, required this.showId, required this.showWhen})
+  const PerformScreen(
+      {Key? key,
+      required this.showId,
+      required this.showWhen,
+      required this.showName})
       : super(key: key);
 
   @override
-  _PerformScreen createState() =>
-      _PerformScreen(showId: this.showId, showWhen: this.showWhen);
+  _PerformScreen createState() => _PerformScreen(
+      showId: this.showId, showWhen: this.showWhen, showName: this.showName);
 }
 
 class _PerformScreen extends State<PerformScreen> {
-  _PerformScreen({required this.showId, required this.showWhen});
+  _PerformScreen(
+      {required this.showId, required this.showWhen, required this.showName});
 
   final int showId;
   final String showWhen;
+  final String showName;
   late SetlistService setlistService;
   late Future<List<Song>> performanceSongsFuture;
   late List<Song> performanceSongsResolved;
   final TextEditingController _songTitleController = TextEditingController();
   final TextEditingController _songLyricsController = TextEditingController();
+  final TextEditingController _firstColumnLyricsController =
+      TextEditingController();
+  final TextEditingController _secondColumnLyricsController =
+      TextEditingController();
   final TextEditingController _songTempoController = TextEditingController();
   final TextEditingController _songKeyController = TextEditingController();
   final _dropDownKey = GlobalKey<DropdownSearchState<Song>>();
@@ -42,12 +54,40 @@ class _PerformScreen extends State<PerformScreen> {
         LocalizationService.instance.getLocalizedString('tempo_no_bpm') + ": ";
     String keyStr =
         LocalizationService.instance.getLocalizedString('key') + ": ";
-
     _songTitleController.text = s.title;
     _songLyricsController.text = s.lyrics == null ? '' : s.lyrics!;
+    _firstColumnLyricsController.text =
+        _getLyricsColumnText(_songLyricsController.text, 1);
+    _secondColumnLyricsController.text =
+        _getLyricsColumnText(_songLyricsController.text, 2);
     _songTempoController.text =
         s.tempo == null ? tempoStr + "-" : tempoStr + s.tempo.toString();
     _songKeyController.text = s.key == null ? keyStr + "-" : keyStr + s.key!;
+  }
+
+  String _getLyricsColumnText(String fullLyrics, int column) {
+    if (fullLyrics.isEmpty) return '';
+
+    String s = '';
+    int halfIndex = (fullLyrics.length / 2).floor();
+    int doubleLineBreakBeforeHalfIndex =
+        fullLyrics.substring(0, halfIndex).lastIndexOf("\n\n");
+    int sigleLineBreakBeforeHalfIndex =
+        fullLyrics.substring(0, halfIndex).lastIndexOf("\n");
+
+    if (column == 1) {
+      if (doubleLineBreakBeforeHalfIndex != -1)
+        s = fullLyrics.substring(0, doubleLineBreakBeforeHalfIndex);
+      else
+        s = fullLyrics.substring(0, sigleLineBreakBeforeHalfIndex);
+    } else if (column == 2) {
+      if (doubleLineBreakBeforeHalfIndex != -1)
+        s = fullLyrics.substring(doubleLineBreakBeforeHalfIndex);
+      else
+        s = fullLyrics.substring(sigleLineBreakBeforeHalfIndex);
+    }
+
+    return s.trim();
   }
 
   @override
@@ -80,19 +120,21 @@ class _PerformScreen extends State<PerformScreen> {
                           right: defaultPadding),
                       child: Column(
                         children: [
-                          BackHeader(goBack: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SonglistPlusMobileApp(
-                                  activeScreen: EditShowScreen(
-                                    showId: showId,
-                                    whenLabel: showWhen,
+                          BackHeader(
+                              title: showName,
+                              goBack: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SonglistPlusMobileApp(
+                                      activeScreen: EditShowScreen(
+                                        showId: showId,
+                                        whenLabel: showWhen,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                            );
-                          }),
+                                );
+                              }),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -120,7 +162,6 @@ class _PerformScreen extends State<PerformScreen> {
                                   child: Column(
                                     children: [
                                       FutureBuilder<List<Song>>(
-                                        //Use this to await on multiple futures
                                         future: this.performanceSongsFuture,
                                         builder: (BuildContext context,
                                             AsyncSnapshot<List<Song>>
@@ -175,7 +216,7 @@ class _PerformScreen extends State<PerformScreen> {
                                                         _songTempoController,
                                                     color: Colors.white54)),
                                             Flexible(
-                                                flex: 2,
+                                                flex: 3,
                                                 child: TextFormFieldDisabled(
                                                     controller:
                                                         _songKeyController,
@@ -185,6 +226,7 @@ class _PerformScreen extends State<PerformScreen> {
                                         children: [
                                           Expanded(
                                             child: TextFormFieldDisabled(
+                                              alignment: TextAlign.center,
                                               controller: _songTitleController,
                                               fontSize: defaultFontSize * 2,
                                               keyBoardType:
@@ -197,7 +239,17 @@ class _PerformScreen extends State<PerformScreen> {
                                     ],
                                   ),
                                 ),
-                              ])
+                              ]),
+                          if (Responsive.isMobile(context))
+                            SingleColumnLyrics(
+                                songLyricsController: _songLyricsController)
+                          else
+                            DoubleColumnLyrics(
+                              firstColumnLyricsController:
+                                  this._firstColumnLyricsController,
+                              secondColumnLyricsController:
+                                  this._secondColumnLyricsController,
+                            )
                         ],
                       ),
                     ),
@@ -205,23 +257,6 @@ class _PerformScreen extends State<PerformScreen> {
                 ),
               ],
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        right: defaultPadding,
-                        left: defaultPadding,
-                        bottom: defaultPadding),
-                    child: TextFormFieldDisabled(
-                      controller: this._songLyricsController,
-                      keyBoardType: TextInputType.multiline,
-                      maxLines: null,
-                    ),
-                  ),
-                )
-              ],
-            )
           ]),
         ),
       ),
@@ -248,5 +283,98 @@ class _PerformScreen extends State<PerformScreen> {
           this.performanceSongsResolved[currentSelectedSong.position! - 2];
       this._dropDownKey.currentState!.changeSelectedItem(previousSong);
     }
+  }
+}
+
+class SingleColumnLyrics extends StatelessWidget {
+  const SingleColumnLyrics({
+    Key? key,
+    required TextEditingController songLyricsController,
+  })  : _songLyricsController = songLyricsController,
+        super(key: key);
+
+  final TextEditingController _songLyricsController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.only(
+                right: defaultPadding,
+                left: defaultPadding,
+                bottom: defaultPadding),
+            child: TextFormFieldDisabled(
+              controller: this._songLyricsController,
+              keyBoardType: TextInputType.multiline,
+              maxLines: null,
+            ),
+          ),
+        )
+      ],
+    );
+  }
+}
+
+// ignore: must_be_immutable
+class DoubleColumnLyrics extends StatelessWidget {
+  DoubleColumnLyrics({
+    Key? key,
+    required TextEditingController firstColumnLyricsController,
+    required TextEditingController secondColumnLyricsController,
+  })  : _firstColumnLyricsController = firstColumnLyricsController,
+        _secondColumnLyricsController = secondColumnLyricsController,
+        super(key: key);
+
+  TextEditingController _firstColumnLyricsController;
+  TextEditingController _secondColumnLyricsController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                    right: defaultPadding,
+                    left: defaultPadding * 2,
+                    bottom: defaultPadding),
+                child: TextFormFieldDisabled(
+                  controller: this._firstColumnLyricsController,
+                  keyBoardType: TextInputType.multiline,
+                  maxLines: null,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                    right: defaultPadding,
+                    left: defaultPadding,
+                    bottom: defaultPadding),
+                child: TextFormFieldDisabled(
+                  controller: this._secondColumnLyricsController,
+                  keyBoardType: TextInputType.multiline,
+                  maxLines: null,
+                ),
+              ),
+            ],
+          ),
+        )
+      ],
+    );
   }
 }
