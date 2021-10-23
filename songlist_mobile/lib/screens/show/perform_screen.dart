@@ -1,5 +1,6 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:songlist_mobile/components/common/back_header.dart';
 import 'package:songlist_mobile/components/common/text_form_field_disabled.dart';
 import 'package:songlist_mobile/components/show/setlist_navigation_button.dart';
@@ -48,6 +49,8 @@ class _PerformScreen extends State<PerformScreen> {
   final TextEditingController _songTempoController = TextEditingController();
   final TextEditingController _songKeyController = TextEditingController();
   final _dropDownKey = GlobalKey<DropdownSearchState<Song>>();
+  double _lyricsFontSizeSingleColumn = 16;
+  double _lyricsFontSizeDoubleColumn = 24;
 
   void _updateControllers(Song s) {
     String tempoStr =
@@ -121,20 +124,46 @@ class _PerformScreen extends State<PerformScreen> {
                       child: Column(
                         children: [
                           BackHeader(
-                              title: showName,
-                              goBack: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => SonglistPlusMobileApp(
-                                      activeScreen: EditShowScreen(
-                                        showId: showId,
-                                        whenLabel: showWhen,
-                                      ),
+                            title: showName,
+                            goBack: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SonglistPlusMobileApp(
+                                    activeScreen: EditShowScreen(
+                                      showId: showId,
+                                      whenLabel: showWhen,
                                     ),
                                   ),
-                                );
-                              }),
+                                ),
+                              );
+                            },
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  this._increaseFontSize();
+                                },
+                                icon: SvgPicture.asset(
+                                  "assets/icons/increase-font.svg",
+                                  color: increaseAndDecreaseIconColor,
+                                  height: increaseAndDecreaseIconHeight,
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  this._decreaseFontSize();
+                                },
+                                icon: SvgPicture.asset(
+                                  "assets/icons/decrease-font.svg",
+                                  color: increaseAndDecreaseIconColor,
+                                  height: increaseAndDecreaseIconHeight,
+                                ),
+                              ),
+                            ],
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -154,102 +183,112 @@ class _PerformScreen extends State<PerformScreen> {
                               ),
                             ],
                           ),
-                          Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  flex: 5,
-                                  child: Column(
-                                    children: [
-                                      FutureBuilder<List<Song>>(
-                                        future: this.performanceSongsFuture,
-                                        builder: (BuildContext context,
-                                            AsyncSnapshot<List<Song>>
-                                                snapshot) {
-                                          List<Widget> children = [];
-                                          if (snapshot.hasData) {
-                                            this.performanceSongsResolved =
-                                                snapshot.data!;
-                                            children = <Widget>[
-                                              DropdownSearch<Song>(
-                                                key: _dropDownKey,
-                                                compareFn: (i, s) =>
-                                                    i?.isEqual(s!) ?? false,
-                                                mode: Mode.MENU,
-                                                items: snapshot.data,
-                                                selectedItem: snapshot.data![0],
-                                                itemAsString: (Song? s) => s!
-                                                    .songAsStringWithPosition(),
-                                                dropdownSearchDecoration:
-                                                    InputDecoration(
-                                                  labelText: LocalizationService
-                                                      .instance
-                                                      .getLocalizedString(
-                                                          'setlist'),
-                                                ),
-                                                onChanged: (data) {
-                                                  setState(() {
-                                                    this._updateControllers(
-                                                        data!);
-                                                  });
-                                                },
-                                                showSearchBox: true,
-                                              )
-                                            ];
-                                          }
-                                          return Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.stretch,
-                                            children: children,
-                                          );
-                                        },
-                                      ),
-                                      SizedBox(height: defaultPadding),
-                                      Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                          Padding(
+                            padding: EdgeInsets.only(
+                                left: formFieldPadding,
+                                right: formFieldPadding),
+                            child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    flex: 5,
+                                    child: Column(
+                                      children: [
+                                        FutureBuilder<List<Song>>(
+                                          future: this.performanceSongsFuture,
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<List<Song>>
+                                                  snapshot) {
+                                            List<Widget> children = [];
+                                            if (snapshot.hasData) {
+                                              this.performanceSongsResolved =
+                                                  snapshot.data!;
+                                              children = <Widget>[
+                                                DropdownSearch<Song>(
+                                                  key: _dropDownKey,
+                                                  compareFn: (i, s) =>
+                                                      i?.isEqual(s!) ?? false,
+                                                  mode: Mode.MENU,
+                                                  items: snapshot.data,
+                                                  selectedItem:
+                                                      snapshot.data![0],
+                                                  itemAsString: (Song? s) => s!
+                                                      .songAsStringWithPosition(),
+                                                  dropdownSearchDecoration:
+                                                      InputDecoration(
+                                                    labelText:
+                                                        LocalizationService
+                                                            .instance
+                                                            .getLocalizedString(
+                                                                'setlist'),
+                                                  ),
+                                                  onChanged: (data) {
+                                                    setState(() {
+                                                      this._updateControllers(
+                                                          data!);
+                                                    });
+                                                  },
+                                                  showSearchBox: true,
+                                                )
+                                              ];
+                                            }
+                                            return Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.stretch,
+                                              children: children,
+                                            );
+                                          },
+                                        ),
+                                        SizedBox(height: defaultPadding),
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Flexible(
+                                                  flex: 1,
+                                                  child: TextFormFieldDisabled(
+                                                      controller:
+                                                          _songTempoController,
+                                                      color: Colors.white54)),
+                                              Flexible(
+                                                  flex: 3,
+                                                  child: TextFormFieldDisabled(
+                                                      controller:
+                                                          _songKeyController,
+                                                      color: Colors.white54)),
+                                            ]),
+                                        Row(
                                           children: [
-                                            Flexible(
-                                                flex: 1,
-                                                child: TextFormFieldDisabled(
-                                                    controller:
-                                                        _songTempoController,
-                                                    color: Colors.white54)),
-                                            Flexible(
-                                                flex: 3,
-                                                child: TextFormFieldDisabled(
-                                                    controller:
-                                                        _songKeyController,
-                                                    color: Colors.white54)),
-                                          ]),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: TextFormFieldDisabled(
-                                              alignment: TextAlign.center,
-                                              controller: _songTitleController,
-                                              fontSize: defaultFontSize * 2,
-                                              keyBoardType:
-                                                  TextInputType.multiline,
-                                              maxLines: null,
+                                            Expanded(
+                                              child: TextFormFieldDisabled(
+                                                alignment: TextAlign.start,
+                                                controller:
+                                                    _songTitleController,
+                                                fontSize: defaultFontSize * 2,
+                                                keyBoardType:
+                                                    TextInputType.multiline,
+                                                maxLines: null,
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ]),
+                                ]),
+                          ),
                           if (Responsive.isMobile(context))
                             SingleColumnLyrics(
-                                songLyricsController: _songLyricsController)
+                              songLyricsController: _songLyricsController,
+                              fontSize: this._lyricsFontSizeSingleColumn,
+                            )
                           else
                             DoubleColumnLyrics(
-                              firstColumnLyricsController:
-                                  this._firstColumnLyricsController,
-                              secondColumnLyricsController:
-                                  this._secondColumnLyricsController,
-                            )
+                                firstColumnLyricsController:
+                                    this._firstColumnLyricsController,
+                                secondColumnLyricsController:
+                                    this._secondColumnLyricsController,
+                                fontSize: this._lyricsFontSizeDoubleColumn)
                         ],
                       ),
                     ),
@@ -261,6 +300,20 @@ class _PerformScreen extends State<PerformScreen> {
         ),
       ),
     );
+  }
+
+  void _increaseFontSize() {
+    setState(() {
+      this._lyricsFontSizeSingleColumn += 4;
+      this._lyricsFontSizeDoubleColumn += 4;
+    });
+  }
+
+  void _decreaseFontSize() {
+    setState(() {
+      this._lyricsFontSizeSingleColumn -= 4;
+      this._lyricsFontSizeDoubleColumn -= 4;
+    });
   }
 
   void _next() {
@@ -286,14 +339,18 @@ class _PerformScreen extends State<PerformScreen> {
   }
 }
 
+// ignore: must_be_immutable
 class SingleColumnLyrics extends StatelessWidget {
-  const SingleColumnLyrics({
-    Key? key,
-    required TextEditingController songLyricsController,
-  })  : _songLyricsController = songLyricsController,
+  SingleColumnLyrics(
+      {Key? key,
+      required TextEditingController songLyricsController,
+      required double fontSize})
+      : _songLyricsController = songLyricsController,
+        _fontSize = fontSize,
         super(key: key);
 
-  final TextEditingController _songLyricsController;
+  TextEditingController _songLyricsController;
+  double _fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -302,10 +359,11 @@ class SingleColumnLyrics extends StatelessWidget {
         Expanded(
           child: Padding(
             padding: EdgeInsets.only(
-                right: defaultPadding,
-                left: defaultPadding,
+                right: formFieldPadding,
+                left: formFieldPadding,
                 bottom: defaultPadding),
             child: TextFormFieldDisabled(
+              fontSize: _fontSize,
               controller: this._songLyricsController,
               keyBoardType: TextInputType.multiline,
               maxLines: null,
@@ -319,16 +377,19 @@ class SingleColumnLyrics extends StatelessWidget {
 
 // ignore: must_be_immutable
 class DoubleColumnLyrics extends StatelessWidget {
-  DoubleColumnLyrics({
-    Key? key,
-    required TextEditingController firstColumnLyricsController,
-    required TextEditingController secondColumnLyricsController,
-  })  : _firstColumnLyricsController = firstColumnLyricsController,
+  DoubleColumnLyrics(
+      {Key? key,
+      required TextEditingController firstColumnLyricsController,
+      required TextEditingController secondColumnLyricsController,
+      required double fontSize})
+      : _firstColumnLyricsController = firstColumnLyricsController,
         _secondColumnLyricsController = secondColumnLyricsController,
+        _fontSize = fontSize,
         super(key: key);
 
   TextEditingController _firstColumnLyricsController;
   TextEditingController _secondColumnLyricsController;
+  double _fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -343,10 +404,11 @@ class DoubleColumnLyrics extends StatelessWidget {
             children: [
               Padding(
                 padding: EdgeInsets.only(
-                    right: defaultPadding,
-                    left: defaultPadding * 2,
+                    right: formFieldPadding,
+                    left: formFieldPadding,
                     bottom: defaultPadding),
                 child: TextFormFieldDisabled(
+                  fontSize: _fontSize,
                   controller: this._firstColumnLyricsController,
                   keyBoardType: TextInputType.multiline,
                   maxLines: null,
@@ -366,6 +428,7 @@ class DoubleColumnLyrics extends StatelessWidget {
                     left: defaultPadding,
                     bottom: defaultPadding),
                 child: TextFormFieldDisabled(
+                  fontSize: _fontSize,
                   controller: this._secondColumnLyricsController,
                   keyBoardType: TextInputType.multiline,
                   maxLines: null,

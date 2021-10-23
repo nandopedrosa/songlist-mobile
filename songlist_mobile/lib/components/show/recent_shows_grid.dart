@@ -35,8 +35,7 @@ class _RecentShowsGridState extends State<RecentShowsGrid> {
                 style: TextButton.styleFrom(
                   padding: EdgeInsets.symmetric(
                     horizontal: defaultPadding,
-                    vertical:
-                        defaultPadding / (Responsive.isMobile(context) ? 2 : 1),
+                    vertical: defaultPadding / 2,
                   ),
                 ),
                 onPressed: () {

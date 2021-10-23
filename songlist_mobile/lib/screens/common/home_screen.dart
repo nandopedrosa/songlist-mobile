@@ -4,7 +4,6 @@ import 'package:songlist_mobile/components/show/recent_shows_grid.dart';
 import 'package:songlist_mobile/components/song/recent_songs_table.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/main.dart';
-import 'package:songlist_mobile/util/responsive.dart';
 import 'package:songlist_mobile/screens/song/edit_song_screen.dart';
 
 import '../../util/constants.dart';
@@ -47,8 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: TextButton.styleFrom(
                               padding: EdgeInsets.symmetric(
                                 horizontal: defaultPadding,
-                                vertical: defaultPadding /
-                                    (Responsive.isMobile(context) ? 2 : 1),
+                                vertical: defaultPadding / 2,
                               ),
                             ),
                             onPressed: () {

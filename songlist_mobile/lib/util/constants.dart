@@ -16,3 +16,5 @@ const dataTableHeadingRowHeight = 72.0;
 
 //Misc
 const int defaultRowsPerPage = 8;
+const increaseAndDecreaseIconHeight = 24.0;
+const Color increaseAndDecreaseIconColor = Colors.white70;
