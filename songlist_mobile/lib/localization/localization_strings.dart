@@ -1,5 +1,8 @@
 class LocalizationStrings {
   static const localizedStrings = <String, List<String>>{
+    'tools': ['Tools', 'Ferramentas'],
+    'help': ['Help', 'Ajuda'],
+    'pro_version': ['Pro Version', 'Versão Pro'],
     'new_song': ['New Song', 'Nova Música'],
     'new_show': ['New Show', 'Novo Show'],
     'recent_songs': ['Recently Added Songs', 'Músicas Recentes'],
@@ -106,6 +109,13 @@ class LocalizationStrings {
       "Letra importada com sucesso. Não esqueça de salvar sua música!"
     ],
     "share_setlist": ["Share setlist", "Compartilhar repertório"],
-    "setlist_for": ["Setlist for", "Repertório para"]
+    "setlist_for": ["Setlist for", "Repertório para"],
+    "export_database_disclaimer": [
+      "Exporting the database allows you to generate a backup file with all your songs.\n\nThis file can be shared or saved to external applications, such as Mail, Gmail, WhatsApp and Dropbox, among others. You can import this file later using the Import function.\n\nWarning: depending on the number of songs you have in the database, this process can take a while.",
+      "A exportação da base de dados permite gerar um arquivo de backup com todas as suas músicas.\n\nEsse arquivo pode ser salvo ou compartilhado em outras aplicações, como Mail, Gmail, WhatsApp e Dropbox, entre outras. Em outro momento, você pode importar este arquivo usando a funcionalidade de Importar.\n\nAtenção: dependendo da quantidade de músicas que você tem em sua base de dados, esse processo pode demorar um pouco."
+    ],
+    "import_database_disclaimer": ['', ''],
+    "export_songs": ["Export songs", "Exportar músicas"],
+    "import_songs": ["Import songs", "Importar músicas"],
   };
 }

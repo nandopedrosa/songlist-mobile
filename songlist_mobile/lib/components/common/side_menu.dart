@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/main.dart';
 import 'package:songlist_mobile/screens/show/all_shows_screen.dart';
 import 'package:songlist_mobile/screens/song/all_songs_screen.dart';
 import 'package:songlist_mobile/screens/common/home_screen.dart';
+import 'package:songlist_mobile/screens/tools/tools_screen.dart';
 
 class SideMenu extends StatelessWidget {
   const SideMenu({
@@ -37,7 +39,7 @@ class SideMenu extends StatelessWidget {
             },
           ),
           DrawerListTile(
-            title: "Songs",
+            title: LocalizationService.instance.getLocalizedString("songs"),
             svgSrc: "assets/icons/file-music.svg",
             press: () {
               Navigator.push(
@@ -61,22 +63,30 @@ class SideMenu extends StatelessWidget {
             },
           ),
           DrawerListTile(
-            title: "Tools",
+            title: LocalizationService.instance.getLocalizedString("tools"),
             svgSrc: "assets/icons/gear.svg",
-            press: () {},
+            press: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        SonglistPlusMobileApp(activeScreen: ToolsScreen())),
+              );
+            },
           ),
           DrawerListTile(
-            title: "Help",
+            title: LocalizationService.instance.getLocalizedString("help"),
             svgSrc: "assets/icons/question-octagon.svg",
             press: () {},
           ),
           DrawerListTile(
-            title: "Contact",
+            title: LocalizationService.instance.getLocalizedString("contact"),
             svgSrc: "assets/icons/envelope.svg",
             press: () {},
           ),
           DrawerListTile(
-            title: "Pro Version",
+            title:
+                LocalizationService.instance.getLocalizedString("pro_version"),
             svgSrc: "assets/icons/currency-dollar.svg",
             press: () {},
           ),
