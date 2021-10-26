@@ -332,10 +332,10 @@ class _EditShowForm extends State<EditShowForm> {
 
   void afterSaveOrUpdate(int id) {
     if (this.showId == null) {
-      ToastMessage.showToast(LocalizationService.instance
+      ToastMessage.showSuccessToast(LocalizationService.instance
           .getLocalizedString('show_successfully_created'));
     } else {
-      ToastMessage.showToast(LocalizationService.instance
+      ToastMessage.showSuccessToast(LocalizationService.instance
           .getLocalizedString('show_successfully_updated'));
     }
 
@@ -347,7 +347,7 @@ class _EditShowForm extends State<EditShowForm> {
   void delete() {
     this.showService.delete(this.showId!);
 
-    ToastMessage.showToast(LocalizationService.instance
+    ToastMessage.showSuccessToast(LocalizationService.instance
         .getLocalizedString('show_successfully_deleted'));
 
     Navigator.push(

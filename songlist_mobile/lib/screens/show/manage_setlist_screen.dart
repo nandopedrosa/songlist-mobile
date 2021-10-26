@@ -288,7 +288,7 @@ class _ManageSetlistScreen extends State<ManageSetlistScreen> {
     this.setlistService.save(this.showId, selectedSongs);
     this.showService.updateDuration(this.showId, totalDuration);
 
-    ToastMessage.showToast(
+    ToastMessage.showSuccessToast(
         LocalizationService.instance.getLocalizedString('setlist_saved'));
   }
 

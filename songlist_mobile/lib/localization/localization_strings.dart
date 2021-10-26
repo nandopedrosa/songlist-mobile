@@ -88,6 +88,22 @@ class LocalizationStrings {
     'add_song': ['Add song', 'Adicionar música'],
     'play': ['Play', 'Tocar'],
     'previous': ['Previous', 'Anterior'],
-    'next': ['Next', 'Próxima']
+    'next': ['Next', 'Próxima'],
+    'import_lyrics_chords': ['Import lyrics/chords', 'Importar letra/cifra'],
+    'import_web_address': [
+      'Web address (paste here)',
+      'Endereço web (cole aqui)'
+    ],
+    'import': ['Import', 'Importar'],
+    'export': ['Export', 'Exportar'],
+    "supported_websites": [
+      "Supported websites: LyricsFreak.com and Letras.com.br",
+      "Sites suportados: Letras.com.br e LyricsFreak.com"
+    ],
+    "website_not_supported": ['Website not supported', "Site não suportado"],
+    "lyrics_imported": [
+      'Lyrics successfully imported. Do not forget to save your song!',
+      "Letra importada com sucesso. Não esqueça de salvar sua música!"
+    ],
   };
 }

@@ -9,26 +9,29 @@ import 'package:songlist_mobile/components/common/text_field_editor.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/main.dart';
 import 'package:songlist_mobile/models/song.dart';
+import 'package:songlist_mobile/screens/common/secondary_screen.dart';
 import 'package:songlist_mobile/screens/song/all_songs_screen.dart';
+import 'package:songlist_mobile/screens/song/import_lyrics_screen.dart';
 import 'package:songlist_mobile/service/song_service.dart';
 import 'package:songlist_mobile/components/common/toast_message.dart';
+import 'package:songlist_mobile/util/constants.dart';
 import 'package:songlist_mobile/util/validation.dart';
 
 // ignore: must_be_immutable
 class EditSongForm extends StatefulWidget {
   int? songId;
+  String? importedLyricsText;
 
-  EditSongForm({
-    Key? key,
-    this.songId,
-  }) : super(key: key);
+  EditSongForm({Key? key, this.songId, this.importedLyricsText})
+      : super(key: key);
 
   @override
-  _EditSongForm createState() => _EditSongForm(songId);
+  _EditSongForm createState() => _EditSongForm(songId, importedLyricsText);
 }
 
 class _EditSongForm extends State<EditSongForm> {
   int? songId;
+  String? importedLyricsText;
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _artistController = TextEditingController();
   final TextEditingController _keyController = TextEditingController();
@@ -38,13 +41,12 @@ class _EditSongForm extends State<EditSongForm> {
   final TextEditingController _lyricsController = TextEditingController();
   late SongService service;
 
-  _EditSongForm(this.songId);
+  _EditSongForm(this.songId, this.importedLyricsText);
 
   @override
   void initState() {
     super.initState();
     this.service = SongService();
-
     if (this.songId != null) {
       service.find(songId!).then((song) => this._updateControllers(song));
     }
@@ -58,7 +60,14 @@ class _EditSongForm extends State<EditSongForm> {
     if (song.tempo != null) this._tempoController.text = song.tempo!.toString();
     if (song.duration != null) this._durationController.text = song.duration!;
     if (song.notes != null) this._notesController.text = song.notes!;
-    if (song.lyrics != null) this._lyricsController.text = song.lyrics!;
+
+    //If we are importing lyrics, then get the imported lyrics value
+    //Else we just get whatever the DB returned
+    if (this.importedLyricsText != null) {
+      this._lyricsController.text = this.importedLyricsText!;
+    } else {
+      if (song.lyrics != null) this._lyricsController.text = song.lyrics!;
+    }
   }
 
   @override
@@ -95,6 +104,35 @@ class _EditSongForm extends State<EditSongForm> {
         TextAreaEditor(
           controller: this._notesController,
           label: LocalizationService.instance.getLocalizedString('notes'),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(formFieldPadding),
+          child: Row(
+            children: [
+              Text(
+                LocalizationService.instance
+                        .getLocalizedString("import_lyrics_chords") +
+                    " ?",
+                style: Theme.of(context).textTheme.headline6,
+              ),
+              IconButton(
+                icon: const Icon(Icons.arrow_forward_ios),
+                tooltip: 'Import Lyrics/Chords',
+                onPressed: () {
+                  Navigator.push(
+                    formContext,
+                    MaterialPageRoute(
+                      builder: (context) => SecondaryScreen(
+                        activeScreen: ImportLyricsScreen(
+                          songId: this.songId!,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
         TextAreaEditor(
           controller: this._lyricsController,
@@ -160,10 +198,10 @@ class _EditSongForm extends State<EditSongForm> {
 
   void afterSaveOrUpdate(int id) {
     if (this.songId == null) {
-      ToastMessage.showToast(LocalizationService.instance
+      ToastMessage.showSuccessToast(LocalizationService.instance
           .getLocalizedString('song_successfully_created'));
     } else {
-      ToastMessage.showToast(LocalizationService.instance
+      ToastMessage.showSuccessToast(LocalizationService.instance
           .getLocalizedString('song_successfully_updated'));
     }
 
@@ -175,7 +213,7 @@ class _EditSongForm extends State<EditSongForm> {
   void delete() {
     this.service.delete(this.songId!);
 
-    ToastMessage.showToast(LocalizationService.instance
+    ToastMessage.showSuccessToast(LocalizationService.instance
         .getLocalizedString('song_successfully_deleted'));
 
     Navigator.push(

@@ -8,20 +8,20 @@ import '../../util/constants.dart';
 // ignore: must_be_immutable
 class EditSongScreen extends StatefulWidget {
   int? songId;
+  String? importedLyricsText;
 
-  EditSongScreen({
-    Key? key,
-    this.songId,
-  }) : super(key: key);
+  EditSongScreen({Key? key, this.songId, this.importedLyricsText})
+      : super(key: key);
 
   @override
-  _EditSongScreen createState() => _EditSongScreen(songId);
+  _EditSongScreen createState() => _EditSongScreen(songId, importedLyricsText);
 }
 
 class _EditSongScreen extends State<EditSongScreen> {
   int? songId;
+  String? importedLyricsText;
 
-  _EditSongScreen(this.songId);
+  _EditSongScreen(this.songId, this.importedLyricsText);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,10 @@ class _EditSongScreen extends State<EditSongScreen> {
                 flex: 5,
                 child: Column(
                   children: [
-                    EditSongForm(songId: songId),
+                    EditSongForm(
+                      songId: songId,
+                      importedLyricsText: this.importedLyricsText,
+                    ),
                   ],
                 ),
               )
