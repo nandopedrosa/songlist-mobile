@@ -70,6 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     SizedBox(height: defaultPadding),
                     RecentSongsTable(),
+                    SizedBox(height: defaultPadding),
                   ],
                 ),
               )

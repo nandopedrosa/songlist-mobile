@@ -105,5 +105,7 @@ class LocalizationStrings {
       'Lyrics successfully imported. Do not forget to save your song!',
       "Letra importada com sucesso. Não esqueça de salvar sua música!"
     ],
+    "share_setlist": ["Share setlist", "Compartilhar repertório"],
+    "setlist_for": ["Setlist for", "Repertório para"]
   };
 }

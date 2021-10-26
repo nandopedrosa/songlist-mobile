@@ -1,7 +1,9 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:songlist_mobile/components/common/back_header.dart';
 import 'package:songlist_mobile/components/common/save_button.dart';
+import 'package:songlist_mobile/components/common/share_setlist_button.dart';
 import 'package:songlist_mobile/components/common/toast_message.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/main.dart';
@@ -107,6 +109,12 @@ class _ManageSetlistScreen extends State<ManageSetlistScreen> {
                                                 leftPadding: 0,
                                                 rightPadding: 0,
                                                 topPadding: defaultPadding),
+                                            ShareSetlistButton(
+                                                onPressed: () {
+                                                  this._share(snapshot.data!);
+                                                },
+                                                leftPadding: 0,
+                                                rightPadding: 0),
                                           ];
                                         }
                                         return Column(
@@ -248,6 +256,19 @@ class _ManageSetlistScreen extends State<ManageSetlistScreen> {
         ]),
       ),
     );
+  }
+
+  void _share(List<Song> songs) {
+    String songTitles = "";
+    for (var i = 0; i < songs.length; i++) {
+      songTitles += (i + 1).toString() + ". " + songs[i].title + "\n";
+    }
+    Share.share(songTitles,
+        subject:
+            LocalizationService.instance.getLocalizedString("setlist_for") +
+                ' "' +
+                this.showName +
+                '"');
   }
 
   void _reorderAvailableSongs(List<Song> availableSongs) {
