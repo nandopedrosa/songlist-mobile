@@ -246,6 +246,29 @@ But she doesn''t see, she doesn''t see, no she just doesn''t see', 'Bossa nova' 
     return recentSongs;
   }
 
+  //All fields
+  Future<List<Song>> exportSongs() async {
+    // get a reference to the database
+    Database? db = await DatabaseHelper.instance.database;
+    List<Map<String, dynamic>> result =
+        await db!.rawQuery("select * from song order by title;");
+
+    List<Song> allSongs = List.generate(result.length, (i) {
+      return Song(
+        title: result[i]['title'],
+        artist: result[i]['artist'],
+        key: result[i]['key'],
+        tempo: result[i]['tempo'],
+        duration: result[i]['duration'],
+        lyrics: result[i]['lyrics'],
+        notes: result[i]['notes'],
+        created_on: result[i]['created_on'],
+      );
+    });
+
+    return allSongs;
+  }
+
   Future<List<Song>> getAllSongs() async {
     // get a reference to the database
     Database? db = await DatabaseHelper.instance.database;

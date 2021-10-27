@@ -3,6 +3,7 @@ class LocalizationStrings {
     'tools': ['Tools', 'Ferramentas'],
     'help': ['Help', 'Ajuda'],
     'pro_version': ['Pro Version', 'Versão Pro'],
+    'about': ['About', 'Sobre'],
     'new_song': ['New Song', 'Nova Música'],
     'new_show': ['New Show', 'Novo Show'],
     'recent_songs': ['Recently Added Songs', 'Músicas Recentes'],
@@ -111,11 +112,21 @@ class LocalizationStrings {
     "share_setlist": ["Share setlist", "Compartilhar repertório"],
     "setlist_for": ["Setlist for", "Repertório para"],
     "export_database_disclaimer": [
-      "Exporting the database allows you to generate a backup file with all your songs.\n\nThis file can be shared or saved to external applications, such as Mail, Gmail, WhatsApp and Dropbox, among others. You can import this file later using the Import function.\n\nWarning: depending on the number of songs you have in the database, this process can take a while.",
-      "A exportação da base de dados permite gerar um arquivo de backup com todas as suas músicas.\n\nEsse arquivo pode ser salvo ou compartilhado em outras aplicações, como Mail, Gmail, WhatsApp e Dropbox, entre outras. Em outro momento, você pode importar este arquivo usando a funcionalidade de Importar.\n\nAtenção: dependendo da quantidade de músicas que você tem em sua base de dados, esse processo pode demorar um pouco."
+      "Exporting the database allows you to generate a backup file with all your songs so you can use them in other devices.\n\nBy selecting Export, the file can be shared or saved to external applications, such as Mail, Gmail, WhatsApp, Dropbox or even your local device storage. You can import this file later using the Import function.\n\nWarning: depending on the number of songs you have in the database, this process can take a while.",
+      "A exportação da base de dados permite gerar um arquivo de backup com todas as suas músicas para que você possa usá-las em outros dispositivos.\n\nAo selecionar Exportar, o arquivo poderá ser salvo em outras aplicações, como Mail, Gmail, WhatsApp, Dropbox ou mesmo no armazenamento local do seu dispositivo. No futuro, você poderá importar este arquivo usando a funcionalidade de Importar.\n\nAtenção: dependendo da quantidade de músicas que você tem em sua base de dados, esse processo pode demorar um pouco."
     ],
-    "import_database_disclaimer": ['', ''],
+    "import_database_disclaimer": [
+      "Here you can import a previously generated backup file with your songs.\n\nTo do so, press the button below and browse for the file you wish to import from applications such as Dropbox, Google Drive or even your local device storage.\n\nWarning: depending on the number of songs you are importing, this process can take a while.",
+      "Aqui você pode importar um arquivo de backup com suas músicas.\n\nPara fazer isso, aperte o botão abaixo e procure pelo arquivo que deseja importar a partir de aplicações como Dropbox, Google Drive ou mesmo no armazenamento local do seu dispositivo.\n\nAtenção: dependendo do número de músicas que você está importando, esse processo pode demorar um pouco."
+    ],
     "export_songs": ["Export songs", "Exportar músicas"],
     "import_songs": ["Import songs", "Importar músicas"],
+    "songs_exported": ["Songs exported", "Músicas exportadas"],
+    "songs_imported": ["Songs imported", "Músicas importadas"],
+    "export_file": ["Export file", "Arquivo de exportação"],
+    "internal_error": [
+      "Internal error. Please report this to the app developer",
+      "Erro interno. Por favor informe-o ao desenvolver do aplicativo."
+    ]
   };
 }

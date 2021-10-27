@@ -80,7 +80,7 @@ class SideMenu extends StatelessWidget {
             press: () {},
           ),
           DrawerListTile(
-            title: LocalizationService.instance.getLocalizedString("contact"),
+            title: LocalizationService.instance.getLocalizedString("about"),
             svgSrc: "assets/icons/envelope.svg",
             press: () {},
           ),

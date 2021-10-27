@@ -2,6 +2,7 @@ import 'package:songlist_mobile/database/dao/song_dao.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/models/song.dart';
 import 'package:songlist_mobile/util/validation.dart';
+import 'dart:convert';
 
 class SongService {
   SongDao _dao = SongDao();
@@ -62,6 +63,24 @@ class SongService {
     return recentSongs;
   }
 
+  //returns number of songs imported
+  Future<int> importSongs(String jsonListOfSongs) async {
+    int count = 0;
+    Iterable it = json.decode(jsonListOfSongs);
+    List<Song> songs = List<Song>.from(it.map((song) => Song.fromMap(song)));
+    for (Song s in songs) {
+      await this.save(s);
+      count++;
+    }
+    return Future.value(count);
+  }
+
+  Future<List<Song>> exportSongs() {
+    Future<List<Song>> allSongs = this._dao.exportSongs();
+    return allSongs;
+  }
+
+  //Doesn't return lyrics
   Future<List<Song>> getAllSongs() {
     Future<List<Song>> allSongs = this._dao.getAllSongs();
     return allSongs;
