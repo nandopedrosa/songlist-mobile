@@ -121,8 +121,11 @@ class LocalizationStrings {
     ],
     "export_songs": ["Export songs", "Exportar músicas"],
     "import_songs": ["Import songs", "Importar músicas"],
-    "songs_exported": ["Songs exported", "Músicas exportadas"],
-    "songs_imported": ["Songs imported", "Músicas importadas"],
+    "songs_exported": [
+      "Songs exported. Now you can save them wherever you like.",
+      "Músicas exportadas. Agora você pode salvá-las onde quiser."
+    ],
+    "songs_imported": ["Songs imported.", "Músicas importadas."],
     "export_file": ["Export file", "Arquivo de exportação"],
     "internal_error": [
       "Internal error. Please report this to the app developer",

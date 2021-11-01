@@ -9,7 +9,8 @@ class Song {
   String? notes;
   // ignore: non_constant_identifier_names
   String created_on;
-  int? position;
+  int?
+      position; //this is not saved to database, we only use it as a volatile value
 
   Song(
       {this.id,

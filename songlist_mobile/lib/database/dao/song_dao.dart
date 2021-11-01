@@ -232,7 +232,7 @@ But she doesn''t see, she doesn''t see, no she just doesn''t see', 'Bossa nova' 
     // get a reference to the database
     Database? db = await DatabaseHelper.instance.database;
     List<Map<String, dynamic>> result = await db!.rawQuery(
-        'select id, title, artist, created_on from song order by created_on desc LIMIT $recentSongsLimit;');
+        'select id, title, artist, created_on from song order by created_on desc, title asc LIMIT $recentSongsLimit;');
 
     List<Song> recentSongs = List.generate(result.length, (i) {
       return Song(
