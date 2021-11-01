@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:songlist_mobile/components/common/delete_button.dart';
 import 'package:songlist_mobile/components/common/go_back_button.dart';
+import 'package:songlist_mobile/components/common/import_button.dart';
 import 'package:songlist_mobile/components/common/modal_dialog.dart';
 import 'package:songlist_mobile/components/common/save_button.dart';
 import 'package:songlist_mobile/components/common/text_area_editor.dart';
@@ -9,13 +10,12 @@ import 'package:songlist_mobile/components/common/text_field_editor.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/main.dart';
 import 'package:songlist_mobile/models/song.dart';
-import 'package:songlist_mobile/screens/common/secondary_screen.dart';
 import 'package:songlist_mobile/screens/song/all_songs_screen.dart';
-import 'package:songlist_mobile/screens/song/import_lyrics_screen.dart';
 import 'package:songlist_mobile/service/song_service.dart';
 import 'package:songlist_mobile/components/common/toast_message.dart';
 import 'package:songlist_mobile/util/constants.dart';
 import 'package:songlist_mobile/util/validation.dart';
+import 'package:http/http.dart' as http;
 
 // ignore: must_be_immutable
 class EditSongForm extends StatefulWidget {
@@ -39,6 +39,10 @@ class _EditSongForm extends State<EditSongForm> {
   final TextEditingController _durationController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
   final TextEditingController _lyricsController = TextEditingController();
+  final TextEditingController _urlControler = TextEditingController();
+  Future<http.Response>? apiResponse;
+
+  final _importButtonKey = GlobalKey();
   late SongService service;
 
   _EditSongForm(this.songId, this.importedLyricsText);
@@ -105,7 +109,87 @@ class _EditSongForm extends State<EditSongForm> {
           controller: this._notesController,
           label: LocalizationService.instance.getLocalizedString('notes'),
         ),
-        ImportLyricsAction(context: context, songId: songId),
+        Padding(
+          padding: const EdgeInsets.all(formFieldPadding),
+          child: Row(
+            children: [
+              Text(
+                LocalizationService.instance
+                        .getLocalizedString("import_lyrics_chords") +
+                    " ?",
+                style: Theme.of(context).textTheme.headline6,
+              ),
+              IconButton(
+                icon: const Icon(Icons.arrow_forward_ios),
+                tooltip: 'Import Lyrics/Chords',
+                onPressed: () {
+                  //------ Modal Dialog: Import Lyrics ---------
+                  showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(defaultPadding))),
+                          backgroundColor: secondaryColor,
+                          title: Text(
+                            LocalizationService.instance
+                                .getLocalizedString("import_lyrics_chords"),
+                            style: TextStyle(fontSize: defaultFontSize),
+                          ),
+                          content: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SupportedWebsites(),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      children: [
+                                        TextFieldEditor(
+                                            controller: this._urlControler,
+                                            maxLength: 256,
+                                            label: LocalizationService.instance
+                                                .getLocalizedString(
+                                                    "import_web_address")),
+                                        //------ IMPORT LYRICS HERE ---------
+                                        ImportButton(
+                                          key: _importButtonKey,
+                                          onPressed: _importButtonAction,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          actions: [
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                textStyle:
+                                    const TextStyle(fontSize: defaultFontSize),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                "OK",
+                                style: TextStyle(
+                                    fontSize: flatButtonDefaultFontSize),
+                              ),
+                            ),
+                          ],
+                        );
+                      });
+                },
+              ),
+            ],
+          ),
+        ),
         TextAreaEditor(
           controller: this._lyricsController,
           label:
@@ -127,6 +211,7 @@ class _EditSongForm extends State<EditSongForm> {
     );
   }
 
+  //Save button action
   void saveOrUpdateSong() {
     //This is used for the created_on (which is really a last modified date)
     var now = new DateTime.now();
@@ -154,7 +239,7 @@ class _EditSongForm extends State<EditSongForm> {
 
     //If valid, show success Toast
     if (validation.isValid) {
-      this.service.save(song).then((id) => afterSaveOrUpdate(id));
+      this.service.save(song).then((id) => showSaveOrUpdateSuccessMessage(id));
     } else {
       // Else, show a modal dialog with an error report
       showDialog(
@@ -172,7 +257,7 @@ class _EditSongForm extends State<EditSongForm> {
     }
   }
 
-  void afterSaveOrUpdate(int id) {
+  void showSaveOrUpdateSuccessMessage(int id) {
     if (this.songId == null) {
       ToastMessage.showSuccessToast(LocalizationService.instance
           .getLocalizedString('song_successfully_created'));
@@ -186,7 +271,8 @@ class _EditSongForm extends State<EditSongForm> {
     });
   }
 
-  // The delete button is only visible when there a song id
+  //Deletes the song and goes back to the songs table
+  //This is only accessible if there is a song ID
   void delete() {
     this.service.delete(this.songId!);
 
@@ -200,48 +286,80 @@ class _EditSongForm extends State<EditSongForm> {
               SonglistPlusMobileApp(activeScreen: AllSongsScreen())),
     );
   }
+
+  // Validates import lyrics URL
+  bool isValidUrl(String songUrl) {
+    if (songUrl.isEmpty) return false;
+
+    for (var site in supportedLyricsOrChordsWebsites) {
+      //the list is defined in the constants file
+      if (songUrl.toLowerCase().indexOf(site) != -1) return true;
+    }
+
+    return false;
+  }
+
+  //Imports a song lyrics from the web API
+  void _importButtonAction() {
+    if (this._urlControler.text.isEmpty) return;
+
+    if (this.isValidUrl(this._urlControler.text)) {
+      this._importLyrics(this._urlControler.text).then((value) {
+        this._lyricsController.text = value.body.toString();
+
+        ToastMessage.showSuccessToast(
+            LocalizationService.instance.getLocalizedString("lyrics_imported"));
+      });
+    } else {
+      ToastMessage.showErrorToast(LocalizationService.instance
+          .getLocalizedString("website_not_supported"));
+    }
+  }
+
+  //Calls the web api
+  Future<http.Response> _importLyrics(String songUrl) {
+    String songUrl = this._urlControler.text;
+    String serviceRoute = "";
+
+    if (songUrl.toLowerCase().indexOf("letras.mus.br") != -1) {
+      serviceRoute = letrasServiceRoute;
+    } else if ((songUrl.toLowerCase().indexOf("lyricsfreak.com") != -1)) {
+      serviceRoute = lyricsFreakServiceRoute;
+    }
+    String fullUrl = importLyricsOrChordsApiBaseUrl + serviceRoute + songUrl;
+    return http.get(Uri.parse(fullUrl));
+  }
 }
 
-class ImportLyricsAction extends StatelessWidget {
-  const ImportLyricsAction({
+//Supported websites disclaimer
+class SupportedWebsites extends StatelessWidget {
+  const SupportedWebsites({
     Key? key,
-    required this.context,
-    required this.songId,
   }) : super(key: key);
-
-  final BuildContext context;
-  final int? songId;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(formFieldPadding),
-      child: Row(
-        children: [
-          Text(
-            LocalizationService.instance
-                    .getLocalizedString("import_lyrics_chords") +
-                " ?",
-            style: Theme.of(context).textTheme.headline6,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Flexible(
+          child: Padding(
+            padding: const EdgeInsets.all(formFieldPadding),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  LocalizationService.instance
+                      .getLocalizedString("supported_websites"),
+                  style: TextStyle(
+                      color: Colors.white54, fontSize: defaultFontSize),
+                )
+              ],
+            ),
           ),
-          IconButton(
-            icon: const Icon(Icons.arrow_forward_ios),
-            tooltip: 'Import Lyrics/Chords',
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SecondaryScreen(
-                    activeScreen: ImportLyricsScreen(
-                      songId: this.songId!,
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

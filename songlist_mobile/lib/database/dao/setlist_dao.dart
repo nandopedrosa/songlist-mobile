@@ -11,7 +11,7 @@ class SetlistDao {
 	"song_id"	INTEGER NOT NULL,
 	"song_position"	INTEGER NOT NULL,
 	UNIQUE("show_id","song_id"),
-	CONSTRAINT "FK_SHOW_ID" FOREIGN KEY("show_id") REFERENCES show(id),
+	CONSTRAINT "FK_SHOW_ID" FOREIGN KEY("show_id") REFERENCES show(id) ON DELETE CASCADE,
 	CONSTRAINT "FK_SONG_ID" FOREIGN KEY("song_id") REFERENCES song(id));
 """;
 

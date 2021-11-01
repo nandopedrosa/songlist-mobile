@@ -30,9 +30,15 @@ class DatabaseHelper {
     final String path = join(await getDatabasesPath(), 'songlist_mobile.db');
     return await openDatabase(path,
         version: this.upgradeScripts.length + 1,
+        onConfigure: _onConfigure,
         onCreate: _onCreate,
         onUpgrade: _onUpgrade,
         onDowngrade: onDatabaseDowngradeDelete);
+  }
+
+  _onConfigure(Database db) async {
+    // Add support for cascade delete
+    await db.execute("PRAGMA foreign_keys = ON");
   }
 
   // Basically create tables and pre-populate data

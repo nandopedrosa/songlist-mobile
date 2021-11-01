@@ -17,6 +17,7 @@ import 'package:songlist_mobile/screens/common/secondary_screen.dart';
 import 'package:songlist_mobile/screens/show/all_shows_screen.dart';
 import 'package:songlist_mobile/screens/show/manage_setlist_screen.dart';
 import 'package:songlist_mobile/screens/show/perform_screen.dart';
+import 'package:songlist_mobile/service/setlist_service.dart';
 import 'package:songlist_mobile/service/show_service.dart';
 import 'package:songlist_mobile/util/constants.dart';
 import 'package:songlist_mobile/util/validation.dart';
@@ -45,7 +46,7 @@ class _EditShowForm extends State<EditShowForm> {
   final TextEditingController _durationController = TextEditingController();
   int? showId;
   late ShowService showService;
-  late Future<String> totalDuration;
+  late SetlistService setListService;
 
   _EditShowForm(int? showId) {
     this.showId = showId;
@@ -75,14 +76,22 @@ class _EditShowForm extends State<EditShowForm> {
   void initState() {
     super.initState();
     this.showService = ShowService();
+    this.setListService = SetlistService();
 
     if (this.showId != null) {
+      // Pre existing show
       showService.find(showId!).then((show) {
         this._updateControllers(show);
       });
     } else {
+      //New show
       this._whenLabelController.text =
           LocalizationService.instance.getLocalizedString("select_date");
+      this._durationController.text =
+          LocalizationService.instance.getLocalizedString("duration") +
+              ": 00:00";
+      this._numberOfSongsController.text =
+          LocalizationService.instance.getLocalizedString('no_songs');
     }
   }
 
@@ -215,16 +224,23 @@ class _EditShowForm extends State<EditShowForm> {
         ),
         if (this.showId != null)
           PlayButton(onPressed: () {
-            Navigator.push(
-              formContext,
-              MaterialPageRoute(
-                builder: (context) => SecondaryScreen(
-                  activeScreen: PerformScreen(
-                      showId: this.showId!,
-                      showName: this._nameController.text),
-                ),
-              ),
-            );
+            this.setListService.getNumberOfSongs(this.showId!).then((value) {
+              if (value > 0) {
+                Navigator.push(
+                  formContext,
+                  MaterialPageRoute(
+                    builder: (context) => SecondaryScreen(
+                      activeScreen: PerformScreen(
+                          showId: this.showId!,
+                          showName: this._nameController.text),
+                    ),
+                  ),
+                );
+              } else {
+                ToastMessage.showErrorToast(LocalizationService.instance
+                    .getLocalizedString('no_songs'));
+              }
+            });
           }),
         GoBackButton(onPressed: () {
           Navigator.push(
@@ -239,6 +255,7 @@ class _EditShowForm extends State<EditShowForm> {
     );
   }
 
+  // Returns the number of songs in a pretty format
   String getPrettyNumberOfSongs(int numberOfSongs) {
     if (this.showId == null)
       return LocalizationService.instance.getLocalizedString('no_songs');
@@ -260,6 +277,7 @@ class _EditShowForm extends State<EditShowForm> {
     return numberOfSongsLabel;
   }
 
+  // Shows then "When" date picker
   void _showDatePicker(BuildContext context) {
     DatePicker.showDateTimePicker(context,
         minTime: DateTime.now(),

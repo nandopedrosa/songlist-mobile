@@ -106,8 +106,8 @@ class LocalizationStrings {
     ],
     "website_not_supported": ['Website not supported', "Site não suportado"],
     "lyrics_imported": [
-      'Lyrics successfully imported. Do not forget to save your song!',
-      "Letra importada com sucesso. Não esqueça de salvar sua música!"
+      'Lyrics successfully imported!',
+      "Letra importada com sucesso! "
     ],
     "share_setlist": ["Share setlist", "Compartilhar repertório"],
     "setlist_for": ["Setlist for", "Repertório para"],

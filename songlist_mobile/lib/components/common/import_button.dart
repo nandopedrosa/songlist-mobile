@@ -4,7 +4,7 @@ import 'package:songlist_mobile/localization/localization_service.dart';
 
 // ignore: must_be_immutable
 class ImportButton extends StatelessWidget {
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   double leftPadding;
   double rightPadding;
   double topPadding;
