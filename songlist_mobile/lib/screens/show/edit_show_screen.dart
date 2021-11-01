@@ -7,20 +7,17 @@ import '../../util/constants.dart';
 // ignore: must_be_immutable
 class EditShowScreen extends StatefulWidget {
   int? showId;
-  String whenLabel;
 
-  EditShowScreen({Key? key, this.showId, required this.whenLabel})
-      : super(key: key);
+  EditShowScreen({Key? key, this.showId}) : super(key: key);
 
   @override
-  _EditShowScreen createState() => _EditShowScreen(showId, whenLabel);
+  _EditShowScreen createState() => _EditShowScreen(showId);
 }
 
 class _EditShowScreen extends State<EditShowScreen> {
   int? showId;
-  String whenLabel;
 
-  _EditShowScreen(this.showId, this.whenLabel);
+  _EditShowScreen(this.showId);
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +36,6 @@ class _EditShowScreen extends State<EditShowScreen> {
                   children: [
                     EditShowForm(
                       showId: showId,
-                      whenLabel: LocalizationService.instance
-                          .getFullLocalizedDateAndTime(whenLabel),
                     ),
                   ],
                 ),

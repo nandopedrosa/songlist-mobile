@@ -20,16 +20,22 @@ class DatabaseHelper {
     return _database;
   }
 
+  // The key represents the version of the DB.
+  // This is useful when we want to upgrade or execute database migrations
+  // The first version just creates the tables and pre-populates some data (onCreate method)
+  Map<int, String> upgradeScripts = {};
+
   // this opens the database (and creates it if it doesn't exist)
   _initDatabase() async {
     final String path = join(await getDatabasesPath(), 'songlist_mobile.db');
     return await openDatabase(path,
-        version: 1,
+        version: this.upgradeScripts.length + 1,
         onCreate: _onCreate,
+        onUpgrade: _onUpgrade,
         onDowngrade: onDatabaseDowngradeDelete);
   }
 
-  // SQL code to create the database table
+  // Basically create tables and pre-populate data
   Future _onCreate(Database db, int version) async {
     //Create tables
     await db.execute(SongDao.tableSql);
@@ -50,5 +56,18 @@ class DatabaseHelper {
     await db.rawInsert(SetlistDao.insertSetlist5);
     await db.rawInsert(SetlistDao.insertSetlist6);
     await db.rawInsert(SetlistDao.insertSetlist7);
+
+    //If there are any upgrades, execute them now
+    for (int i = 2; i <= this.upgradeScripts.length + 1; i++) {
+      if (upgradeScripts[i]!.isNotEmpty)
+        await db.execute(this.upgradeScripts[i]!);
+    }
+  }
+
+  Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    for (int i = oldVersion + 1; i <= newVersion; i++) {
+      if (this.upgradeScripts[i]!.isNotEmpty)
+        await db.execute(this.upgradeScripts[i]!);
+    }
   }
 }

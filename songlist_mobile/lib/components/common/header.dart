@@ -4,6 +4,7 @@ import 'package:songlist_mobile/util/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// Application header for primary screens
 // ignore: must_be_immutable
 class Header extends StatelessWidget {
   Header({Key? key, required this.title, this.showSideMenu = true})

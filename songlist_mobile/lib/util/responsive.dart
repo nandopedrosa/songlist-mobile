@@ -5,6 +5,11 @@ class Responsive extends StatelessWidget {
   final Widget tablet;
   final Widget desktop;
 
+  //These are the threshold sizes for each type of device
+  static const int tabletSize = 800; //anything smaller is considered mobile
+  //anything in between is considered tabled
+  static const int desktopSize = 1100; //anything bigger is considered desktop
+
   const Responsive({
     Key? key,
     required this.mobile,
@@ -21,29 +26,24 @@ class Responsive extends StatelessWidget {
 
   // This isMobile, isTablet, isDesktop helep us later
   static bool isMobile(BuildContext context) =>
-      MediaQuery.of(context).size.width < 800;
+      MediaQuery.of(context).size.width < tabletSize;
 
   static bool isTablet(BuildContext context) =>
-      MediaQuery.of(context).size.width < 1100 &&
-      MediaQuery.of(context).size.width >= 800;
+      MediaQuery.of(context).size.width < desktopSize &&
+      MediaQuery.of(context).size.width >= tabletSize;
 
   static bool isDesktop(BuildContext context) =>
-      MediaQuery.of(context).size.width >= 1100;
+      MediaQuery.of(context).size.width >= desktopSize;
 
   @override
   Widget build(BuildContext context) {
     final Size _size = MediaQuery.of(context).size;
-    // If our width is more than 1100 then we consider it a desktop
-    if (_size.width >= 1100) {
+    if (_size.width >= desktopSize) {
       return desktop;
-    }
-    // If width it less then 1100 and more then 850 we consider it as tablet
-    // ignore: unnecessary_null_comparison
-    else if (_size.width >= 800 && tablet != null) {
+      // ignore: unnecessary_null_comparison
+    } else if (_size.width >= tabletSize && tablet != null) {
       return tablet;
-    }
-    // Or less then that we called it mobile
-    else {
+    } else {
       return mobile;
     }
   }

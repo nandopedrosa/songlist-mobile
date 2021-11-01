@@ -246,7 +246,8 @@ But she doesn''t see, she doesn''t see, no she just doesn''t see', 'Bossa nova' 
     return recentSongs;
   }
 
-  //All fields
+  // All fields, except ID.
+  // Songs ordered by title.
   Future<List<Song>> exportSongs() async {
     // get a reference to the database
     Database? db = await DatabaseHelper.instance.database;
@@ -269,6 +270,7 @@ But she doesn''t see, she doesn''t see, no she just doesn''t see', 'Bossa nova' 
     return allSongs;
   }
 
+  //Doesn't return all fields, only the mandatory ones
   Future<List<Song>> getAllSongs() async {
     // get a reference to the database
     Database? db = await DatabaseHelper.instance.database;

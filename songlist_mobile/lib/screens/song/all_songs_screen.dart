@@ -33,30 +33,7 @@ class _AllSongsScreenState extends State<AllSongsScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        ElevatedButton.icon(
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: defaultPadding,
-                              vertical: defaultPadding /
-                                  (Responsive.isMobile(context) ? 2 : 1),
-                            ),
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SonglistPlusMobileApp(
-                                  activeScreen: EditSongScreen(),
-                                ),
-                              ),
-                            );
-                          },
-                          icon: Icon(Icons.add),
-                          label: Text(
-                            LocalizationService.instance
-                                .getLocalizedString('new_song'),
-                          ),
-                        ),
+                        NewSongButton(),
                       ],
                     ),
                     SizedBox(height: defaultPadding),
@@ -67,6 +44,38 @@ class _AllSongsScreenState extends State<AllSongsScreen> {
             ])
           ],
         ),
+      ),
+    );
+  }
+}
+
+class NewSongButton extends StatelessWidget {
+  const NewSongButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton.icon(
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.symmetric(
+          horizontal: defaultPadding,
+          vertical: defaultPadding / (Responsive.isMobile(context) ? 2 : 1),
+        ),
+      ),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SonglistPlusMobileApp(
+              activeScreen: EditSongScreen(),
+            ),
+          ),
+        );
+      },
+      icon: Icon(Icons.add),
+      label: Text(
+        LocalizationService.instance.getLocalizedString('new_song'),
       ),
     );
   }

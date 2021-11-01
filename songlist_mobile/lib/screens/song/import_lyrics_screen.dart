@@ -46,7 +46,6 @@ class _ImportLyricsScreen extends State<ImportLyricsScreen> {
             children: [
               Expanded(
                 // It takes 5/6 part of the screen
-
                 child: SafeArea(
                   child: SingleChildScrollView(
                     padding: EdgeInsets.all(defaultPadding),
@@ -184,8 +183,8 @@ class _ImportLyricsScreen extends State<ImportLyricsScreen> {
   bool isValidUrl(String songUrl) {
     if (songUrl.isEmpty) return false;
 
-    List<String> supportedWebsites = ['lyricsfreak.com', 'letras.mus.br'];
-    for (var site in supportedWebsites) {
+    for (var site in supportedLyricsOrChordsWebsites) {
+      //the list is defined in the constants file
       if (songUrl.toLowerCase().indexOf(site) != -1) return true;
     }
 
@@ -194,19 +193,15 @@ class _ImportLyricsScreen extends State<ImportLyricsScreen> {
 
   Future<http.Response> _import(String songUrl) {
     String songUrl = this._urlControler.text;
-    String apiBaseUrl = "https://songlist-plus-mobile-api.herokuapp.com/";
     String serviceRoute = "";
 
     if (songUrl.toLowerCase().indexOf("letras.mus.br") != -1) {
-      serviceRoute = "import-from-letras?url=";
+      serviceRoute = letrasServiceRoute;
     } else if ((songUrl.toLowerCase().indexOf("lyricsfreak.com") != -1)) {
-      serviceRoute = "import-from-freak?url=";
+      serviceRoute = lyricsFreakServiceRoute;
     }
 
-    return http.get(Uri.parse(apiBaseUrl + serviceRoute + songUrl));
-  }
-
-  Future<http.Response> fetchAlbum() {
-    return http.get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
+    return http.get(
+        Uri.parse(importLyricsOrChordsApiBaseUrl + serviceRoute + songUrl));
   }
 }

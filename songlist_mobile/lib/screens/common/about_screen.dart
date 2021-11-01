@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:songlist_mobile/components/common/header.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
+import 'package:songlist_mobile/screens/common/help_screen.dart';
 import '../../util/constants.dart';
 
 class AboutScreen extends StatefulWidget {
@@ -75,43 +76,6 @@ class _AboutScreen extends State<AboutScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-// ignore: must_be_immutable
-class HelpText extends StatelessWidget {
-  HelpText({Key? key, required isHeadline, required textKey})
-      : this.isHeadline = isHeadline,
-        this.textKey = textKey,
-        super(key: key);
-
-  late bool isHeadline;
-  late String textKey;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(defaultPadding),
-      child: Row(
-        children: [
-          if (isHeadline)
-            Expanded(
-              child: Text(
-                LocalizationService.instance.getLocalizedString(textKey),
-                style: Theme.of(context).textTheme.headline6,
-              ),
-            )
-          else
-            Expanded(
-              child: Text(
-                LocalizationService.instance.getLocalizedString(textKey),
-                style:
-                    TextStyle(fontSize: defaultFontSize, color: Colors.white54),
-              ),
-            )
-        ],
       ),
     );
   }

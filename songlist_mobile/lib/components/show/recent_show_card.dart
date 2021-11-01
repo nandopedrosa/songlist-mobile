@@ -20,10 +20,7 @@ class RecentShowCard extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => SonglistPlusMobileApp(
-              activeScreen: EditShowScreen(
-                showId: show.id,
-                whenLabel: show.when,
-              ),
+              activeScreen: EditShowScreen(showId: show.id),
             ),
           ),
         );

@@ -4,7 +4,10 @@ import 'package:songlist_mobile/components/common/side_menu.dart';
 import 'package:songlist_mobile/controllers/MenuController.dart';
 import 'package:songlist_mobile/util/responsive.dart';
 
+//Main screen template for other screens
+//Includes a header and a body
 class MainScreen extends StatelessWidget {
+  //The current active screen
   final Widget activeScreen;
 
   const MainScreen({Key? key, required this.activeScreen}) : super(key: key);
@@ -18,7 +21,7 @@ class MainScreen extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // We want this side menu only for large screen
+            // We want this side menu only for large screens
             if (Responsive.isDesktop(context))
               Expanded(
                 // default flex = 1

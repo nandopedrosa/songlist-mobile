@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class BackHeader extends StatelessWidget {
-  final String title;
-  final VoidCallback goBack;
+  final String title; //Header title
+  final VoidCallback goBack; //Function to go back
 
   BackHeader({Key? key, this.title = '', required this.goBack})
       : super(key: key);

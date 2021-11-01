@@ -33,33 +33,7 @@ class _AllShowsScreenState extends State<AllShowsScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        ElevatedButton.icon(
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: defaultPadding,
-                              vertical: defaultPadding /
-                                  (Responsive.isMobile(context) ? 2 : 1),
-                            ),
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SonglistPlusMobileApp(
-                                  activeScreen: EditShowScreen(
-                                    whenLabel: LocalizationService.instance
-                                        .getLocalizedString('select_date'),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                          icon: Icon(Icons.add),
-                          label: Text(
-                            LocalizationService.instance
-                                .getLocalizedString('new_show'),
-                          ),
-                        ),
+                        NewShowButton(),
                       ],
                     ),
                     SizedBox(height: defaultPadding),
@@ -70,6 +44,38 @@ class _AllShowsScreenState extends State<AllShowsScreen> {
             ])
           ],
         ),
+      ),
+    );
+  }
+}
+
+class NewShowButton extends StatelessWidget {
+  const NewShowButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton.icon(
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.symmetric(
+          horizontal: defaultPadding,
+          vertical: defaultPadding / (Responsive.isMobile(context) ? 2 : 1),
+        ),
+      ),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SonglistPlusMobileApp(
+              activeScreen: EditShowScreen(),
+            ),
+          ),
+        );
+      },
+      icon: Icon(Icons.add),
+      label: Text(
+        LocalizationService.instance.getLocalizedString('new_show'),
       ),
     );
   }

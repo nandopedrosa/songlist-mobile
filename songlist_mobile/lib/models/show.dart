@@ -1,5 +1,3 @@
-import 'package:songlist_mobile/models/song.dart';
-
 class Show {
   int? id;
   String name;
@@ -9,7 +7,7 @@ class Show {
   String? address;
   String? contact;
   String? notes;
-  List<Song> songs = [];
+  int numberOfSongs;
   // ignore: non_constant_identifier_names
   String created_on;
 
@@ -22,6 +20,7 @@ class Show {
     this.address,
     this.contact,
     this.notes,
+    this.numberOfSongs = 0,
     // ignore: non_constant_identifier_names
     required this.created_on,
   });
@@ -37,7 +36,7 @@ class Show {
     showMap['notes'] = show.notes;
     showMap['duration'] = show.duration;
     showMap['created_on'] = show.created_on;
-    showMap['number_of_songs'] = show.songs.length;
+    showMap['number_of_songs'] = show.numberOfSongs;
     return showMap;
   }
 
@@ -51,23 +50,11 @@ class Show {
         notes: json['notes'],
         duration: json['duration'],
         created_on: json['created_on'],
+        numberOfSongs: json['number_of_songs'],
       );
-
-  void addSong(Song song) {
-    this.songs.add(song);
-  }
-
-  void removeSong(int songId) {
-    for (var i = 0; i < this.songs.length; i++) {
-      if (this.songs[i].id == songId) {
-        this.songs.removeAt(i);
-        break;
-      }
-    }
-  }
 
   @override
   String toString() {
-    return 'Show(id: $id, name: $name, total songs: ${songs.length})';
+    return 'Show(id: $id, name: $name)';
   }
 }

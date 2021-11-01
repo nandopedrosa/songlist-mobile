@@ -30,8 +30,8 @@ class EditSongForm extends StatefulWidget {
 }
 
 class _EditSongForm extends State<EditSongForm> {
-  int? songId;
-  String? importedLyricsText;
+  int? songId; // If we are updating a previously added song, this is never null
+  String? importedLyricsText; // We get this after importing lyrics from the web
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _artistController = TextEditingController();
   final TextEditingController _keyController = TextEditingController();
@@ -105,35 +105,7 @@ class _EditSongForm extends State<EditSongForm> {
           controller: this._notesController,
           label: LocalizationService.instance.getLocalizedString('notes'),
         ),
-        Padding(
-          padding: const EdgeInsets.all(formFieldPadding),
-          child: Row(
-            children: [
-              Text(
-                LocalizationService.instance
-                        .getLocalizedString("import_lyrics_chords") +
-                    " ?",
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              IconButton(
-                icon: const Icon(Icons.arrow_forward_ios),
-                tooltip: 'Import Lyrics/Chords',
-                onPressed: () {
-                  Navigator.push(
-                    formContext,
-                    MaterialPageRoute(
-                      builder: (context) => SecondaryScreen(
-                        activeScreen: ImportLyricsScreen(
-                          songId: this.songId!,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
+        ImportLyricsAction(context: context, songId: songId),
         TextAreaEditor(
           controller: this._lyricsController,
           label:
@@ -156,9 +128,11 @@ class _EditSongForm extends State<EditSongForm> {
   }
 
   void saveOrUpdateSong() {
+    //This is used for the created_on (which is really a last modified date)
     var now = new DateTime.now();
     var formatter = new DateFormat('yyyy-MM-dd HH:mm:ss');
     String nowFormattedDate = formatter.format(now);
+
     Song song = Song(
         title: this._titleController.text,
         artist: this._artistController.text,
@@ -178,9 +152,11 @@ class _EditSongForm extends State<EditSongForm> {
 
     Validation validation = service.validate(song);
 
+    //If valid, show success Toast
     if (validation.isValid) {
       this.service.save(song).then((id) => afterSaveOrUpdate(id));
     } else {
+      // Else, show a modal dialog with an error report
       showDialog(
           barrierDismissible: false,
           context: context,
@@ -210,6 +186,7 @@ class _EditSongForm extends State<EditSongForm> {
     });
   }
 
+  // The delete button is only visible when there a song id
   void delete() {
     this.service.delete(this.songId!);
 
@@ -221,6 +198,50 @@ class _EditSongForm extends State<EditSongForm> {
       MaterialPageRoute(
           builder: (context) =>
               SonglistPlusMobileApp(activeScreen: AllSongsScreen())),
+    );
+  }
+}
+
+class ImportLyricsAction extends StatelessWidget {
+  const ImportLyricsAction({
+    Key? key,
+    required this.context,
+    required this.songId,
+  }) : super(key: key);
+
+  final BuildContext context;
+  final int? songId;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(formFieldPadding),
+      child: Row(
+        children: [
+          Text(
+            LocalizationService.instance
+                    .getLocalizedString("import_lyrics_chords") +
+                " ?",
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          IconButton(
+            icon: const Icon(Icons.arrow_forward_ios),
+            tooltip: 'Import Lyrics/Chords',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SecondaryScreen(
+                    activeScreen: ImportLyricsScreen(
+                      songId: this.songId!,
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }

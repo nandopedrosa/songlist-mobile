@@ -1,22 +1,28 @@
-import 'package:songlist_mobile/util/constants.dart';
-import 'package:songlist_mobile/controllers/MenuController.dart';
-import 'package:songlist_mobile/screens/common/home_screen.dart';
-import 'package:songlist_mobile/screens/common/main_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:songlist_mobile/controllers/MenuController.dart';
+import 'package:songlist_mobile/screens/common/home_screen.dart';
+import 'package:songlist_mobile/screens/common/main_screen.dart';
+import 'package:songlist_mobile/util/constants.dart';
 
 void main() {
   runApp(SonglistPlusMobileApp(activeScreen: HomeScreen()));
 }
 
-class SonglistPlusMobileApp extends StatelessWidget {
+class SonglistPlusMobileApp extends StatefulWidget {
   final Widget activeScreen;
 
   const SonglistPlusMobileApp({Key? key, required this.activeScreen})
       : super(key: key);
 
-  // This widget is the root of your application.
+  @override
+  State<SonglistPlusMobileApp> createState() => _SonglistPlusMobileAppState();
+}
+
+class _SonglistPlusMobileAppState extends State<SonglistPlusMobileApp> {
+  @override
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -43,7 +49,8 @@ class SonglistPlusMobileApp extends StatelessWidget {
             create: (context) => MenuController(),
           ),
         ],
-        child: MainScreen(activeScreen: this.activeScreen),
+        //Main screen is used as a template for other screens
+        child: MainScreen(activeScreen: this.widget.activeScreen),
       ),
     );
   }

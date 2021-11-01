@@ -43,10 +43,7 @@ class _RecentShowsGridState extends State<RecentShowsGrid> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => SonglistPlusMobileApp(
-                        activeScreen: EditShowScreen(
-                          whenLabel: LocalizationService.instance
-                              .getLocalizedString('select_date'),
-                        ),
+                        activeScreen: EditShowScreen(),
                       ),
                     ),
                   );

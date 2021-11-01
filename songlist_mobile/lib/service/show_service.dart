@@ -31,6 +31,10 @@ class ShowService {
     this._dao.updateDuration(showId, duration);
   }
 
+  void updateNumberOfSongs(int showId, int numberOfSongs) {
+    this._dao.updateNumberOfSongs(showId, numberOfSongs);
+  }
+
   Future<int> save(Show show) {
     if (show.id == null) {
       return this._dao.insert(show);

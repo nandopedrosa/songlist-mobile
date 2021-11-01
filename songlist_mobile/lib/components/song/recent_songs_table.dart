@@ -42,41 +42,7 @@ class _RecentSongsTableState extends State<RecentSongsTable> {
         children: [
           SizedBox(
             width: double.infinity,
-            child: FutureBuilder<List<Song>>(
-                future: this.recentSongs,
-                builder:
-                    (BuildContext context, AsyncSnapshot<List<Song>> snapshot) {
-                  List<Widget> children = [];
-
-                  //Snapshot is ASYNC, we have to check if it has data before accessing it
-                  if (snapshot.hasData) {
-                    children = <Widget>[
-                      DataTable2(
-                        columnSpacing: defaultPadding,
-                        showCheckboxColumn: false,
-                        columns: [
-                          DataColumn(
-                            label: Text(LocalizationService.instance
-                                .getLocalizedString("title")),
-                          ),
-                          DataColumn(
-                            label: Text(LocalizationService.instance
-                                .getLocalizedString("artist")),
-                          ),
-                        ],
-                        rows: List.generate(
-                          snapshot.data!.length,
-                          (index) =>
-                              tableDataRow(snapshot.data![index], context),
-                        ),
-                      )
-                    ];
-                  }
-
-                  return Column(
-                    children: children,
-                  );
-                }),
+            child: RecentSongsFutureBuilder(recentSongs: recentSongs),
           ),
         ],
       ),
@@ -84,9 +50,57 @@ class _RecentSongsTableState extends State<RecentSongsTable> {
   }
 }
 
+class RecentSongsFutureBuilder extends StatelessWidget {
+  const RecentSongsFutureBuilder({
+    Key? key,
+    required this.recentSongs,
+  }) : super(key: key);
+
+  final Future<List<Song>> recentSongs;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<Song>>(
+        future: this.recentSongs,
+        builder: (BuildContext context, AsyncSnapshot<List<Song>> snapshot) {
+          List<Widget> children = [];
+
+          //Snapshot is ASYNC, we have to check if it has data before accessing it
+          if (snapshot.hasData) {
+            children = <Widget>[
+              DataTable2(
+                //imported library
+                columnSpacing: defaultPadding,
+                showCheckboxColumn: false,
+                columns: [
+                  DataColumn(
+                    label: Text(LocalizationService.instance
+                        .getLocalizedString("title")),
+                  ),
+                  DataColumn(
+                    label: Text(LocalizationService.instance
+                        .getLocalizedString("artist")),
+                  ),
+                ],
+                rows: List.generate(
+                  snapshot.data!.length,
+                  (index) => tableDataRow(snapshot.data![index], context),
+                ),
+              )
+            ];
+          }
+          return Column(
+            children: children,
+          );
+        });
+  }
+}
+
 DataRow tableDataRow(Song song, BuildContext tableContext) {
+  final Color rowColor = Colors.white70;
   return DataRow(
     onSelectChanged: (value) {
+      //action when selecting a row
       Navigator.push(
         tableContext,
         MaterialPageRoute(
@@ -97,8 +111,8 @@ DataRow tableDataRow(Song song, BuildContext tableContext) {
       );
     },
     cells: [
-      DataCell(Text(song.title, style: TextStyle(color: Colors.white70))),
-      DataCell(Text(song.artist, style: TextStyle(color: Colors.white70))),
+      DataCell(Text(song.title, style: TextStyle(color: rowColor))),
+      DataCell(Text(song.artist, style: TextStyle(color: rowColor))),
     ],
   );
 }

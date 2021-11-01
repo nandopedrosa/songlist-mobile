@@ -9,6 +9,7 @@ import 'package:songlist_mobile/screens/song/all_songs_screen.dart';
 import 'package:songlist_mobile/screens/common/home_screen.dart';
 import 'package:songlist_mobile/screens/tools/tools_screen.dart';
 
+//Menu with the application options
 class SideMenu extends StatelessWidget {
   const SideMenu({
     Key? key,
@@ -100,12 +101,6 @@ class SideMenu extends StatelessWidget {
               );
             },
           ),
-          DrawerListTile(
-            title:
-                LocalizationService.instance.getLocalizedString("pro_version"),
-            svgSrc: "assets/icons/currency-dollar.svg",
-            press: () {},
-          ),
         ],
       ),
     );
@@ -115,10 +110,9 @@ class SideMenu extends StatelessWidget {
 class DrawerListTile extends StatelessWidget {
   const DrawerListTile({
     Key? key,
-    // For selecting those three line once press "Command+D"
-    required this.title,
-    required this.svgSrc,
-    required this.press,
+    required this.title, // Menu title
+    required this.svgSrc, //Icon
+    required this.press, //Action when pressed
   }) : super(key: key);
 
   final String title, svgSrc;

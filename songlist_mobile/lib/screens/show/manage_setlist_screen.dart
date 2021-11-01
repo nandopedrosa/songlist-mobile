@@ -18,27 +18,22 @@ import 'package:songlist_mobile/util/constants.dart';
 class ManageSetlistScreen extends StatefulWidget {
   final String showName;
   final int showId;
-  final String showWhen;
 
   const ManageSetlistScreen(
-      {Key? key,
-      required this.showName,
-      required this.showId,
-      required this.showWhen})
+      {Key? key, required this.showName, required this.showId})
       : super(key: key);
 
   @override
-  _ManageSetlistScreen createState() => _ManageSetlistScreen(
-      showName: this.showName, showId: this.showId, showWhen: this.showWhen);
+  _ManageSetlistScreen createState() =>
+      _ManageSetlistScreen(showName: this.showName, showId: this.showId);
 }
 
 class _ManageSetlistScreen extends State<ManageSetlistScreen> {
-  _ManageSetlistScreen(
-      {required this.showName, required this.showId, required this.showWhen});
+  _ManageSetlistScreen({required this.showName, required this.showId});
 
   final String showName;
   final int showId;
-  final String showWhen;
+
   late SongService songService;
   late ShowService showService;
   late SetlistService setlistService;
@@ -78,10 +73,8 @@ class _ManageSetlistScreen extends State<ManageSetlistScreen> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => SonglistPlusMobileApp(
-                                    activeScreen: EditShowScreen(
-                                      showId: showId,
-                                      whenLabel: showWhen,
-                                    ),
+                                    activeScreen:
+                                        EditShowScreen(showId: showId),
                                   ),
                                 ),
                               );
@@ -94,7 +87,6 @@ class _ManageSetlistScreen extends State<ManageSetlistScreen> {
                                 child: Column(
                                   children: [
                                     FutureBuilder<List<Song>>(
-                                      //Use this to await on multiple futures
                                       future: this.selectedSongs,
                                       builder: (BuildContext context,
                                           AsyncSnapshot<List<Song>> snapshot) {
@@ -308,6 +300,7 @@ class _ManageSetlistScreen extends State<ManageSetlistScreen> {
 
     this.setlistService.save(this.showId, selectedSongs);
     this.showService.updateDuration(this.showId, totalDuration);
+    this.showService.updateNumberOfSongs(this.showId, selectedSongs.length);
 
     ToastMessage.showSuccessToast(
         LocalizationService.instance.getLocalizedString('setlist_saved'));

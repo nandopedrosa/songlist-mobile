@@ -27,6 +27,7 @@ class _AllSongsTableState extends State<AllSongsTable> {
   void initState() {
     super.initState();
     this.service = SongService();
+    //This doesn't return the songs' lyrics for faster loading
     this.songs = service.getAllSongs();
   }
 
@@ -48,7 +49,7 @@ class _AllSongsTableState extends State<AllSongsTable> {
                 child: TextField(
                   controller: searchController,
                   onSubmitted: (value) {
-                    _search(searchController.text);
+                    _search(searchController.text); //search
                   },
                   decoration: InputDecoration(
                     hintText: LocalizationService.instance
@@ -85,43 +86,7 @@ class _AllSongsTableState extends State<AllSongsTable> {
         ),
         SizedBox(
           width: double.infinity,
-          child: FutureBuilder<List<Song>>(
-              future: this.songs,
-              builder:
-                  (BuildContext context, AsyncSnapshot<List<Song>> snapshot) {
-                List<Widget> children = [];
-
-                //Snapshot is ASYNC, we have to check if it has data before accessing it
-                if (snapshot.hasData) {
-                  children = <Widget>[
-                    PaginatedDataTable(
-                      columnSpacing: defaultPadding,
-                      headingRowHeight: dataTableHeadingRowHeight,
-                      showCheckboxColumn: false,
-                      //Remove empty rows if the data length is less than rows per page
-                      rowsPerPage: snapshot.data!.length > defaultRowsPerPage
-                          ? defaultRowsPerPage
-                          : snapshot.data!.length,
-                      source: AllSongsData(snapshot.data, context),
-                      columns: [
-                        DataColumn(
-                          label: Text(LocalizationService.instance
-                              .getLocalizedString("title")),
-                        ),
-                        DataColumn(
-                          label: Text(LocalizationService.instance
-                              .getLocalizedString("artist")),
-                        ),
-                      ],
-                    )
-                  ];
-                }
-
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: children,
-                );
-              }),
+          child: AllSongsFutureBuilder(songs: songs),
         ),
       ],
     );
@@ -138,6 +103,53 @@ class _AllSongsTableState extends State<AllSongsTable> {
       this.searchController.text = '';
       this.songs = this.service.getAllSongs();
     });
+  }
+}
+
+class AllSongsFutureBuilder extends StatelessWidget {
+  const AllSongsFutureBuilder({
+    Key? key,
+    required this.songs,
+  }) : super(key: key);
+
+  final Future<List<Song>> songs;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<Song>>(
+        future: this.songs,
+        builder: (BuildContext context, AsyncSnapshot<List<Song>> snapshot) {
+          List<Widget> children = [];
+          //Snapshot is ASYNC, we have to check if it has data before accessing it
+          if (snapshot.hasData) {
+            children = <Widget>[
+              PaginatedDataTable(
+                columnSpacing: defaultPadding,
+                headingRowHeight: dataTableHeadingRowHeight,
+                showCheckboxColumn: false,
+                //Remove empty rows if the data length is less than rows per page
+                rowsPerPage: snapshot.data!.length > defaultRowsPerPage
+                    ? defaultRowsPerPage
+                    : snapshot.data!.length,
+                source: AllSongsData(snapshot.data, context),
+                columns: [
+                  DataColumn(
+                    label: Text(LocalizationService.instance
+                        .getLocalizedString("title")),
+                  ),
+                  DataColumn(
+                    label: Text(LocalizationService.instance
+                        .getLocalizedString("artist")),
+                  ),
+                ],
+              )
+            ];
+          }
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: children,
+          );
+        });
   }
 }
 

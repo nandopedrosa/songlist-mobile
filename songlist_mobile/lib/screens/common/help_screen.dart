@@ -72,8 +72,8 @@ class HelpText extends StatelessWidget {
         this.textKey = textKey,
         super(key: key);
 
-  late bool isHeadline;
-  late String textKey;
+  late bool isHeadline; //If true, changes to a bigger font style
+  late String textKey; //To fetch from localizations strings
 
   @override
   Widget build(BuildContext context) {

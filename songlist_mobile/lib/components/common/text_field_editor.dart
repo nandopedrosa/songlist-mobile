@@ -22,7 +22,7 @@ class TextFieldEditor extends StatelessWidget {
     required this.label,
     this.hint,
     this.icon,
-    this.maxLength = 64,
+    this.maxLength = defaultTextFieldMaxLength,
     this.acceptNumbersOnly = false,
     this.fillColor = secondaryColor,
     this.filled = false,

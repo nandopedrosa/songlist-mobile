@@ -1,3 +1,4 @@
+//Used to return validation messages (Error or Success)
 class Validation {
   bool isValid;
   List<String> messages;

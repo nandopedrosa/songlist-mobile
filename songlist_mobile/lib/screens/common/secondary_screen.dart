@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:songlist_mobile/util/constants.dart';
 
+//Screen without the drawer menu
 class SecondaryScreen extends StatelessWidget {
   final Widget activeScreen;
 
   const SecondaryScreen({Key? key, required this.activeScreen})
       : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

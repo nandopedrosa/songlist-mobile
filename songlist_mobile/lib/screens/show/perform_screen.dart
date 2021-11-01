@@ -15,27 +15,21 @@ import 'package:songlist_mobile/util/responsive.dart';
 // ignore: must_be_immutable
 class PerformScreen extends StatefulWidget {
   final int showId;
-  final String showWhen;
   final String showName;
 
-  const PerformScreen(
-      {Key? key,
-      required this.showId,
-      required this.showWhen,
-      required this.showName})
+  const PerformScreen({Key? key, required this.showId, required this.showName})
       : super(key: key);
 
   @override
-  _PerformScreen createState() => _PerformScreen(
-      showId: this.showId, showWhen: this.showWhen, showName: this.showName);
+  _PerformScreen createState() =>
+      _PerformScreen(showId: this.showId, showName: this.showName);
 }
 
 class _PerformScreen extends State<PerformScreen> {
-  _PerformScreen(
-      {required this.showId, required this.showWhen, required this.showName});
+  _PerformScreen({required this.showId, required this.showName});
 
   final int showId;
-  final String showWhen;
+
   final String showName;
   late SetlistService setlistService;
   late Future<List<Song>> performanceSongsFuture;
@@ -51,46 +45,23 @@ class _PerformScreen extends State<PerformScreen> {
   final _dropDownKey = GlobalKey<DropdownSearchState<Song>>();
   double _lyricsFontSizeSingleColumn = 16;
   double _lyricsFontSizeDoubleColumn = 24;
+  double _fontSizeIncrements = 4;
 
-  void _updateControllers(Song s) {
+  void _updateControllers(Song song) {
     String tempoStr =
         LocalizationService.instance.getLocalizedString('tempo_no_bpm') + ": ";
     String keyStr =
         LocalizationService.instance.getLocalizedString('key') + ": ";
-    _songTitleController.text = s.title;
-    _songLyricsController.text = s.lyrics == null ? '' : s.lyrics!;
+    _songTempoController.text =
+        song.tempo == null ? tempoStr + "-" : tempoStr + song.tempo.toString();
+    _songKeyController.text =
+        song.key == null ? keyStr + "-" : keyStr + song.key!;
+    _songTitleController.text = song.title;
+    _songLyricsController.text = song.lyrics == null ? '' : song.lyrics!;
     _firstColumnLyricsController.text =
         _getLyricsColumnText(_songLyricsController.text, 1);
     _secondColumnLyricsController.text =
         _getLyricsColumnText(_songLyricsController.text, 2);
-    _songTempoController.text =
-        s.tempo == null ? tempoStr + "-" : tempoStr + s.tempo.toString();
-    _songKeyController.text = s.key == null ? keyStr + "-" : keyStr + s.key!;
-  }
-
-  String _getLyricsColumnText(String fullLyrics, int column) {
-    if (fullLyrics.isEmpty) return '';
-
-    String s = '';
-    int halfIndex = (fullLyrics.length / 2).floor();
-    int doubleLineBreakBeforeHalfIndex =
-        fullLyrics.substring(0, halfIndex).lastIndexOf("\n\n");
-    int sigleLineBreakBeforeHalfIndex =
-        fullLyrics.substring(0, halfIndex).lastIndexOf("\n");
-
-    if (column == 1) {
-      if (doubleLineBreakBeforeHalfIndex != -1)
-        s = fullLyrics.substring(0, doubleLineBreakBeforeHalfIndex);
-      else
-        s = fullLyrics.substring(0, sigleLineBreakBeforeHalfIndex);
-    } else if (column == 2) {
-      if (doubleLineBreakBeforeHalfIndex != -1)
-        s = fullLyrics.substring(doubleLineBreakBeforeHalfIndex);
-      else
-        s = fullLyrics.substring(sigleLineBreakBeforeHalfIndex);
-    }
-
-    return s.trim();
   }
 
   @override
@@ -98,9 +69,12 @@ class _PerformScreen extends State<PerformScreen> {
     super.initState();
     this.setlistService = SetlistService();
     this.performanceSongsFuture = setlistService.getPerformanceSongs(showId);
-    setlistService
-        .getFirstSongInPerformance(showId)
-        .then((value) => _updateControllers(value));
+    performanceSongsFuture.then((value) {
+      if (value.length > 0) {
+        this._updateControllers(
+            value[0]); //update controllers with the first song values
+      }
+    });
   }
 
   @override
@@ -132,7 +106,6 @@ class _PerformScreen extends State<PerformScreen> {
                                   builder: (context) => SonglistPlusMobileApp(
                                     activeScreen: EditShowScreen(
                                       showId: showId,
-                                      whenLabel: showWhen,
                                     ),
                                   ),
                                 ),
@@ -304,15 +277,15 @@ class _PerformScreen extends State<PerformScreen> {
 
   void _increaseFontSize() {
     setState(() {
-      this._lyricsFontSizeSingleColumn += 4;
-      this._lyricsFontSizeDoubleColumn += 4;
+      this._lyricsFontSizeSingleColumn += this._fontSizeIncrements;
+      this._lyricsFontSizeDoubleColumn += this._fontSizeIncrements;
     });
   }
 
   void _decreaseFontSize() {
     setState(() {
-      this._lyricsFontSizeSingleColumn -= 4;
-      this._lyricsFontSizeDoubleColumn -= 4;
+      this._lyricsFontSizeSingleColumn -= this._fontSizeIncrements;
+      this._lyricsFontSizeDoubleColumn -= this._fontSizeIncrements;
     });
   }
 
@@ -336,6 +309,33 @@ class _PerformScreen extends State<PerformScreen> {
           this.performanceSongsResolved[currentSelectedSong.position! - 2];
       this._dropDownKey.currentState!.changeSelectedItem(previousSong);
     }
+  }
+
+  //This function calculates how much text should go on each column
+  //The goal is to distribute text evenly between the two columns, but it is just an approximation
+  String _getLyricsColumnText(String fullLyrics, int column) {
+    if (fullLyrics.isEmpty) return '';
+
+    String s = '';
+    int halfIndex = (fullLyrics.length / 2).floor();
+    int doubleLineBreakBeforeHalfIndex =
+        fullLyrics.substring(0, halfIndex).lastIndexOf("\n\n");
+    int sigleLineBreakBeforeHalfIndex =
+        fullLyrics.substring(0, halfIndex).lastIndexOf("\n");
+
+    if (column == 1) {
+      if (doubleLineBreakBeforeHalfIndex != -1)
+        s = fullLyrics.substring(0, doubleLineBreakBeforeHalfIndex);
+      else
+        s = fullLyrics.substring(0, sigleLineBreakBeforeHalfIndex);
+    } else if (column == 2) {
+      if (doubleLineBreakBeforeHalfIndex != -1)
+        s = fullLyrics.substring(doubleLineBreakBeforeHalfIndex);
+      else
+        s = fullLyrics.substring(sigleLineBreakBeforeHalfIndex);
+    }
+
+    return s.trim();
   }
 }
 

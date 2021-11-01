@@ -7,49 +7,48 @@ import 'package:songlist_mobile/components/common/modal_dialog.dart';
 import 'package:songlist_mobile/components/common/save_button.dart';
 import 'package:songlist_mobile/components/common/text_area_editor.dart';
 import 'package:songlist_mobile/components/common/text_field_editor.dart';
+import 'package:songlist_mobile/components/common/text_form_field_disabled.dart';
+import 'package:songlist_mobile/components/common/toast_message.dart';
 import 'package:songlist_mobile/components/show/play_button.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/main.dart';
 import 'package:songlist_mobile/models/show.dart';
+import 'package:songlist_mobile/screens/common/secondary_screen.dart';
 import 'package:songlist_mobile/screens/show/all_shows_screen.dart';
 import 'package:songlist_mobile/screens/show/manage_setlist_screen.dart';
-import 'package:songlist_mobile/screens/common/secondary_screen.dart';
 import 'package:songlist_mobile/screens/show/perform_screen.dart';
-import 'package:songlist_mobile/service/setlist_service.dart';
 import 'package:songlist_mobile/service/show_service.dart';
-import 'package:songlist_mobile/components/common/toast_message.dart';
 import 'package:songlist_mobile/util/constants.dart';
 import 'package:songlist_mobile/util/validation.dart';
 
 // ignore: must_be_immutable
 class EditShowForm extends StatefulWidget {
   int? showId;
-  String whenLabel;
 
-  EditShowForm({Key? key, this.showId, required this.whenLabel})
-      : super(key: key);
+  EditShowForm({Key? key, this.showId}) : super(key: key);
 
   @override
-  _EditShowForm createState() => _EditShowForm(showId, whenLabel);
+  _EditShowForm createState() => _EditShowForm(showId);
 }
 
 class _EditShowForm extends State<EditShowForm> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _whenController = TextEditingController();
+  //Trick to update controller asynchonously
+  final TextEditingController _whenLabelController = TextEditingController();
   final TextEditingController _payController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _contactController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
+  final TextEditingController _numberOfSongsController =
+      TextEditingController();
+  final TextEditingController _durationController = TextEditingController();
   int? showId;
-  late String whenLabel;
   late ShowService showService;
-  late SetlistService setlistService;
-  late Future<int> numberOfSongs;
   late Future<String> totalDuration;
 
-  _EditShowForm(int? showId, String whenLabel) {
+  _EditShowForm(int? showId) {
     this.showId = showId;
-    this.whenLabel = whenLabel;
   }
 
   //Update the controller values when we fetch the model
@@ -57,28 +56,34 @@ class _EditShowForm extends State<EditShowForm> {
     this._nameController.text = show.name;
     if (show.when != null) {
       this._whenController.text = show.when!;
+      this._whenLabelController.text =
+          LocalizationService.instance.getFullLocalizedDateAndTime(show.when!);
     }
     if (show.pay != null) this._payController.text = show.pay!;
     if (show.address != null) this._addressController.text = show.address!;
     if (show.contact != null) this._contactController.text = show.contact!;
     if (show.notes != null) this._notesController.text = show.notes!;
+    this._durationController.text =
+        LocalizationService.instance.getLocalizedString("duration") +
+            ": " +
+            show.duration;
+    this._numberOfSongsController.text =
+        getPrettyNumberOfSongs(show.numberOfSongs);
   }
 
   @override
   void initState() {
     super.initState();
     this.showService = ShowService();
-    this.setlistService = SetlistService();
-    if (this.showId != null) {
-      showService.find(showId!).then((show) => this._updateControllers(show));
-      this.numberOfSongs = setlistService.getNumberOfSongs(this.showId!);
-      this.totalDuration = showService.getDuration(this.showId!);
-    }
-  }
 
-  @override
-  void dispose() {
-    super.dispose();
+    if (this.showId != null) {
+      showService.find(showId!).then((show) {
+        this._updateControllers(show);
+      });
+    } else {
+      this._whenLabelController.text =
+          LocalizationService.instance.getLocalizedString("select_date");
+    }
   }
 
   @override
@@ -114,23 +119,16 @@ class _EditShowForm extends State<EditShowForm> {
                   padding: EdgeInsets.only(right: defaultPadding),
                   child: Icon(Icons.calendar_today, color: Colors.white)),
               onPressed: () {
-                DatePicker.showDateTimePicker(formContext,
-                    minTime: DateTime.now(),
-                    maxTime: DateTime.now().add(const Duration(days: 365 * 5)),
-                    onConfirm: (date) {
-                  setState(() {
-                    this.whenLabel = LocalizationService.instance
-                        .getFullLocalizedDateAndTime(date.toString());
-                    this._whenController.text = date.toString();
-                  });
-                }, currentTime: DateTime.now(), locale: LocaleType.pt);
+                this._showDatePicker(formContext);
               },
               style: OutlinedButton.styleFrom(
                   primary: Colors.white70,
                   side: BorderSide(color: Colors.white54)),
-              label: Text(
-                this.whenLabel,
-                style: TextStyle(color: Colors.white),
+              label: TextFormFieldDisabled(
+                alignment: TextAlign.start,
+                controller: _whenLabelController,
+                fontSize: defaultFontSize,
+                color: Colors.white70,
               ),
             ),
           ),
@@ -174,9 +172,9 @@ class _EditShowForm extends State<EditShowForm> {
                       MaterialPageRoute(
                         builder: (context) => SecondaryScreen(
                           activeScreen: ManageSetlistScreen(
-                              showId: this.showId!,
-                              showName: this._nameController.text,
-                              showWhen: this._whenController.text),
+                            showId: this.showId!,
+                            showName: this._nameController.text,
+                          ),
                         ),
                       ),
                     );
@@ -188,59 +186,30 @@ class _EditShowForm extends State<EditShowForm> {
         if (this.showId != null)
           Padding(
             padding: EdgeInsets.only(
-                top: defaultPadding,
-                left: formFieldPadding,
-                right: formFieldPadding),
-            child: FutureBuilder<int>(
-                future: numberOfSongs,
-                builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-                  List<Widget> children = [];
-                  if (snapshot.hasData) {
-                    children = <Widget>[
-                      Text(getNumberOfSongsInSetlistLabel(snapshot.data!),
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                              fontSize: defaultFontSize,
-                              fontStyle: FontStyle.italic,
-                              color: Colors.white54)),
-                    ];
-                  }
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: children,
-                  );
-                }),
+              top: formFieldPadding,
+              left: formFieldPadding,
+              right: formFieldPadding,
+            ),
+            child: TextFormFieldDisabled(
+              alignment: TextAlign.start,
+              controller: _numberOfSongsController,
+              fontSize: defaultFontSize,
+              color: Colors.white54,
+              fontStyle: FontStyle.italic,
+            ),
           ),
         if (this.showId != null)
-          FutureBuilder<String>(
-              future: this.totalDuration,
-              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                List<Widget> children = [];
-                if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                  children = <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(
-                          top: defaultPadding,
-                          left: formFieldPadding,
-                          right: formFieldPadding),
-                      child: Text(
-                          LocalizationService.instance
-                                  .getLocalizedString('total_duration') +
-                              ": " +
-                              snapshot.data!,
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                              fontSize: defaultFontSize,
-                              fontStyle: FontStyle.italic,
-                              color: Colors.white54)),
-                    )
-                  ];
-                }
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: children,
-                );
-              }),
+          Padding(
+            padding: EdgeInsets.only(
+                top: 0, left: formFieldPadding, right: formFieldPadding),
+            child: TextFormFieldDisabled(
+              alignment: TextAlign.start,
+              controller: _durationController,
+              fontSize: defaultFontSize,
+              color: Colors.white54,
+              fontStyle: FontStyle.italic,
+            ),
+          ),
         SaveButton(
           onPressed: this.saveOrUpdateShow,
         ),
@@ -252,7 +221,6 @@ class _EditShowForm extends State<EditShowForm> {
                 builder: (context) => SecondaryScreen(
                   activeScreen: PerformScreen(
                       showId: this.showId!,
-                      showWhen: this._whenController.text,
                       showName: this._nameController.text),
                 ),
               ),
@@ -271,7 +239,7 @@ class _EditShowForm extends State<EditShowForm> {
     );
   }
 
-  String getNumberOfSongsInSetlistLabel(int numberOfSongs) {
+  String getPrettyNumberOfSongs(int numberOfSongs) {
     if (this.showId == null)
       return LocalizationService.instance.getLocalizedString('no_songs');
 
@@ -290,6 +258,23 @@ class _EditShowForm extends State<EditShowForm> {
     }
 
     return numberOfSongsLabel;
+  }
+
+  void _showDatePicker(BuildContext context) {
+    DatePicker.showDateTimePicker(context,
+        minTime: DateTime.now(),
+        maxTime: DateTime.now().add(const Duration(days: 365 * 5)),
+        onConfirm: (date) {
+      setState(() {
+        this._whenLabelController.text = LocalizationService.instance
+            .getFullLocalizedDateAndTime(date.toString());
+        this._whenController.text = date.toString();
+      });
+    },
+        currentTime: DateTime.now(),
+        locale: LocalizationService.instance.getPreferredLanguage() == 'en'
+            ? LocaleType.en
+            : LocaleType.pt);
   }
 
   void saveOrUpdateShow() {

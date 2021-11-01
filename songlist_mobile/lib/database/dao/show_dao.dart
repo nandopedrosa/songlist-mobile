@@ -135,6 +135,12 @@ class ShowDao {
     await db!.rawUpdate(sql, [duration, showId]);
   }
 
+  Future<void> updateNumberOfSongs(int showId, int numberOfSongs) async {
+    Database? db = await DatabaseHelper.instance.database;
+    String sql = "update $_tableName set number_of_songs = ? where id = ?";
+    await db!.rawUpdate(sql, [numberOfSongs, showId]);
+  }
+
   void delete(int id) async {
     Database? db = await DatabaseHelper.instance.database;
     db!.delete(_tableName, where: "id = ?", whereArgs: [id]);

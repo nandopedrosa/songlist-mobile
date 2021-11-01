@@ -85,43 +85,7 @@ class _AllShowsTableState extends State<AllShowsTable> {
         ),
         SizedBox(
           width: double.infinity,
-          child: FutureBuilder<List<ShowDto>>(
-              future: this.shows,
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<ShowDto>> snapshot) {
-                List<Widget> children = [];
-
-                //Snapshot is ASYNC, we have to check if it has data before accessing it
-                if (snapshot.hasData) {
-                  children = <Widget>[
-                    PaginatedDataTable(
-                      columnSpacing: defaultPadding,
-                      headingRowHeight: dataTableHeadingRowHeight,
-                      showCheckboxColumn: false,
-                      //Remove empty rows if the data length is less than rows per page
-                      rowsPerPage: snapshot.data!.length > defaultRowsPerPage
-                          ? defaultRowsPerPage
-                          : snapshot.data!.length,
-                      source: AllShowsData(snapshot.data, context),
-                      columns: [
-                        DataColumn(
-                          label: Text(LocalizationService.instance
-                              .getLocalizedString("name")),
-                        ),
-                        DataColumn(
-                          label: Text(LocalizationService.instance
-                              .getLocalizedString("when")),
-                        ),
-                      ],
-                    )
-                  ];
-                }
-
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: children,
-                );
-              }),
+          child: AllShowsFutureBuilder(shows: shows),
         ),
       ],
     );
@@ -138,6 +102,55 @@ class _AllShowsTableState extends State<AllShowsTable> {
       this.searchController.text = '';
       this.shows = this.service.getAllShows();
     });
+  }
+}
+
+class AllShowsFutureBuilder extends StatelessWidget {
+  const AllShowsFutureBuilder({
+    Key? key,
+    required this.shows,
+  }) : super(key: key);
+
+  final Future<List<ShowDto>> shows;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<ShowDto>>(
+        future: this.shows,
+        builder: (BuildContext context, AsyncSnapshot<List<ShowDto>> snapshot) {
+          List<Widget> children = [];
+
+          //Snapshot is ASYNC, we have to check if it has data before accessing it
+          if (snapshot.hasData) {
+            children = <Widget>[
+              PaginatedDataTable(
+                columnSpacing: defaultPadding,
+                headingRowHeight: dataTableHeadingRowHeight,
+                showCheckboxColumn: false,
+                //Remove empty rows if the data length is less than rows per page
+                rowsPerPage: snapshot.data!.length > defaultRowsPerPage
+                    ? defaultRowsPerPage
+                    : snapshot.data!.length,
+                source: AllShowsData(snapshot.data, context),
+                columns: [
+                  DataColumn(
+                    label: Text(LocalizationService.instance
+                        .getLocalizedString("name")),
+                  ),
+                  DataColumn(
+                    label: Text(LocalizationService.instance
+                        .getLocalizedString("when")),
+                  ),
+                ],
+              )
+            ];
+          }
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: children,
+          );
+        });
   }
 }
 
@@ -161,7 +174,6 @@ class AllShowsData extends DataTableSource {
               builder: (context) => SonglistPlusMobileApp(
                 activeScreen: EditShowScreen(
                   showId: _data![index].id,
-                  whenLabel: _data![index].when,
                 ),
               ),
             ),
@@ -177,7 +189,6 @@ class AllShowsData extends DataTableSource {
                 )),
           ),
           DataCell(
-            //Date format: July 10, 1996, HH24:MM
             Container(
               width: Responsive.getTableCellWidth(2, tableContext),
               child: Text(

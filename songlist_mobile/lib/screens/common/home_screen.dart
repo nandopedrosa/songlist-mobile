@@ -8,7 +8,6 @@ import 'package:songlist_mobile/screens/song/edit_song_screen.dart';
 
 import '../../util/constants.dart';
 
-// ignore: must_be_immutable
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -42,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         Padding(
                           padding: EdgeInsets.only(left: defaultPadding),
+                          //New song button
                           child: ElevatedButton.icon(
                             style: TextButton.styleFrom(
                               padding: EdgeInsets.symmetric(

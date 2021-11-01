@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:songlist_mobile/util/constants.dart';
 
-// ignore: must_be_immutable
+//This is just a textfield editor with multiple lines
 class TextAreaEditor extends StatelessWidget {
   final TextEditingController controller;
   final String label;

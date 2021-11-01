@@ -75,12 +75,13 @@ class SongService {
     return Future.value(count);
   }
 
+  //exports songs to a json file, so the user can save it somewhere
   Future<List<Song>> exportSongs() {
     Future<List<Song>> allSongs = this._dao.exportSongs();
     return allSongs;
   }
 
-  //Doesn't return lyrics
+  //Does not return lyrics
   Future<List<Song>> getAllSongs() {
     Future<List<Song>> allSongs = this._dao.getAllSongs();
     return allSongs;
