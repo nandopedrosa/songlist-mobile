@@ -289,6 +289,22 @@ But she doesn''t see, she doesn''t see, no she just doesn''t see', 'Bossa nova' 
     return allSongs;
   }
 
+  // Check if a song is associated with any setlist.
+  // This is useful to mantain referential integrity (don't allow deleting this song)
+  Future<bool> isInSetlist(int songId) async {
+    Database? db = await DatabaseHelper.instance.database;
+    String querySql =
+        "select count(*) as ocurrences from setlist where song_id  = ? ";
+    final int? ocurrences =
+        Sqflite.firstIntValue(await db!.rawQuery(querySql, [songId]));
+
+    if (ocurrences! > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   Future<List<Song>> getSongsByTitleOrArtist(String term) async {
     Database? db = await DatabaseHelper.instance.database;
 

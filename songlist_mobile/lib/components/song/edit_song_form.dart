@@ -274,17 +274,23 @@ class _EditSongForm extends State<EditSongForm> {
   //Deletes the song and goes back to the songs table
   //This is only accessible if there is a song ID
   void delete() {
-    this.service.delete(this.songId!);
-
-    ToastMessage.showSuccessToast(LocalizationService.instance
-        .getLocalizedString('song_successfully_deleted'));
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) =>
-              SonglistPlusMobileApp(activeScreen: AllSongsScreen())),
-    );
+    this.service.delete(this.songId!).then((value) {
+      // If true, delete was sucessful, just show success message and return to the songs table
+      if (value == true) {
+        ToastMessage.showSuccessToast(LocalizationService.instance
+            .getLocalizedString('song_successfully_deleted'));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  SonglistPlusMobileApp(activeScreen: AllSongsScreen())),
+        );
+      } else {
+        // If false, we could not delete because the song is already associated with one or more setlists
+        ToastMessage.showErrorToast(LocalizationService.instance
+            .getLocalizedString("cant_delete_song"));
+      }
+    });
   }
 
   // Validates import lyrics URL

@@ -49,8 +49,20 @@ class SongService {
     }
   }
 
-  void delete(int id) {
-    this._dao.delete(id);
+  // We only delete the song if it is not associated with any setlist.
+  // Otherwise we do nothing and return false.
+  Future<bool> delete(int songId) async {
+    bool isInSetlist = await this.isInSetlist(songId);
+    if (isInSetlist) {
+      return false;
+    } else {
+      this._dao.delete(songId);
+      return true;
+    }
+  }
+
+  Future<bool> isInSetlist(int songId) {
+    return this._dao.isInSetlist(songId);
   }
 
   Future<Song> find(int id) {
