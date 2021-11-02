@@ -24,6 +24,12 @@ class Responsive extends StatelessWidget {
     return (screenWidth / numberOfCells) * 0.9;
   }
 
+  //Adjust dropdown search height according to the device height
+  static double getDropdownSearchHeight(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    return screenHeight * 0.5; // 50% of the screen height
+  }
+
   // This isMobile, isTablet, isDesktop helep us later
   static bool isMobile(BuildContext context) =>
       MediaQuery.of(context).size.width < tabletSize;

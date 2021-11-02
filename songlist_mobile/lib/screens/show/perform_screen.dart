@@ -178,6 +178,9 @@ class _PerformScreen extends State<PerformScreen> {
                                                   snapshot.data!;
                                               children = <Widget>[
                                                 DropdownSearch<Song>(
+                                                  maxHeight: Responsive
+                                                      .getDropdownSearchHeight(
+                                                          context),
                                                   key: _dropDownKey,
                                                   compareFn: (i, s) =>
                                                       i?.isEqual(s!) ?? false,

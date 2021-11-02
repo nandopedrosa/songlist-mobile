@@ -13,6 +13,7 @@ import 'package:songlist_mobile/service/setlist_service.dart';
 import 'package:songlist_mobile/service/show_service.dart';
 import 'package:songlist_mobile/service/song_service.dart';
 import 'package:songlist_mobile/util/constants.dart';
+import 'package:songlist_mobile/util/responsive.dart';
 
 // ignore: must_be_immutable
 class ManageSetlistScreen extends StatefulWidget {
@@ -54,198 +55,212 @@ class _ManageSetlistScreen extends State<ManageSetlistScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                // It takes 5/6 part of the screen
-                flex: 5,
-                child: SafeArea(
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.all(defaultPadding),
-                    child: Column(
-                      children: [
-                        BackHeader(
-                            title: showName,
-                            goBack: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SonglistPlusMobileApp(
-                                    activeScreen:
-                                        EditShowScreen(showId: showId),
-                                  ),
-                                ),
-                              );
-                            }),
-                        Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                flex: 5,
-                                child: Column(
-                                  children: [
-                                    FutureBuilder<List<Song>>(
-                                      future: this.selectedSongs,
-                                      builder: (BuildContext context,
-                                          AsyncSnapshot<List<Song>> snapshot) {
-                                        List<Widget> children = [];
-                                        if (snapshot.hasData) {
-                                          children = <Widget>[
-                                            SaveButton(
-                                                onPressed: () {
-                                                  this._saveSetlist(
-                                                      snapshot.data!);
-                                                },
-                                                leftPadding: 0,
-                                                rightPadding: 0,
-                                                topPadding: defaultPadding),
-                                            ShareSetlistButton(
-                                                onPressed: () {
-                                                  this._share(snapshot.data!);
-                                                },
-                                                leftPadding: 0,
-                                                rightPadding: 0),
-                                          ];
-                                        }
-                                        return Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.stretch,
-                                          children: children,
-                                        );
-                                      },
-                                    ),
-                                    SizedBox(height: defaultPadding),
-                                    FutureBuilder<List<List<Song>>>(
-                                      //Use this to await on multiple futures
-                                      future: Future.wait([
-                                        this.availableSongs,
-                                        this.selectedSongs
-                                      ]),
-                                      builder: (BuildContext context,
-                                          AsyncSnapshot<List<List<Song>>>
-                                              snapshot) {
-                                        List<Widget> children = [];
-                                        if (snapshot.hasData) {
-                                          children = <Widget>[
-                                            DropdownSearch<Song>(
-                                              mode: Mode.MENU,
-                                              items: snapshot.data![0],
-                                              selectedItem: Song(
-                                                  title: '',
-                                                  artist: '',
-                                                  created_on: ''),
-                                              dropdownSearchDecoration:
-                                                  InputDecoration(
-                                                labelText: LocalizationService
-                                                    .instance
-                                                    .getLocalizedString(
-                                                        'add_song'),
-                                              ),
-                                              onChanged: (data) {
-                                                setState(() {
-                                                  this._addToSetlist(
-                                                      data!, snapshot.data![1]);
-                                                  this._removeFromAvailableSongs(
-                                                      data, snapshot.data![0]);
-                                                });
-                                              },
-                                              showSearchBox: true,
-                                            )
-                                          ];
-                                        }
-                                        return Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.stretch,
-                                          children: children,
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ])
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.all(defaultPadding),
-                  child: FutureBuilder<List<List<Song>>>(
-                      //Use this to await on multiple futures
-                      future: Future.wait(
-                          [this.availableSongs, this.selectedSongs]),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<List<List<Song>>> snapshot) {
-                        List<Widget> children = [];
-                        if (snapshot.hasData) {
-                          children = <Widget>[
-                            ReorderableListView.builder(
-                              onReorder: (int oldIndex, int newIndex) {
-                                setState(() {
-                                  if (oldIndex < newIndex) {
-                                    newIndex -= 1;
-                                  }
-                                  final Song draggedSong =
-                                      snapshot.data![1].removeAt(oldIndex);
-                                  snapshot.data![1]
-                                      .insert(newIndex, draggedSong);
-                                });
-                              },
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                final Song song = snapshot.data![1][index];
-                                return Card(
-                                  key: Key(song.id.toString()),
-                                  child: ListTile(
-                                    leading: IconButton(
-                                      icon: Icon(
-                                        Icons.remove_circle,
-                                        color: Color.fromRGBO(255, 67, 67, 0.6),
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          Song s = this._removeFromSetlist(
-                                              index, snapshot.data![1]);
-                                          this._addToAvailableSongs(
-                                              s, snapshot.data![0]);
-                                        });
-                                      },
-                                    ),
-                                    trailing: Icon(
-                                      Icons.drag_handle,
-                                      color: Colors.white,
-                                    ),
-                                    title: Text(
-                                      (index + 1).toString() +
-                                          '. ' +
-                                          song.title,
+        child: SingleChildScrollView(
+          // THIS IS IMPORTANT FOR THE SETLIST SCROLLING TO WORK, OTHERWISE IT WILL KEEP "PULLING BACK" TO TOP
+          physics: ScrollPhysics(),
+          child: Column(children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  // It takes 5/6 part of the screen
+                  flex: 5,
+                  child: SafeArea(
+                    child: SingleChildScrollView(
+                      padding: EdgeInsets.all(defaultPadding),
+                      child: Column(
+                        children: [
+                          BackHeader(
+                              title: showName,
+                              goBack: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SonglistPlusMobileApp(
+                                      activeScreen:
+                                          EditShowScreen(showId: showId),
                                     ),
                                   ),
                                 );
-                              },
-                              itemCount: snapshot.data![1].length,
-                            )
-                          ];
-                        }
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: children,
-                        );
-                      }),
+                              }),
+                          Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  flex: 5,
+                                  child: Column(
+                                    children: [
+                                      FutureBuilder<List<Song>>(
+                                        future: this.selectedSongs,
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<List<Song>>
+                                                snapshot) {
+                                          List<Widget> children = [];
+                                          if (snapshot.hasData) {
+                                            children = <Widget>[
+                                              SaveButton(
+                                                  onPressed: () {
+                                                    this._saveSetlist(
+                                                        snapshot.data!);
+                                                  },
+                                                  leftPadding: 0,
+                                                  rightPadding: 0,
+                                                  topPadding: defaultPadding),
+                                              ShareSetlistButton(
+                                                  onPressed: () {
+                                                    this._share(snapshot.data!);
+                                                  },
+                                                  leftPadding: 0,
+                                                  rightPadding: 0),
+                                            ];
+                                          }
+                                          return Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.stretch,
+                                            children: children,
+                                          );
+                                        },
+                                      ),
+                                      SizedBox(height: defaultPadding),
+                                      FutureBuilder<List<List<Song>>>(
+                                        //Use this to await on multiple futures
+                                        future: Future.wait([
+                                          this.availableSongs,
+                                          this.selectedSongs
+                                        ]),
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<List<List<Song>>>
+                                                snapshot) {
+                                          List<Widget> children = [];
+                                          if (snapshot.hasData) {
+                                            children = <Widget>[
+                                              DropdownSearch<Song>(
+                                                maxHeight: Responsive
+                                                    .getDropdownSearchHeight(
+                                                        context),
+                                                mode: Mode.MENU,
+                                                items: snapshot.data![0],
+                                                selectedItem: Song(
+                                                    title: '',
+                                                    artist: '',
+                                                    created_on: ''),
+                                                dropdownSearchDecoration:
+                                                    InputDecoration(
+                                                  labelText: LocalizationService
+                                                      .instance
+                                                      .getLocalizedString(
+                                                          'add_song'),
+                                                ),
+                                                onChanged: (data) {
+                                                  setState(() {
+                                                    this._addToSetlist(data!,
+                                                        snapshot.data![1]);
+                                                    this._removeFromAvailableSongs(
+                                                        data,
+                                                        snapshot.data![0]);
+                                                  });
+                                                },
+                                                showSearchBox: true,
+                                              )
+                                            ];
+                                          }
+                                          return Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.stretch,
+                                            children: children,
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ])
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-              )
-            ],
-          )
-        ]),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.all(defaultPadding),
+                    child: FutureBuilder<List<List<Song>>>(
+                        //Use this to await on multiple futures
+                        future: Future.wait(
+                            [this.availableSongs, this.selectedSongs]),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<List<List<Song>>> snapshot) {
+                          List<Widget> children = [];
+                          if (snapshot.hasData) {
+                            children = <Widget>[
+                              //---- This is the selected Setlist -----
+                              ReorderableListView.builder(
+                                // THIS IS IMPORTANT FOR THE SETLIST SCROLLING TO WORK, OTHERWISE IT WILL KEEP "PULLING BACK" TO TOP
+                                physics: BouncingScrollPhysics(),
+                                onReorder: (int oldIndex, int newIndex) {
+                                  setState(() {
+                                    if (oldIndex < newIndex) {
+                                      newIndex -= 1;
+                                    }
+                                    final Song draggedSong =
+                                        snapshot.data![1].removeAt(oldIndex);
+                                    snapshot.data![1]
+                                        .insert(newIndex, draggedSong);
+                                  });
+                                },
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  final Song song = snapshot.data![1][index];
+                                  // ----- Each Song -----
+                                  return Card(
+                                    key: Key(song.id.toString()),
+                                    child: ListTile(
+                                      leading: IconButton(
+                                        icon: Icon(
+                                          Icons.remove_circle,
+                                          color:
+                                              Color.fromRGBO(255, 67, 67, 0.6),
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            Song s = this._removeFromSetlist(
+                                                index, snapshot.data![1]);
+                                            this._addToAvailableSongs(
+                                                s, snapshot.data![0]);
+                                          });
+                                        },
+                                      ),
+                                      trailing: Icon(
+                                        Icons.drag_handle,
+                                        color: Colors.white,
+                                      ),
+                                      title: Text(
+                                        (index + 1).toString() +
+                                            '. ' +
+                                            song.title,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                itemCount: snapshot.data![1].length,
+                              )
+                            ];
+                          }
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: children,
+                          );
+                        }),
+                  ),
+                )
+              ],
+            )
+          ]),
+        ),
       ),
     );
   }
