@@ -122,30 +122,42 @@ class AllShowsFutureBuilder extends StatelessWidget {
 
           //Snapshot is ASYNC, we have to check if it has data before accessing it
           if (snapshot.hasData) {
-            children = <Widget>[
-              PaginatedDataTable(
-                columnSpacing: defaultPadding,
-                headingRowHeight: dataTableHeadingRowHeight,
-                showCheckboxColumn: false,
-                //Remove empty rows if the data length is less than rows per page
-                rowsPerPage: snapshot.data!.length > defaultRowsPerPage
-                    ? defaultRowsPerPage
-                    : snapshot.data!.length,
-                source: AllShowsData(snapshot.data, context),
-                columns: [
-                  DataColumn(
-                    label: Text(LocalizationService.instance
-                        .getLocalizedString("name")),
+            // We have to check if there is any data found, otherwise Paginated Data Table throws an error with 0 rows.
+            if (snapshot.data!.length == 0) {
+              children = <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Expanded(
+                    child: Text(LocalizationService.instance
+                        .getLocalizedString("no_shows_found")),
                   ),
-                  DataColumn(
-                    label: Text(LocalizationService.instance
-                        .getLocalizedString("when")),
-                  ),
-                ],
-              )
-            ];
+                )
+              ];
+            } else {
+              children = <Widget>[
+                PaginatedDataTable(
+                  columnSpacing: defaultPadding,
+                  headingRowHeight: dataTableHeadingRowHeight,
+                  showCheckboxColumn: false,
+                  //Remove empty rows if the data length is less than rows per page
+                  rowsPerPage: snapshot.data!.length > defaultRowsPerPage
+                      ? defaultRowsPerPage
+                      : snapshot.data!.length,
+                  source: AllShowsData(snapshot.data, context),
+                  columns: [
+                    DataColumn(
+                      label: Text(LocalizationService.instance
+                          .getLocalizedString("name")),
+                    ),
+                    DataColumn(
+                      label: Text(LocalizationService.instance
+                          .getLocalizedString("when")),
+                    ),
+                  ],
+                )
+              ];
+            }
           }
-
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: children,
