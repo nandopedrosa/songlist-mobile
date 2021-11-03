@@ -3,8 +3,9 @@ import 'package:songlist_mobile/util/constants.dart';
 
 //We use this because it accepts a controller, which updates asynchronously
 //We can do better next version, with a better state management
+// ignore: must_be_immutable
 class TextFormFieldDisabled extends StatelessWidget {
-  const TextFormFieldDisabled(
+  TextFormFieldDisabled(
       {Key? key,
       required TextEditingController controller,
       TextInputType keyBoardType = TextInputType.text,
@@ -12,6 +13,7 @@ class TextFormFieldDisabled extends StatelessWidget {
       double fontSize = defaultFontSize,
       TextAlign alignment = TextAlign.start,
       Color color = Colors.white,
+      VoidCallback? onTap,
       FontStyle fontStyle = FontStyle.normal})
       : _controller = controller,
         _keyBoardType = keyBoardType,
@@ -19,6 +21,7 @@ class TextFormFieldDisabled extends StatelessWidget {
         _fontSize = fontSize,
         _alignment = alignment,
         _color = color,
+        _onTap = onTap,
         _fontStyle = fontStyle,
         super(key: key);
 
@@ -29,10 +32,12 @@ class TextFormFieldDisabled extends StatelessWidget {
   final FontStyle _fontStyle;
   final Color _color;
   final TextAlign _alignment;
+  VoidCallback? _onTap;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onTap: _onTap,
       controller: this._controller,
       keyboardType: this._keyBoardType,
       textAlign: _alignment,

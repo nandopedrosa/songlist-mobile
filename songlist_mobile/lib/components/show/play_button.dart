@@ -29,8 +29,8 @@ class PlayButton extends StatelessWidget {
         child: ElevatedButton(
             onPressed: this.onPressed,
             style: ElevatedButton.styleFrom(primary: Colors.green),
-            child:
-                Text(LocalizationService.instance.getLocalizedString('play'))),
+            child: Text(
+                LocalizationService.instance.getLocalizedString('play') + '!')),
       ),
     );
   }

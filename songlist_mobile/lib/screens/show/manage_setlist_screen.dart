@@ -135,6 +135,13 @@ class _ManageSetlistScreen extends State<ManageSetlistScreen> {
                                           if (snapshot.hasData) {
                                             children = <Widget>[
                                               DropdownSearch<Song>(
+                                                emptyBuilder: (context,
+                                                        searchEntry) =>
+                                                    Center(
+                                                        child: Text(LocalizationService
+                                                            .instance
+                                                            .getLocalizedString(
+                                                                "no_songs_found"))),
                                                 maxHeight: Responsive
                                                     .getDropdownSearchHeight(
                                                         context),
@@ -161,6 +168,9 @@ class _ManageSetlistScreen extends State<ManageSetlistScreen> {
                                                   });
                                                 },
                                                 showSearchBox: true,
+                                                searchFieldProps:
+                                                    TextFieldProps(
+                                                        autofocus: true),
                                               )
                                             ];
                                           }

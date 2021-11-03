@@ -125,8 +125,9 @@ class _EditShowForm extends State<EditShowForm> {
             width: double.infinity,
             child: OutlinedButton.icon(
               icon: Padding(
-                  padding: EdgeInsets.only(right: defaultPadding),
-                  child: Icon(Icons.calendar_today, color: Colors.white)),
+                padding: EdgeInsets.only(right: defaultPadding),
+                child: Icon(Icons.calendar_today, color: Colors.white),
+              ),
               onPressed: () {
                 this._showDatePicker(formContext);
               },
@@ -134,6 +135,9 @@ class _EditShowForm extends State<EditShowForm> {
                   primary: Colors.white70,
                   side: BorderSide(color: Colors.white54)),
               label: TextFormFieldDisabled(
+                onTap: () {
+                  this._showDatePicker(formContext);
+                },
                 alignment: TextAlign.start,
                 controller: _whenLabelController,
                 fontSize: defaultFontSize,
@@ -225,6 +229,7 @@ class _EditShowForm extends State<EditShowForm> {
         if (this.showId != null)
           PlayButton(onPressed: () {
             this.setListService.getNumberOfSongs(this.showId!).then((value) {
+              // If we have songs added...
               if (value > 0) {
                 Navigator.push(
                   formContext,
@@ -236,9 +241,10 @@ class _EditShowForm extends State<EditShowForm> {
                     ),
                   ),
                 );
+                // If we DON'T have any songs to play
               } else {
                 ToastMessage.showErrorToast(LocalizationService.instance
-                    .getLocalizedString('no_songs'));
+                    .getLocalizedString('no_songs_try_adding'));
               }
             });
           }),

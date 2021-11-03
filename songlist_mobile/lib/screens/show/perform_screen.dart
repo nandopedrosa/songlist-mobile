@@ -178,6 +178,13 @@ class _PerformScreen extends State<PerformScreen> {
                                                   snapshot.data!;
                                               children = <Widget>[
                                                 DropdownSearch<Song>(
+                                                  emptyBuilder: (context,
+                                                          searchEntry) =>
+                                                      Center(
+                                                          child: Text(LocalizationService
+                                                              .instance
+                                                              .getLocalizedString(
+                                                                  "no_songs_found"))),
                                                   maxHeight: Responsive
                                                       .getDropdownSearchHeight(
                                                           context),
@@ -205,6 +212,9 @@ class _PerformScreen extends State<PerformScreen> {
                                                     });
                                                   },
                                                   showSearchBox: true,
+                                                  searchFieldProps:
+                                                      TextFieldProps(
+                                                          autofocus: true),
                                                 )
                                               ];
                                             }
