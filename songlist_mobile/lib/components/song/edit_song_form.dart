@@ -14,6 +14,7 @@ import 'package:songlist_mobile/screens/song/all_songs_screen.dart';
 import 'package:songlist_mobile/service/song_service.dart';
 import 'package:songlist_mobile/components/common/toast_message.dart';
 import 'package:songlist_mobile/util/constants.dart';
+import 'package:songlist_mobile/util/internet_connection.dart';
 import 'package:songlist_mobile/util/validation.dart';
 import 'package:http/http.dart' as http;
 
@@ -309,17 +310,29 @@ class _EditSongForm extends State<EditSongForm> {
   void _importButtonAction() {
     if (this._urlControler.text.isEmpty) return;
 
-    if (this.isValidUrl(this._urlControler.text)) {
-      this._importLyrics(this._urlControler.text).then((value) {
-        this._lyricsController.text = value.body.toString();
+    // We can only import lyrics if there is an internet connection
+    InternetConnection.hasConnection().then(
+      (hasConnection) {
+        if (hasConnection) {
+          if (this.isValidUrl(this._urlControler.text)) {
+            this._importLyrics(this._urlControler.text).then(
+              (value) {
+                this._lyricsController.text = value.body.toString();
 
-        ToastMessage.showSuccessToast(
-            LocalizationService.instance.getLocalizedString("lyrics_imported"));
-      });
-    } else {
-      ToastMessage.showErrorToast(LocalizationService.instance
-          .getLocalizedString("website_not_supported"));
-    }
+                ToastMessage.showSuccessToast(LocalizationService.instance
+                    .getLocalizedString("lyrics_imported"));
+              },
+            );
+          } else {
+            ToastMessage.showErrorToast(LocalizationService.instance
+                .getLocalizedString("website_not_supported"));
+          }
+        } else {
+          ToastMessage.showErrorToast(
+              LocalizationService.instance.getLocalizedString("no_connection"));
+        }
+      },
+    );
   }
 
   //Calls the web api

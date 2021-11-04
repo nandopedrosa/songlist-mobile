@@ -190,6 +190,10 @@ class LocalizationStrings {
       "Não é possível excluir a música porque ela está associada a um ou mais repertórios. Primeiro remova a música dos repertórios."
     ],
     "no_songs_found": ["No songs found", "Nenhuma música encontrada"],
-    "no_shows_found": ["No shows found", "Nenhum show encontrado"]
+    "no_shows_found": ["No shows found", "Nenhum show encontrado"],
+    "no_connection": [
+      "An internet connection is required for this feature. Are you sure you are connected?",
+      "É necessária uma conexão à internet para esta funcionalidade. Tem certeza que você está conectado?"
+    ],
   };
 }
