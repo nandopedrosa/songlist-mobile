@@ -56,9 +56,15 @@ class _EditShowForm extends State<EditShowForm> {
   void _updateControllers(Show show) {
     this._nameController.text = show.name;
     if (show.when != null) {
-      this._whenController.text = show.when!;
-      this._whenLabelController.text =
-          LocalizationService.instance.getFullLocalizedDateAndTime(show.when!);
+      this._whenController.text = show.when == null ? "" : show.when!;
+      String? localizedWhen =
+          LocalizationService.instance.getFullLocalizedDateAndTime(show.when);
+      if (localizedWhen == null || localizedWhen.isEmpty) {
+        this._whenLabelController.text =
+            LocalizationService.instance.getLocalizedString("select_date");
+      } else {
+        this._whenLabelController.text = localizedWhen;
+      }
     }
     if (show.pay != null) this._payController.text = show.pay!;
     if (show.address != null) this._addressController.text = show.address!;
@@ -243,8 +249,10 @@ class _EditShowForm extends State<EditShowForm> {
                 );
                 // If we DON'T have any songs to play
               } else {
-                ToastMessage.showErrorToast(LocalizationService.instance
-                    .getLocalizedString('no_songs_try_adding'));
+                ToastMessage.showErrorToast(
+                    LocalizationService.instance
+                        .getLocalizedString('no_songs_try_adding'),
+                    context);
               }
             });
           }),
@@ -291,7 +299,7 @@ class _EditShowForm extends State<EditShowForm> {
         onConfirm: (date) {
       setState(() {
         this._whenLabelController.text = LocalizationService.instance
-            .getFullLocalizedDateAndTime(date.toString());
+            .getFullLocalizedDateAndTime(date.toString())!;
         this._whenController.text = date.toString();
       });
     },
@@ -307,7 +315,10 @@ class _EditShowForm extends State<EditShowForm> {
     String nowFormattedDate = formatter.format(now);
     Show show = Show(
         name: this._nameController.text,
-        when: this._whenController.text,
+        // Empty dates are invalid. We can deal with null values, though
+        when: this._whenController.text.isEmpty
+            ? null
+            : this._whenController.text,
         pay: this._payController.text,
         address: this._addressController.text,
         contact: this._contactController.text,
@@ -341,11 +352,15 @@ class _EditShowForm extends State<EditShowForm> {
 
   void afterSaveOrUpdate(int id) {
     if (this.showId == null) {
-      ToastMessage.showSuccessToast(LocalizationService.instance
-          .getLocalizedString('show_successfully_created'));
+      ToastMessage.showSuccessToast(
+          LocalizationService.instance
+              .getLocalizedString('show_successfully_created'),
+          context);
     } else {
-      ToastMessage.showSuccessToast(LocalizationService.instance
-          .getLocalizedString('show_successfully_updated'));
+      ToastMessage.showSuccessToast(
+          LocalizationService.instance
+              .getLocalizedString('show_successfully_updated'),
+          context);
     }
 
     setState(() {
@@ -355,15 +370,15 @@ class _EditShowForm extends State<EditShowForm> {
 
   void delete() {
     this.showService.delete(this.showId!);
-
-    ToastMessage.showSuccessToast(LocalizationService.instance
-        .getLocalizedString('show_successfully_deleted'));
-
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) =>
-              SonglistPlusMobileApp(activeScreen: AllShowsScreen())),
+        builder: (context) => SonglistPlusMobileApp(
+          activeScreen: AllShowsScreen(
+            didDelete: true,
+          ),
+        ),
+      ),
     );
   }
 }

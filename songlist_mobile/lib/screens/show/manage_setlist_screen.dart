@@ -328,7 +328,8 @@ class _ManageSetlistScreen extends State<ManageSetlistScreen> {
     this.showService.updateNumberOfSongs(this.showId, selectedSongs.length);
 
     ToastMessage.showSuccessToast(
-        LocalizationService.instance.getLocalizedString('setlist_saved'));
+        LocalizationService.instance.getLocalizedString('setlist_saved'),
+        context);
   }
 
   String _getPrettyTotalDuration(Duration totalDuration) {

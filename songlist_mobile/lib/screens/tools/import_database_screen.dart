@@ -91,7 +91,8 @@ class _ImportDatabaseScreen extends State<ImportDatabaseScreen> {
                                               " " +
                                               LocalizationService.instance
                                                   .getLocalizedString(
-                                                      "songs_imported"));
+                                                      "songs_imported"),
+                                          context);
                                     } else if (snapshot.hasError) {
                                       return Expanded(
                                         child: Text(LocalizationService.instance

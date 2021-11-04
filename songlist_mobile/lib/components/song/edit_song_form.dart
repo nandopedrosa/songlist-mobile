@@ -260,11 +260,15 @@ class _EditSongForm extends State<EditSongForm> {
 
   void showSaveOrUpdateSuccessMessage(int id) {
     if (this.songId == null) {
-      ToastMessage.showSuccessToast(LocalizationService.instance
-          .getLocalizedString('song_successfully_created'));
+      ToastMessage.showSuccessToast(
+          LocalizationService.instance
+              .getLocalizedString('song_successfully_created'),
+          context);
     } else {
-      ToastMessage.showSuccessToast(LocalizationService.instance
-          .getLocalizedString('song_successfully_updated'));
+      ToastMessage.showSuccessToast(
+          LocalizationService.instance
+              .getLocalizedString('song_successfully_updated'),
+          context);
     }
 
     setState(() {
@@ -278,18 +282,21 @@ class _EditSongForm extends State<EditSongForm> {
     this.service.delete(this.songId!).then((value) {
       // If true, delete was sucessful, just show success message and return to the songs table
       if (value == true) {
-        ToastMessage.showSuccessToast(LocalizationService.instance
-            .getLocalizedString('song_successfully_deleted'));
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  SonglistPlusMobileApp(activeScreen: AllSongsScreen())),
+            builder: (context) => SonglistPlusMobileApp(
+              activeScreen: AllSongsScreen(
+                didDelete: true,
+              ),
+            ),
+          ),
         );
       } else {
         // If false, we could not delete because the song is already associated with one or more setlists
-        ToastMessage.showErrorToast(LocalizationService.instance
-            .getLocalizedString("cant_delete_song"));
+        ToastMessage.showErrorToast(
+            LocalizationService.instance.getLocalizedString("cant_delete_song"),
+            context);
       }
     });
   }
@@ -319,17 +326,22 @@ class _EditSongForm extends State<EditSongForm> {
               (value) {
                 this._lyricsController.text = value.body.toString();
 
-                ToastMessage.showSuccessToast(LocalizationService.instance
-                    .getLocalizedString("lyrics_imported"));
+                ToastMessage.showSuccessToast(
+                    LocalizationService.instance
+                        .getLocalizedString("lyrics_imported"),
+                    context);
               },
             );
           } else {
-            ToastMessage.showErrorToast(LocalizationService.instance
-                .getLocalizedString("website_not_supported"));
+            ToastMessage.showErrorToast(
+                LocalizationService.instance
+                    .getLocalizedString("website_not_supported"),
+                context);
           }
         } else {
           ToastMessage.showErrorToast(
-              LocalizationService.instance.getLocalizedString("no_connection"));
+              LocalizationService.instance.getLocalizedString("no_connection"),
+              context);
         }
       },
     );

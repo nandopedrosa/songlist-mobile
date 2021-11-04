@@ -95,7 +95,8 @@ class _ExportDatabaseScreen extends State<ExportDatabaseScreen> {
                                       ToastMessage.showSuccessToast(
                                           LocalizationService.instance
                                               .getLocalizedString(
-                                                  "songs_exported"));
+                                                  "songs_exported"),
+                                          context);
                                     } else if (snapshot.hasError) {
                                       return Expanded(
                                         child: Text(LocalizationService.instance

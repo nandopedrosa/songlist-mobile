@@ -2,7 +2,7 @@ class ShowDto {
   int id;
   String name;
   String duration;
-  String when;
+  String? when;
   int numberOfSongs;
 
   ShowDto({

@@ -178,6 +178,11 @@ class AllShowsData extends DataTableSource {
   int get rowCount => _data!.length;
   int get selectedRowCount => 0;
   DataRow getRow(int index) {
+    String? whenCell = LocalizationService.instance
+        .getFullLocalizedDateAndTime(_data![index].when);
+    if (whenCell == null) {
+      whenCell = "";
+    }
     return DataRow(
         onSelectChanged: (value) {
           Navigator.push(
@@ -203,10 +208,7 @@ class AllShowsData extends DataTableSource {
           DataCell(
             Container(
               width: Responsive.getTableCellWidth(2, tableContext),
-              child: Text(
-                  LocalizationService.instance
-                      .getFullLocalizedDateAndTime(_data![index].when),
-                  style: TextStyle(color: Colors.white70)),
+              child: Text(whenCell, style: TextStyle(color: Colors.white70)),
             ),
           ),
         ]);
