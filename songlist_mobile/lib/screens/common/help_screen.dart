@@ -93,7 +93,7 @@ class HelpText extends StatelessWidget {
               child: Text(
                 LocalizationService.instance.getLocalizedString(textKey),
                 style:
-                    TextStyle(fontSize: defaultFontSize, color: Colors.white54),
+                    TextStyle(fontSize: defaultFontSize, color: Colors.white70),
               ),
             )
         ],

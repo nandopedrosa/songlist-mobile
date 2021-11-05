@@ -53,9 +53,8 @@ class _PerformScreen extends State<PerformScreen> {
     String keyStr =
         LocalizationService.instance.getLocalizedString('key') + ": ";
     _songTempoController.text =
-        song.tempo == null ? tempoStr + "-" : tempoStr + song.tempo.toString();
-    _songKeyController.text =
-        song.key == null ? keyStr + "-" : keyStr + song.key!;
+        song.tempo == null ? tempoStr : tempoStr + song.tempo.toString();
+    _songKeyController.text = song.key == null ? keyStr : keyStr + song.key!;
     _songTitleController.text = song.title;
     _songLyricsController.text = song.lyrics == null ? '' : song.lyrics!;
     _firstColumnLyricsController.text =
@@ -117,20 +116,20 @@ class _PerformScreen extends State<PerformScreen> {
                             children: [
                               IconButton(
                                 onPressed: () {
-                                  this._increaseFontSize();
+                                  this._decreaseFontSize();
                                 },
                                 icon: SvgPicture.asset(
-                                  "assets/icons/increase-font.svg",
+                                  "assets/icons/decrease-font.svg",
                                   color: increaseAndDecreaseIconColor,
                                   height: increaseAndDecreaseIconHeight,
                                 ),
                               ),
                               IconButton(
                                 onPressed: () {
-                                  this._decreaseFontSize();
+                                  this._increaseFontSize();
                                 },
                                 icon: SvgPicture.asset(
-                                  "assets/icons/decrease-font.svg",
+                                  "assets/icons/increase-font.svg",
                                   color: increaseAndDecreaseIconColor,
                                   height: increaseAndDecreaseIconHeight,
                                 ),

@@ -129,61 +129,64 @@ class _EditSongForm extends State<EditSongForm> {
                       barrierDismissible: false,
                       context: context,
                       builder: (BuildContext context) {
-                        return AlertDialog(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(defaultPadding))),
-                          backgroundColor: secondaryColor,
-                          title: Text(
-                            LocalizationService.instance
-                                .getLocalizedString("import_lyrics_chords"),
-                            style: TextStyle(fontSize: defaultFontSize),
-                          ),
-                          content: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SupportedWebsites(),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        TextFieldEditor(
-                                            controller: this._urlControler,
-                                            maxLength: 256,
-                                            label: LocalizationService.instance
-                                                .getLocalizedString(
-                                                    "import_web_address")),
-                                        //------ IMPORT LYRICS HERE ---------
-                                        ImportButton(
-                                          key: _importButtonKey,
-                                          onPressed: _importButtonAction,
-                                        )
-                                      ],
+                        return SingleChildScrollView(
+                          child: AlertDialog(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(defaultPadding))),
+                            backgroundColor: secondaryColor,
+                            title: Text(
+                              LocalizationService.instance
+                                  .getLocalizedString("import_lyrics_chords"),
+                              style: TextStyle(fontSize: defaultFontSize),
+                            ),
+                            content: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SupportedWebsites(),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        children: [
+                                          TextFieldEditor(
+                                              controller: this._urlControler,
+                                              maxLength: 256,
+                                              label: LocalizationService
+                                                  .instance
+                                                  .getLocalizedString(
+                                                      "import_web_address")),
+                                          //------ IMPORT LYRICS HERE ---------
+                                          ImportButton(
+                                            key: _importButtonKey,
+                                            onPressed: _importButtonAction,
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
+                              ],
+                            ),
+                            actions: [
+                              TextButton(
+                                style: TextButton.styleFrom(
+                                  textStyle: const TextStyle(
+                                      fontSize: defaultFontSize),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  "OK",
+                                  style: TextStyle(
+                                      fontSize: flatButtonDefaultFontSize),
+                                ),
                               ),
                             ],
                           ),
-                          actions: [
-                            TextButton(
-                              style: TextButton.styleFrom(
-                                textStyle:
-                                    const TextStyle(fontSize: defaultFontSize),
-                              ),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                "OK",
-                                style: TextStyle(
-                                    fontSize: flatButtonDefaultFontSize),
-                              ),
-                            ),
-                          ],
                         );
                       });
                 },
@@ -330,6 +333,8 @@ class _EditSongForm extends State<EditSongForm> {
                     LocalizationService.instance
                         .getLocalizedString("lyrics_imported"),
                     context);
+                Navigator.of(context, rootNavigator: true)
+                    .pop(); // Close the dialog
               },
             );
           } else {

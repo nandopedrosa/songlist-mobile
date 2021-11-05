@@ -138,7 +138,7 @@ class LocalizationStrings {
     "songs_and_setlists": ['Songs and setlists', 'Músicas e repertórios'],
     "songs_and_setlists_txt": [
       "Adding songs is easy.\n\nJust choose the Songs menu and fill the relevant information you need, like Title, Artist, Key, Tempo, Duration and Lyrics.\n\nAfter you have added your songs, access the Shows menu and start building your setlists for easy visualization during performances.",
-      "É fácil adicionar músicas.\n\nApenas escolha o menu Músicas e preencha toda informação relevante, como Título, Artista, Tom, Tempo, Duração, Letra, etc.\n\nDepois adicionar suas músicas, acesse o menu Shows e comece a montar seus repertórios para visualizá-los durante apresentações."
+      "É fácil adicionar músicas.\n\nApenas escolha o menu Músicas e preencha toda informação relevante, como Título, Artista, Tom, Tempo, Duração, Letra, etc.\n\nDepois de adicionar suas músicas, acesse o menu Shows e comece a montar seus repertórios para visualizá-los durante apresentações."
     ],
     "lyrics_and_chords": ['Lyrics and chords', 'Letras e cifras'],
     "lyrics_and_chords_txt": [
@@ -173,13 +173,13 @@ class LocalizationStrings {
     ],
     "about_me_title": ["About me", "Sobre mim"],
     "about_me_txt": [
-      "Hi, my name is Fernando Pedrosa and I'm a musician and software developer. I work full-time in a technology related job, but my true passion is playing and listening to music.\n\nFor years I've struggled with memorizing lyrics and chords during live performances, so I would always bring some sheets of paper in a binder with all my songs - which is very cumbersome and awkward.\n\nBecause of this, I came up with the idea to develop a mobile app that I could install in different devices and bring them to my shows, so I wouldn't ever need to print sheet music again.\n\nI hope you enjoy using Songlist Plus as much as I do and it helps you be a better and more productive musician.",
-      "Olá, meu nome é Fernando Pedrosa e eu sou músico e desenvolver. Eu trabalho em tempo integral na área de tecnologia, mas a minha paixão é tocar e escutar música.\n\nDurante anos eu tive dificuldade em memorizar a letra ou cifra de músicas durante apresentações ao vivo, então eu sempre levava uma pasta com páginasi impressas - o que é muito pesado e desconfortável.\n\nPor esta razão, eu tive a ideia de desenvolver um aplicativo que eu pudesse instalar em diferentes dispositivos e trazê-los aos meus shows, para que eu não precisasse nunca mais imprimir letras ou cifras.\n\nEu espero que goste do Songlist Plus tanto quanto eu e que lhe ajude a ser um músico melhor e mais produtivo."
+      "My name is Fernando and I'm a musician and software developer. I work full-time in a technology related job, but my true passion is playing and listening to music.\n\nFor years I've struggled with memorizing lyrics and chords during live performances, so I would always bring some sheets of paper in a binder with all my songs - which is very cumbersome and awkward.\n\nBecause of this, I came up with the idea to develop a mobile app that I could install in different devices and bring them to my shows, so I wouldn't ever need to print sheet music again.\n\nI hope you enjoy using Songlist Plus as much as I do and it helps you be a better and more productive musician.",
+      "Meu nome é Fernando, sou músico e desenvolvedor de software. Trabalho em tempo integral na área de tecnologia, mas a minha paixão é tocar e escutar música.\n\nDurante anos eu tive dificuldade em memorizar a letra ou cifra de músicas durante apresentações ao vivo, então eu sempre levava uma pasta com páginasi impressas - o que é muito pesado e desconfortável.\n\nPor esta razão, eu tive a ideia de desenvolver um aplicativo que eu pudesse instalar em diferentes dispositivos e trazê-los aos meus shows, para que eu não precisasse nunca mais imprimir letras ou cifras.\n\nEu espero que você goste do Songlist Plus tanto quanto eu e que lhe ajude a ser um músico melhor e mais produtivo."
     ],
     "find_me_title": ["Where you can find me", "Onde você pode me encontrar"],
     "find_me_email_txt": [
       "If you wanna reach me to talk about anything related to the app or software development, just send me and email:",
-      "Se você quiser falar comigo sobre qualquer coisa relacionada ao aplicativo ou desenvolvimento de software, basta mandar me mandar um email:"
+      "Se você quiser falar comigo sobre qualquer coisa relacionada ao aplicativo ou desenvolvimento de software, basta mandar mandar um email:"
     ],
     "find_me_yt_txt": [
       "You can also check my Youtube Channel, where you can find a bunch of videos of me singing and playing guitar:",
