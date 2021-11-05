@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:songlist_mobile/components/common/export_button.dart';
 import 'package:songlist_mobile/components/common/header.dart';
+import 'package:songlist_mobile/components/common/progress_dialog.dart';
 import 'package:songlist_mobile/components/common/toast_message.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/models/song.dart';
@@ -23,8 +24,7 @@ class _ExportDatabaseScreen extends State<ExportDatabaseScreen> {
   _ExportDatabaseScreen();
 
   late SongService songService;
-  bool exportConfirmed = false;
-  late Future<List<Song>> allSongs;
+  late Future<List<Song>> allSongsFuture;
 
   @override
   void initState() {
@@ -65,53 +65,41 @@ class _ExportDatabaseScreen extends State<ExportDatabaseScreen> {
                       children: [
                         Expanded(
                           child: ExportButton(onPressed: () {
-                            setState(() {
-                              this.exportConfirmed = true;
-                              this.allSongs = songService.exportSongs();
+                            // First we show a "Loading Dialog"
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) {
+                                return ProgressDialog(
+                                  message: LocalizationService.instance
+                                      .getLocalizedString("exporting_songs"),
+                                );
+                              },
+                            );
+                            //Now we get all songs from the database
+                            this.allSongsFuture = songService.exportSongs();
+                            allSongsFuture.then((songs) {
+                              // If there are songs to export, we export them to file
+                              if (songs.isNotEmpty) {
+                                this._export(songs).then((value) {
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pop(); // Close the dialog
+                                });
+                              } else {
+                                // If there are no songs, we just display an error message
+                                Navigator.of(context, rootNavigator: true)
+                                    .pop(); // Close the dialog
+                                ToastMessage.showErrorToast(
+                                    LocalizationService.instance
+                                        .getLocalizedString(
+                                            "no_songs_to_export"),
+                                    context);
+                              }
                             });
                           }),
                         )
                       ],
                     ),
-                    if (exportConfirmed)
-                      Padding(
-                        padding: const EdgeInsets.all(defaultPadding),
-                        child: Row(
-                          children: [
-                            FutureBuilder<List<Song>>(
-                              future: this.allSongs,
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<List<Song>> snapshot) {
-                                switch (snapshot.connectionState) {
-                                  case ConnectionState.none:
-                                    break;
-                                  case ConnectionState.waiting:
-                                    return CircularProgressIndicator();
-                                  case ConnectionState.active:
-                                    break;
-                                  case ConnectionState.done:
-                                    if (snapshot.hasData) {
-                                      this._export(snapshot.data!);
-                                      ToastMessage.showSuccessToast(
-                                          LocalizationService.instance
-                                              .getLocalizedString(
-                                                  "songs_exported"),
-                                          context);
-                                    } else if (snapshot.hasError) {
-                                      return Expanded(
-                                        child: Text(LocalizationService.instance
-                                                .getLocalizedString(
-                                                    "internal_error") +
-                                            ':\n\n${snapshot.error}'),
-                                      );
-                                    }
-                                }
-                                return Text("");
-                              },
-                            )
-                          ],
-                        ),
-                      ),
                   ],
                 ),
               )
@@ -122,7 +110,7 @@ class _ExportDatabaseScreen extends State<ExportDatabaseScreen> {
     );
   }
 
-  void _export(List<Song> songs) async {
+  Future<void> _export(List<Song> songs) async {
     String exportedFileName = "songlist-export.json";
     String jsonListOfSongs =
         jsonEncode(songs.map((s) => Song.toMap(s)).toList());

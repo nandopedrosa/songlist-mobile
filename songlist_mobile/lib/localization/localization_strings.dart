@@ -195,5 +195,11 @@ class LocalizationStrings {
       "An internet connection is required for this feature. Are you sure you are connected?",
       "É necessária uma conexão à internet para esta funcionalidade. Tem certeza que você está conectado?"
     ],
+    "importing_songs": ["Importing songs...", "Importando músicas..."],
+    "exporting_songs": ["Exporting songs...", "Exportando músicas..."],
+    "no_songs_to_export": [
+      "There are no songs to export.",
+      "Não há músicas a serem exportadas."
+    ]
   };
 }

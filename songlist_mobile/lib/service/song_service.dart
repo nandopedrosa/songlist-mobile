@@ -78,12 +78,18 @@ class SongService {
   //returns number of songs imported
   Future<int> importSongs(String jsonListOfSongs) async {
     int count = 0;
-    Iterable it = json.decode(jsonListOfSongs);
-    List<Song> songs = List<Song>.from(it.map((song) => Song.fromMap(song)));
-    for (Song s in songs) {
-      await this.save(s);
-      count++;
+    try {
+      Iterable it = json.decode(jsonListOfSongs);
+      List<Song> songs = List<Song>.from(it.map((song) => Song.fromMap(song)));
+      for (Song s in songs) {
+        await this.save(s);
+        count++;
+      }
+    } catch (e) {
+      return Future.value(
+          0); // Zero songs imported if any exception occurs (wrong file format, for example)
     }
+
     return Future.value(count);
   }
 
