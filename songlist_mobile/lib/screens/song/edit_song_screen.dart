@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:songlist_mobile/components/common/back_header.dart';
 import 'package:songlist_mobile/components/song/edit_song_form.dart';
-import 'package:songlist_mobile/components/common/header.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
+import 'package:songlist_mobile/main.dart';
+import 'package:songlist_mobile/screens/song/all_songs_screen.dart';
 
 import '../../util/constants.dart';
 
@@ -30,13 +32,23 @@ class _EditSongScreen extends State<EditSongScreen> {
         padding: EdgeInsets.all(defaultPadding),
         child: Column(
           children: [
-            Header(
-                title: LocalizationService.instance.getLocalizedString('song')),
             Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Expanded(
                 flex: 5,
                 child: Column(
                   children: [
+                    BackHeader(
+                        title: LocalizationService.instance
+                            .getLocalizedString("song"),
+                        goBack: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SonglistPlusMobileApp(
+                                  activeScreen: AllSongsScreen()),
+                            ),
+                          );
+                        }),
                     EditSongForm(
                       songId: songId,
                       importedLyricsText: this.importedLyricsText,

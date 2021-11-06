@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:songlist_mobile/components/common/delete_button.dart';
-import 'package:songlist_mobile/components/common/go_back_button.dart';
 import 'package:songlist_mobile/components/common/modal_dialog.dart';
 import 'package:songlist_mobile/components/common/save_button.dart';
 import 'package:songlist_mobile/components/common/text_area_editor.dart';
@@ -256,14 +255,6 @@ class _EditShowForm extends State<EditShowForm> {
               }
             });
           }),
-        GoBackButton(onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    SonglistPlusMobileApp(activeScreen: AllShowsScreen())),
-          );
-        }),
         if (this.showId != null) DeleteButton(onPressed: this.delete),
       ],
     );

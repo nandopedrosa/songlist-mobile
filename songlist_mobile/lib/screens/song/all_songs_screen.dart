@@ -58,7 +58,11 @@ class _AllSongsScreenState extends State<AllSongsScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        NewSongButton(),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: formFieldPadding),
+                          child: NewSongButton(),
+                        ),
                       ],
                     ),
                     SizedBox(height: defaultPadding),

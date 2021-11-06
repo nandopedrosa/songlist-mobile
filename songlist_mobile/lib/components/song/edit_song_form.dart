@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:songlist_mobile/components/common/delete_button.dart';
-import 'package:songlist_mobile/components/common/go_back_button.dart';
 import 'package:songlist_mobile/components/common/import_button.dart';
 import 'package:songlist_mobile/components/common/modal_dialog.dart';
 import 'package:songlist_mobile/components/common/save_button.dart';
@@ -202,14 +201,6 @@ class _EditSongForm extends State<EditSongForm> {
         SaveButton(
           onPressed: this.saveOrUpdateSong,
         ),
-        GoBackButton(onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    SonglistPlusMobileApp(activeScreen: AllSongsScreen())),
-          );
-        }),
         if (this.songId != null) DeleteButton(onPressed: this.delete),
       ],
     );

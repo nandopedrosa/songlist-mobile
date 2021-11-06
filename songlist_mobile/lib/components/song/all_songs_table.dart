@@ -42,9 +42,9 @@ class _AllSongsTableState extends State<AllSongsTable> {
             Expanded(
               child: Padding(
                 padding: EdgeInsets.only(
-                    left: defaultPadding / 8,
+                    left: formFieldPadding / 2,
                     bottom: defaultPadding,
-                    right: defaultPadding / 8,
+                    right: formFieldPadding / 2,
                     top: defaultPadding),
                 child: TextField(
                   controller: searchController,

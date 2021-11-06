@@ -23,38 +23,42 @@ class _RecentShowsGridState extends State<RecentShowsGrid> {
     final Size _size = MediaQuery.of(context).size;
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-                LocalizationService.instance.getLocalizedString('recent_shows'),
-                style: Theme.of(context).textTheme.subtitle1!),
-            Padding(
-              padding: EdgeInsets.only(left: defaultPadding),
-              child: ElevatedButton.icon(
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: defaultPadding,
-                    vertical: defaultPadding / 2,
+        Padding(
+          padding: const EdgeInsets.only(left: 4),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                  LocalizationService.instance
+                      .getLocalizedString('recent_shows'),
+                  style: Theme.of(context).textTheme.subtitle1!),
+              Padding(
+                padding: EdgeInsets.only(left: defaultPadding),
+                child: ElevatedButton.icon(
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: defaultPadding,
+                      vertical: defaultPadding / 2,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SonglistPlusMobileApp(
+                          activeScreen: EditShowScreen(),
+                        ),
+                      ),
+                    );
+                  },
+                  icon: Icon(Icons.add),
+                  label: Text(
+                    LocalizationService.instance.getLocalizedString('new_show'),
                   ),
                 ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SonglistPlusMobileApp(
-                        activeScreen: EditShowScreen(),
-                      ),
-                    ),
-                  );
-                },
-                icon: Icon(Icons.add),
-                label: Text(
-                  LocalizationService.instance.getLocalizedString('new_show'),
-                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         SizedBox(height: defaultPadding),
         Responsive(

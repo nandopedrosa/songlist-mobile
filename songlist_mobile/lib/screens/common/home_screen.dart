@@ -30,43 +30,46 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     RecentShowsGrid(),
                     SizedBox(height: defaultPadding * 3),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          LocalizationService.instance
-                              .getLocalizedString("recent_songs"),
-                          textAlign: TextAlign.start,
-                          style: Theme.of(context).textTheme.subtitle1!,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: defaultPadding),
-                          //New song button
-                          child: ElevatedButton.icon(
-                            style: TextButton.styleFrom(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: defaultPadding,
-                                vertical: defaultPadding / 2,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 4),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            LocalizationService.instance
+                                .getLocalizedString("recent_songs"),
+                            textAlign: TextAlign.start,
+                            style: Theme.of(context).textTheme.subtitle1!,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: defaultPadding),
+                            //New song button
+                            child: ElevatedButton.icon(
+                              style: TextButton.styleFrom(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: defaultPadding,
+                                  vertical: defaultPadding / 2,
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SonglistPlusMobileApp(
+                                      activeScreen: EditSongScreen(),
+                                    ),
+                                  ),
+                                );
+                              },
+                              icon: Icon(Icons.add),
+                              label: Text(
+                                LocalizationService.instance
+                                    .getLocalizedString('new_song'),
                               ),
                             ),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SonglistPlusMobileApp(
-                                    activeScreen: EditSongScreen(),
-                                  ),
-                                ),
-                              );
-                            },
-                            icon: Icon(Icons.add),
-                            label: Text(
-                              LocalizationService.instance
-                                  .getLocalizedString('new_song'),
-                            ),
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
                     SizedBox(height: defaultPadding),
                     RecentSongsTable(),

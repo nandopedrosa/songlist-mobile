@@ -59,7 +59,10 @@ class _AllShowsScreenState extends State<AllShowsScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        NewShowButton(),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 4),
+                          child: NewShowButton(),
+                        ),
                       ],
                     ),
                     SizedBox(height: defaultPadding),
