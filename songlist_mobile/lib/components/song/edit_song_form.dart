@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:songlist_mobile/components/common/delete_button.dart';
 import 'package:songlist_mobile/components/common/import_button.dart';
 import 'package:songlist_mobile/components/common/modal_dialog.dart';
+import 'package:songlist_mobile/components/common/progress_dialog.dart';
 import 'package:songlist_mobile/components/common/save_button.dart';
 import 'package:songlist_mobile/components/common/text_area_editor.dart';
 import 'package:songlist_mobile/components/common/text_field_editor.dart';
@@ -316,6 +317,16 @@ class _EditSongForm extends State<EditSongForm> {
       (hasConnection) {
         if (hasConnection) {
           if (this.isValidUrl(this._urlControler.text)) {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return ProgressDialog(
+                  message: LocalizationService.instance
+                      .getLocalizedString("importing_lyrics"),
+                );
+              },
+            );
             this._importLyrics(this._urlControler.text).then(
               (value) {
                 this._lyricsController.text = value.body.toString();

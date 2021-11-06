@@ -196,6 +196,10 @@ class LocalizationStrings {
       "É necessária uma conexão à internet para esta funcionalidade. Tem certeza que você está conectado?"
     ],
     "importing_songs": ["Importing songs...", "Importando músicas..."],
+    "importing_lyrics": [
+      "Importing lyrics or chords...",
+      "Importando letra ou cifra..."
+    ],
     "exporting_songs": ["Exporting songs...", "Exportando músicas..."],
     "no_songs_to_export": [
       "There are no songs to export.",
