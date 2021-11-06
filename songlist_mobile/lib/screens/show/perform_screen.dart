@@ -211,9 +211,6 @@ class _PerformScreen extends State<PerformScreen> {
                                                     });
                                                   },
                                                   showSearchBox: true,
-                                                  searchFieldProps:
-                                                      TextFieldProps(
-                                                          autofocus: true),
                                                 )
                                               ];
                                             }

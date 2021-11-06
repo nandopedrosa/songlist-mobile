@@ -168,9 +168,6 @@ class _ManageSetlistScreen extends State<ManageSetlistScreen> {
                                                   });
                                                 },
                                                 showSearchBox: true,
-                                                searchFieldProps:
-                                                    TextFieldProps(
-                                                        autofocus: true),
                                               )
                                             ];
                                           }
