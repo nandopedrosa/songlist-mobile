@@ -204,6 +204,13 @@ class LocalizationStrings {
     "no_songs_to_export": [
       "There are no songs to export.",
       "Não há músicas a serem exportadas."
-    ]
+    ],
+    "confirm_action": ["Confirm action", "Confirme a ação"],
+    "sure_delete": [
+      "Are you sure you want to delete? This action can't be undone.",
+      "Tem certeza que deseja excluir? Essa ação não pode ser desfeita."
+    ],
+    "cancel": ["Cancel", "Cancelar"],
+    "confirm": ["Confirm", "Confirmar"]
   };
 }

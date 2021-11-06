@@ -202,7 +202,26 @@ class _EditSongForm extends State<EditSongForm> {
         SaveButton(
           onPressed: this.saveOrUpdateSong,
         ),
-        if (this.songId != null) DeleteButton(onPressed: this.delete),
+        if (this.songId != null)
+          DeleteButton(onPressed: () {
+            showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (BuildContext context) {
+                  return ModalDialog(
+                    type: ModalDialogType.warning,
+                    title: LocalizationService.instance
+                        .getLocalizedString('confirm_action'),
+                    message: LocalizationService.instance
+                        .getLocalizedString("sure_delete"),
+                    dismissButtonText: LocalizationService.instance
+                        .getLocalizedString("cancel"),
+                    confirmButtonText: LocalizationService.instance
+                        .getLocalizedString("confirm"),
+                    confirmAction: this.delete,
+                  );
+                });
+          }),
       ],
     );
   }
