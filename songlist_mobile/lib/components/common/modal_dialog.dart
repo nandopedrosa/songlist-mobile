@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../util/constants.dart';
 
+// ignore: must_be_immutable
 class ModalDialog extends StatelessWidget {
   final String message;
   final String title;

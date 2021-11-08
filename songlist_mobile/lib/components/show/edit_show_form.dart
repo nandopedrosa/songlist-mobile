@@ -64,6 +64,9 @@ class _EditShowForm extends State<EditShowForm> {
       } else {
         this._whenLabelController.text = localizedWhen;
       }
+    } else {
+      this._whenLabelController.text =
+          LocalizationService.instance.getLocalizedString("select_date");
     }
     if (show.pay != null) this._payController.text = show.pay!;
     if (show.address != null) this._addressController.text = show.address!;

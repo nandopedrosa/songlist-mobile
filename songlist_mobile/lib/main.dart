@@ -50,7 +50,10 @@ class _SonglistPlusMobileAppState extends State<SonglistPlusMobileApp> {
           ),
         ],
         //Main screen is used as a template for other screens
-        child: MainScreen(activeScreen: this.widget.activeScreen),
+        child: GestureDetector(
+            onTap: () => FocusManager.instance.primaryFocus
+                ?.unfocus(), // Tapping outside of text fields hides the keyboarda
+            child: MainScreen(activeScreen: this.widget.activeScreen)),
       ),
     );
   }

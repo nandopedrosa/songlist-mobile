@@ -343,8 +343,8 @@ But she doesn''t see, she doesn''t see, no she just doesn''t see', 'Bossa nova' 
   Future<int> update(Song song) async {
     Database? db = await DatabaseHelper.instance.database;
     Map<String, dynamic> songMap = Song.toMap(song);
-    return db!
-        .update(_tableName, songMap, where: "id = ?", whereArgs: [song.id]);
+    db!.update(_tableName, songMap, where: "id = ?", whereArgs: [song.id]);
+    return Future.value(song.id);
   }
 
   void delete(int id) async {

@@ -21,14 +21,14 @@ class ToastMessage {
 
   static void showErrorToast(String message, BuildContext context) {
     if (Platform.isAndroid) {
-      _showSnackBarMessage(context, message, Colors.red);
+      _showSnackBarMessage(context, message, Color.fromRGBO(255, 67, 67, 0.8));
     } else if (Platform.isIOS) {
       Fluttertoast.showToast(
           msg: message,
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 5,
-          backgroundColor: Colors.red,
+          backgroundColor: Color.fromRGBO(255, 67, 67, 0.8),
           textColor: Colors.white,
           fontSize: defaultFontSize);
     }

@@ -125,8 +125,8 @@ class ShowDao {
   Future<int> update(Show show) async {
     Database? db = await DatabaseHelper.instance.database;
     Map<String, dynamic> songMap = Show.toMap(show);
-    return db!
-        .update(_tableName, songMap, where: "id = ?", whereArgs: [show.id]);
+    db!.update(_tableName, songMap, where: "id = ?", whereArgs: [show.id]);
+    return Future.value(show.id);
   }
 
   Future<void> updateDuration(int showId, String duration) async {

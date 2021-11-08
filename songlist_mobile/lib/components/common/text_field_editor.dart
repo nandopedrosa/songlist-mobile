@@ -35,6 +35,7 @@ class TextFieldEditor extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(formFieldPadding),
       child: TextField(
+        textCapitalization: TextCapitalization.sentences,
         controller: controller,
         style: TextStyle(fontSize: defaultFontSize),
         keyboardType: keyboardType,
