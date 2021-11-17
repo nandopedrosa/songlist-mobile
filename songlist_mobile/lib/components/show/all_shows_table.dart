@@ -127,10 +127,8 @@ class AllShowsFutureBuilder extends StatelessWidget {
               children = <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Expanded(
-                    child: Text(LocalizationService.instance
-                        .getLocalizedString("no_shows_found")),
-                  ),
+                  child: Text(LocalizationService.instance
+                      .getLocalizedString("no_shows_found")),
                 )
               ];
             } else {
