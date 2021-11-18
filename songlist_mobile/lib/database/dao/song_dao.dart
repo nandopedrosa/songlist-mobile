@@ -52,14 +52,24 @@ Dear.', 'Great solo', '2016-01-01 11:20:05');
 
   static String insertRecentSong3 = """ 
   INSERT INTO "song" ("title", "artist", "key", "tempo", "duration", "lyrics", "notes", "created_on") 
-  VALUES ( 'Covered Wagon Days', 'Will Morrissey', 'F', '117', '04:38', 'Verse:	In the days of forty-nine, There was no one who wouldd decline, The call out West where all the best of fortune seemed to shine.
+  VALUES ( 'Covered Wagon Days', 'Will Morrissey', 'F', '117', '04:38', 'Verse:	In the days of forty-nine, There was no one who would decline, 
+
+The call out West where all the best of fortune seemed to shine.
+
 Chorus:	Old covered wagon days. Gold dragging in their ways. Your deeds in history play Parts that grip the hearts of our nation.', 'Old classic' , '2016-01-01 12:20:05');
   """;
 
   static String insertRecentSong4 = """
   INSERT INTO "song" ("title", "artist", "key", "tempo", "duration", "lyrics", "notes", "created_on") 
-  VALUES ( 'Farewell Blues', 'Rappolo', 'F', '145', '04:03', 'Verse:	Sadness just makes me sigh. I have come to say goodbye. Altho I go Ive got those farewell blues.
-Chorus:	Those farewell blues make me years That parting kiss seems to burn. Farewell dearie Some day I will return...', 'Great blues' , '2016-01-01 13:20:05');
+  VALUES ( 'Farewell Blues', 'Rappolo', 'F', '145', '04:03', 'Verse:	Sadness just makes me sigh. I have come to say goodbye. 
+  
+Altho I go Ive got those farewell blues.
+
+Chorus:	Those farewell blues make me years 
+
+That parting kiss seems to burn. 
+
+Farewell dearie Some day I will return...', 'Great blues' , '2016-01-01 13:20:05');
   """;
 
   Future<List<Song>> getRecentSongs(int recentSongsLimit) async {
