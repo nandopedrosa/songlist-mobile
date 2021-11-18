@@ -1,13 +1,35 @@
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:songlist_mobile/util/constants.dart';
 
 //Screen without the drawer menu
-class SecondaryScreen extends StatelessWidget {
+class SecondaryScreen extends StatefulWidget {
   final Widget activeScreen;
 
   const SecondaryScreen({Key? key, required this.activeScreen})
       : super(key: key);
+
+  @override
+  State<SecondaryScreen> createState() => _SecondaryScreenState();
+}
+
+class _SecondaryScreenState extends State<SecondaryScreen> {
+  @override
+  void initState() {
+    super.initState();
+    BackButtonInterceptor.add(myInterceptor);
+  }
+
+  @override
+  void dispose() {
+    BackButtonInterceptor.remove(myInterceptor);
+    super.dispose();
+  }
+
+  bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +50,6 @@ class SecondaryScreen extends StatelessWidget {
             canvasColor: secondaryColor,
             cardColor: secondaryColor,
             hintColor: Colors.white),
-        home: activeScreen);
+        home: widget.activeScreen);
   }
 }

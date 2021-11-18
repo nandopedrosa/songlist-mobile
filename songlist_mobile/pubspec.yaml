@@ -38,7 +38,8 @@ dependencies:
   share_plus: ^3.0.4
   path_provider: ^2.0.5
   file_picker: ^4.1.5
-    
+  back_button_interceptor: ^5.0.2
+  
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

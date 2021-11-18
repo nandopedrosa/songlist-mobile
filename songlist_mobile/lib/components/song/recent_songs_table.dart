@@ -67,27 +67,29 @@ class RecentSongsFutureBuilder extends StatelessWidget {
 
           //Snapshot is ASYNC, we have to check if it has data before accessing it
           if (snapshot.hasData) {
-            children = <Widget>[
-              DataTable2(
-                //imported library
-                columnSpacing: defaultPadding,
-                showCheckboxColumn: false,
-                columns: [
-                  DataColumn(
-                    label: Text(LocalizationService.instance
-                        .getLocalizedString("title")),
+            if (snapshot.data!.length > 0) {
+              children = <Widget>[
+                DataTable2(
+                  //imported library
+                  columnSpacing: defaultPadding,
+                  showCheckboxColumn: false,
+                  columns: [
+                    DataColumn(
+                      label: Text(LocalizationService.instance
+                          .getLocalizedString("title")),
+                    ),
+                    DataColumn(
+                      label: Text(LocalizationService.instance
+                          .getLocalizedString("artist")),
+                    ),
+                  ],
+                  rows: List.generate(
+                    snapshot.data!.length,
+                    (index) => tableDataRow(snapshot.data![index], context),
                   ),
-                  DataColumn(
-                    label: Text(LocalizationService.instance
-                        .getLocalizedString("artist")),
-                  ),
-                ],
-                rows: List.generate(
-                  snapshot.data!.length,
-                  (index) => tableDataRow(snapshot.data![index], context),
-                ),
-              )
-            ];
+                )
+              ];
+            }
           }
           return Column(
             children: children,

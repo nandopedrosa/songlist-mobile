@@ -23,7 +23,6 @@ class SonglistPlusMobileApp extends StatefulWidget {
 
 class _SonglistPlusMobileAppState extends State<SonglistPlusMobileApp> {
   @override
-  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -51,8 +50,8 @@ class _SonglistPlusMobileAppState extends State<SonglistPlusMobileApp> {
         ],
         //Main screen is used as a template for other screens
         child: GestureDetector(
-            onTap: () => FocusManager.instance.primaryFocus
-                ?.unfocus(), // Tapping outside of text fields hides the keyboarda
+            // Tapping outside of text fields hides the keyboard
+            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
             child: MainScreen(activeScreen: this.widget.activeScreen)),
       ),
     );
