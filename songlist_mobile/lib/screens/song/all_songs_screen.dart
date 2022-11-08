@@ -4,6 +4,8 @@ import 'package:songlist_mobile/components/song/all_songs_table.dart';
 import 'package:songlist_mobile/components/common/header.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/main.dart';
+import 'package:songlist_mobile/screens/common/upgrade_screen.dart';
+import 'package:songlist_mobile/service/song_service.dart';
 import 'package:songlist_mobile/util/responsive.dart';
 import 'package:songlist_mobile/screens/song/edit_song_screen.dart';
 import '../../util/constants.dart';
@@ -32,7 +34,7 @@ class _AllSongsScreenState extends State<AllSongsScreen> {
     super.initState();
     // We need this to show a snackbar message after deleting a song (coming from the Edit Screen)
     if (didDelete)
-      WidgetsBinding.instance!.addPostFrameCallback((_) =>
+      WidgetsBinding.instance.addPostFrameCallback((_) =>
           ToastMessage.showSuccessToast(
               LocalizationService.instance
                   .getLocalizedString('song_successfully_deleted'),
@@ -93,14 +95,27 @@ class NewSongButton extends StatelessWidget {
         ),
       ),
       onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SonglistPlusMobileApp(
-              activeScreen: EditSongScreen(),
-            ),
-          ),
-        );
+        SongService().getTotalSongs().then((total) {
+          if (total >= freeSongsLimit) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SonglistPlusMobileApp(
+                  activeScreen: UpgradeScreen(),
+                ),
+              ),
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SonglistPlusMobileApp(
+                  activeScreen: EditSongScreen(),
+                ),
+              ),
+            );
+          }
+        });
       },
       icon: Icon(Icons.add),
       label: Text(

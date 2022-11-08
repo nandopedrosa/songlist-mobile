@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+//Free songs limit
+const int freeSongsLimit = 4;
+
 //Colors
 const primaryColor = Color(0xFF2697FF);
 const secondaryColor = Color(0xFF2A2D3E);

@@ -1,3 +1,5 @@
+import 'package:songlist_mobile/util/constants.dart';
+
 class LocalizationStrings {
   static const localizedStrings = <String, List<String>>{
     'tools': ['Tools', 'Ferramentas'],
@@ -211,6 +213,19 @@ class LocalizationStrings {
       "Tem certeza que deseja excluir? Essa ação não pode ser desfeita."
     ],
     "cancel": ["Cancel", "Cancelar"],
-    "confirm": ["Confirm", "Confirmar"]
+    "confirm": ["Confirm", "Confirmar"],
+    "upgrade": ["Upgrade", "Upgrade"],
+    "upgrade_title": [
+      "Upgrade Songlist Plus",
+      "Faça o upgrade do Songlist  Plus"
+    ],
+    "upgrade_txt": [
+      "In order to add more than $freeSongsLimit songs, you have to upgrade to the Pro version of Songlist Plus. This will help us keep the app updated and free of bugs.",
+      "Para adicionar mais do que $freeSongsLimit músicas, você tem que fazer o upgrade para a versão Pro do Songlist Plus. Isso nos ajudará a manter o aplicativo atualizado e sem bugs."
+    ],
+    "upgrade_question": [
+      "Would you like to upgrade?",
+      "Gostaria de fazer o upgrade?"
+    ]
   };
 }

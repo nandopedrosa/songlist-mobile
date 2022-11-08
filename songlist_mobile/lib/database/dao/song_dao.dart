@@ -133,6 +133,15 @@ Farewell dearie Some day I will return...', 'Great blues' , '2016-01-01 13:20:05
     return allSongs;
   }
 
+  // Returns the number of songs the user has added
+  Future<int> getTotalSongs() async {
+    Database? db = await DatabaseHelper.instance.database;
+    String querySql = "select count(*) as total from song";
+    List<Map<String, dynamic>> result = await db!.rawQuery(querySql);
+    int total = result.first["total"];
+    return total;
+  }
+
   // Check if a song is associated with any setlist.
   // This is useful to mantain referential integrity (don't allow deleting this song)
   Future<bool> isInSetlist(int songId) async {

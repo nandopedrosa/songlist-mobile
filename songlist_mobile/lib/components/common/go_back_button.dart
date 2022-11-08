@@ -19,7 +19,7 @@ class GoBackButton extends StatelessWidget {
         child: OutlinedButton(
             onPressed: this.onPressed,
             style: OutlinedButton.styleFrom(
-                primary: Colors.white70,
+                backgroundColor: Colors.white70,
                 side: BorderSide(color: Colors.white54)),
             child:
                 Text(LocalizationService.instance.getLocalizedString('back'))),

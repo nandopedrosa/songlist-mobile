@@ -4,7 +4,9 @@ import 'package:songlist_mobile/components/show/recent_shows_grid.dart';
 import 'package:songlist_mobile/components/song/recent_songs_table.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/main.dart';
+import 'package:songlist_mobile/screens/common/upgrade_screen.dart';
 import 'package:songlist_mobile/screens/song/edit_song_screen.dart';
+import 'package:songlist_mobile/service/song_service.dart';
 
 import '../../util/constants.dart';
 
@@ -52,14 +54,29 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                               onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => SonglistPlusMobileApp(
-                                      activeScreen: EditSongScreen(),
-                                    ),
-                                  ),
-                                );
+                                SongService().getTotalSongs().then((total) {
+                                  if (total >= freeSongsLimit) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            SonglistPlusMobileApp(
+                                          activeScreen: UpgradeScreen(),
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            SonglistPlusMobileApp(
+                                          activeScreen: EditSongScreen(),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                });
                               },
                               icon: Icon(Icons.add),
                               label: Text(

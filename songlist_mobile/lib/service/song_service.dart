@@ -105,6 +105,11 @@ class SongService {
     return allSongs;
   }
 
+  //Returns the total number of songs the user has added
+  Future<int> getTotalSongs() {
+    return this._dao.getTotalSongs();
+  }
+
   Future<List<Song>> getSongsByTitleOrArtist(String term) {
     Future<List<Song>> songs;
 

@@ -4,6 +4,7 @@ import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/main.dart';
 import 'package:songlist_mobile/screens/common/about_screen.dart';
 import 'package:songlist_mobile/screens/common/help_screen.dart';
+import 'package:songlist_mobile/screens/common/upgrade_screen.dart';
 import 'package:songlist_mobile/screens/show/all_shows_screen.dart';
 import 'package:songlist_mobile/screens/song/all_songs_screen.dart';
 import 'package:songlist_mobile/screens/common/home_screen.dart';
@@ -74,6 +75,18 @@ class SideMenu extends StatelessWidget {
                 MaterialPageRoute(
                     builder: (context) =>
                         SonglistPlusMobileApp(activeScreen: ToolsScreen())),
+              );
+            },
+          ),
+          DrawerListTile(
+            title: LocalizationService.instance.getLocalizedString("upgrade"),
+            svgSrc: "assets/icons/currency-dollar.svg",
+            press: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        SonglistPlusMobileApp(activeScreen: UpgradeScreen())),
               );
             },
           ),

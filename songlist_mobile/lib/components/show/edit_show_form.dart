@@ -140,7 +140,7 @@ class _EditShowForm extends State<EditShowForm> {
                 this._showDatePicker(formContext);
               },
               style: OutlinedButton.styleFrom(
-                  primary: Colors.white70,
+                  backgroundColor: Colors.white70,
                   side: BorderSide(color: Colors.white54)),
               label: TextFormFieldDisabled(
                 onTap: () {

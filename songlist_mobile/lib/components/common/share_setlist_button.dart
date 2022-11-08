@@ -29,7 +29,7 @@ class ShareSetlistButton extends StatelessWidget {
         child: ElevatedButton.icon(
           onPressed: this.onPressed,
           style: ElevatedButton.styleFrom(
-            primary: Colors.green,
+            backgroundColor: Colors.green,
           ),
           icon: Icon(
             Icons.ios_share,

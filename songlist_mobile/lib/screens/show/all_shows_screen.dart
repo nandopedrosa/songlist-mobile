@@ -33,7 +33,7 @@ class _AllShowsScreenState extends State<AllShowsScreen> {
     super.initState();
     // We need this to show a snackbar message after deleting a show (coming from the Edit Screen)
     if (didDelete)
-      WidgetsBinding.instance!.addPostFrameCallback((_) =>
+      WidgetsBinding.instance.addPostFrameCallback((_) =>
           ToastMessage.showSuccessToast(
               LocalizationService.instance
                   .getLocalizedString('show_successfully_deleted'),

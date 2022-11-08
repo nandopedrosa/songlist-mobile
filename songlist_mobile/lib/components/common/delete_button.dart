@@ -18,7 +18,7 @@ class DeleteButton extends StatelessWidget {
         width: double.infinity,
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              primary: Color.fromRGBO(255, 67, 67, 0.8),
+              backgroundColor: Color.fromRGBO(255, 67, 67, 0.8),
             ),
             onPressed: this.onPressed,
             child: Text(

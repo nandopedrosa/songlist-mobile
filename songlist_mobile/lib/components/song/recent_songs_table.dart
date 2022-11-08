@@ -1,4 +1,3 @@
-import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/main.dart';
@@ -37,14 +36,9 @@ class _RecentSongsTableState extends State<RecentSongsTable> {
         color: secondaryColor,
         borderRadius: const BorderRadius.all(Radius.circular(10)),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: double.infinity,
-            child: RecentSongsFutureBuilder(recentSongs: recentSongs),
-          ),
-        ],
+      child: SizedBox(
+        width: double.infinity,
+        child: RecentSongsFutureBuilder(recentSongs: recentSongs),
       ),
     );
   }
@@ -69,7 +63,7 @@ class RecentSongsFutureBuilder extends StatelessWidget {
           if (snapshot.hasData) {
             if (snapshot.data!.length > 0) {
               children = <Widget>[
-                DataTable2(
+                DataTable(
                   //imported library
                   columnSpacing: defaultPadding,
                   showCheckboxColumn: false,
