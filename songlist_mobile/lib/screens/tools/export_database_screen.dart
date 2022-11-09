@@ -121,6 +121,7 @@ class _ExportDatabaseScreen extends State<ExportDatabaseScreen> {
     await file.writeAsString(jsonListOfSongs);
 
     //Share to user
+    // ignore: deprecated_member_use
     Share.shareFiles(['${directory.path}/$exportedFileName']);
   }
 }

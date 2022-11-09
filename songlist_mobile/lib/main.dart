@@ -3,17 +3,23 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:songlist_mobile/controllers/MenuController.dart';
 import 'package:songlist_mobile/screens/common/home_screen.dart';
+import 'package:songlist_mobile/screens/common/main_screen.dart';
 import 'package:songlist_mobile/service/app_purchases.dart';
 import 'package:songlist_mobile/util/constants.dart';
 
 void main() {
-  runApp(SonglistPlusMobileApp(activeScreen: HomeScreen()));
+  runApp(SonglistPlusMobileApp(
+    activeScreen: HomeScreen(),
+    isFirstRun: true,
+  ));
 }
 
 class SonglistPlusMobileApp extends StatefulWidget {
   final Widget activeScreen;
+  final bool isFirstRun;
 
-  const SonglistPlusMobileApp({Key? key, required this.activeScreen})
+  const SonglistPlusMobileApp(
+      {Key? key, required this.activeScreen, this.isFirstRun = false})
       : super(key: key);
 
   @override
@@ -57,7 +63,9 @@ class _SonglistPlusMobileAppState extends State<SonglistPlusMobileApp> {
             GestureDetector(
           // Tapping outside of text fields hides the keyboard
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-          child: HomeScreen(),
+          child: widget.isFirstRun
+              ? HomeScreen()
+              : MainScreen(activeScreen: this.widget.activeScreen),
         ),
       ),
     );

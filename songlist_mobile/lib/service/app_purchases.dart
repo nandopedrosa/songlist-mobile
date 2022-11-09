@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:songlist_mobile/models/purchasable_product.dart';
 import 'package:songlist_mobile/models/store_state.dart';
 import 'package:songlist_mobile/util/constants.dart';
@@ -20,7 +21,7 @@ class AppPurchases extends ChangeNotifier {
       onDone: _updateStreamOnDone,
       onError: _updateStreamOnError,
     );
-    loadPurchases();
+    loadProducts();
   }
 
   @override
@@ -29,7 +30,8 @@ class AppPurchases extends ChangeNotifier {
     super.dispose();
   }
 
-  Future<void> loadPurchases() async {
+  // Load available products
+  Future<void> loadProducts() async {
     final available = await iapConnection.isAvailable();
     if (!available) {
       storeState = StoreState.notAvailable;
@@ -48,12 +50,48 @@ class AppPurchases extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Buys a product (can be consumable or non consumable - we only deal with the latter)
   Future<void> buy(PurchasableProduct product) async {
-    // omitted
+    final purchaseParam = PurchaseParam(productDetails: product.productDetails);
+    await iapConnection.buyNonConsumable(purchaseParam: purchaseParam);
   }
 
+  // This is called after each purchase
   void _onPurchaseUpdate(List<PurchaseDetails> purchaseDetailsList) {
-    // Handle purchases here
+    purchaseDetailsList.forEach(_handlePurchase);
+    notifyListeners();
+  }
+
+  // For each purchase, complete it, and register it locally
+  // We are using shared preferences, but it's best to register it in the cloud
+  void _handlePurchase(PurchaseDetails purchaseDetails) {
+    // Here we handle purchase error, such as Already Owned Product
+    if (purchaseDetails.status == PurchaseStatus.error) {
+      if (purchaseDetails.error!.message ==
+          "BillingResponse.itemAlreadyOwned") {
+        _registerPurchaseLocally(noSongLimitId);
+      }
+    }
+
+    if (purchaseDetails.status == PurchaseStatus.purchased) {
+      _registerPurchaseLocally(purchaseDetails.productID);
+    }
+
+    if (purchaseDetails.pendingCompletePurchase) {
+      iapConnection.completePurchase(purchaseDetails);
+    }
+  }
+
+  void _registerPurchaseLocally(String productID) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(productID, true);
+  }
+
+  static Future<bool> checkPurchaseLocally(String productID) async {
+    //We check if the user has purchased the Pro version
+    final prefs = await SharedPreferences.getInstance();
+    final bool isPurchased = prefs.getBool(productID) ?? false;
+    return isPurchased;
   }
 
   void _updateStreamOnDone() {

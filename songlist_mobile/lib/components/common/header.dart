@@ -7,11 +7,16 @@ import 'package:provider/provider.dart';
 // Application header for primary screens
 // ignore: must_be_immutable
 class Header extends StatelessWidget {
-  Header({Key? key, required this.title, this.showSideMenu = true})
+  Header(
+      {Key? key,
+      required this.title,
+      this.showSideMenu = true,
+      this.scaffoldKey})
       : super(key: key);
 
   final String title;
   bool showSideMenu;
+  GlobalKey<ScaffoldState>? scaffoldKey;
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +29,10 @@ class Header extends StatelessWidget {
           //Either way, title always shows
           if (!Responsive.isDesktop(context) && showSideMenu)
             IconButton(
-              icon: Icon(Icons.menu),
-              onPressed: context.read<MenuController>().controlMenu,
-            ),
+                icon: Icon(Icons.menu),
+                onPressed: () {
+                  context.read<MenuController>().controlMenu(scaffoldKey);
+                }),
           Text(
             this.title,
             style: Theme.of(context).textTheme.headline6,

@@ -2,6 +2,11 @@ import 'package:songlist_mobile/util/constants.dart';
 
 class LocalizationStrings {
   static const localizedStrings = <String, List<String>>{
+    'congratulations': ['Congratulations', 'Parabéns'],
+    'already_upgraded': [
+      "You have already upgraded for the Pro Version of Songlist Plus and you can add as many songs as you want.\n\nThank you for the support!",
+      "Você já fez o upgrade para a versão Pro do Songlist Plus e agora pode adicionar quantas músicas quiser.\n\nMuito obrigado pelo suporte!"
+    ],
     'tools': ['Tools', 'Ferramentas'],
     'help': ['Help', 'Ajuda'],
     'pro_version': ['Pro Version', 'Versão Pro'],

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:songlist_mobile/components/common/header.dart';
 import 'package:songlist_mobile/components/common/side_menu.dart';
 import 'package:songlist_mobile/components/show/recent_shows_grid.dart';
 import 'package:songlist_mobile/components/song/recent_songs_table.dart';
-import 'package:songlist_mobile/controllers/MenuController.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/main.dart';
 import 'package:songlist_mobile/screens/common/upgrade_screen.dart';
 import 'package:songlist_mobile/screens/song/edit_song_screen.dart';
+import 'package:songlist_mobile/service/app_purchases.dart';
 import 'package:songlist_mobile/service/song_service.dart';
 import 'package:songlist_mobile/util/responsive.dart';
 
@@ -20,10 +19,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: context.read<MenuController>().scaffoldKey,
+      key: _scaffoldKey,
       drawer: SideMenu(),
       body: SafeArea(
         child: Row(
@@ -44,7 +44,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: EdgeInsets.all(defaultPadding),
                   child: Column(
                     children: [
-                      Header(title: "Home"),
+                      Header(
+                        title: "Home",
+                        scaffoldKey: _scaffoldKey,
+                      ),
                       SizedBox(height: defaultPadding),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,34 +82,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               vertical: defaultPadding / 2,
                                             ),
                                           ),
-                                          onPressed: () {
-                                            SongService()
-                                                .getTotalSongs()
-                                                .then((total) {
-                                              if (total >= freeSongsLimit) {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        SonglistPlusMobileApp(
-                                                      activeScreen:
-                                                          UpgradeScreen(),
-                                                    ),
-                                                  ),
-                                                );
-                                              } else {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        SonglistPlusMobileApp(
-                                                      activeScreen:
-                                                          EditSongScreen(),
-                                                    ),
-                                                  ),
-                                                );
-                                              }
-                                            });
+                                          onPressed: () async {
+                                            _accessSongScreen();
                                           },
                                           icon: Icon(Icons.add),
                                           label: Text(
@@ -134,6 +111,35 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  void _accessSongScreen() {
+    // Here we check if the user has the "Pro Version" (no song limit)
+    AppPurchases.checkPurchaseLocally(noSongLimitId).then(
+      (isPurchased) {
+        if (isPurchased) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SonglistPlusMobileApp(
+                activeScreen: EditSongScreen(),
+              ),
+            ),
+          );
+        } else {
+          SongService().getTotalSongs().then((total) {
+            if (total >= freeSongsLimit) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UpgradeScreen(),
+                ),
+              );
+            }
+          });
+        }
+      },
     );
   }
 }
