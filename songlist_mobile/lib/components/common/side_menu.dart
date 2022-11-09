@@ -84,9 +84,7 @@ class SideMenu extends StatelessWidget {
             press: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        SonglistPlusMobileApp(activeScreen: UpgradeScreen())),
+                MaterialPageRoute(builder: (context) => UpgradeScreen()),
               );
             },
           ),

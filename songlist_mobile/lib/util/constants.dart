@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 //Free songs limit
 const int freeSongsLimit = 4;
+const String noSongLimitId = "no_song_limit";
 
 //Colors
 const primaryColor = Color(0xFF2697FF);
