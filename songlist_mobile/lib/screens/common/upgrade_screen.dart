@@ -22,6 +22,7 @@ class _UpgradeScreen extends State<UpgradeScreen> {
     List<PurchasableProduct> listOfProducts = purchases.products;
     PurchasableProduct noSongLimitProduct =
         listOfProducts.firstWhere((p) => p.id == noSongLimitId);
+
     return Scaffold(
       key: context.read<MenuController>().scaffoldKey,
       drawer: SideMenu(),
@@ -88,7 +89,7 @@ class _UpgradeScreen extends State<UpgradeScreen> {
                                         onPressed: () {
                                           purchases
                                               .buy(noSongLimitProduct)
-                                              .then((_) async {
+                                              .then((_) {
                                             setState(() {});
                                           });
                                         },
@@ -98,6 +99,30 @@ class _UpgradeScreen extends State<UpgradeScreen> {
                                 ),
                                 SizedBox(
                                   height: 20,
+                                ),
+                                HelpText(
+                                  isHeadline: false,
+                                  textKey: "restore_purchase_text",
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.grey),
+                                        onPressed: () {
+                                          purchases.restorePurchase().then((_) {
+                                            setState(() {});
+                                          });
+                                        },
+                                        child: Text(LocalizationService.instance
+                                            .getLocalizedString(
+                                                'restore_purchase'))),
+                                  ),
                                 ),
                               ],
                             );

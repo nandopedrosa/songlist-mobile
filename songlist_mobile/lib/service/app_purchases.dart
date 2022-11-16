@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/models/purchasable_product.dart';
 import 'package:songlist_mobile/models/store_state.dart';
 import 'package:songlist_mobile/util/constants.dart';
@@ -50,9 +52,16 @@ class AppPurchases extends ChangeNotifier {
     notifyListeners();
   }
 
+  //Restores previous purchase
+  Future<void> restorePurchase() async {
+    await iapConnection.restorePurchases();
+  }
+
   // Buys a product (can be consumable or non consumable - we only deal with the latter)
   Future<void> buy(PurchasableProduct product) async {
-    final purchaseParam = PurchaseParam(productDetails: product.productDetails);
+    final purchaseParam = PurchaseParam(
+        productDetails:
+            product.productDetails); // Consider passing App Name parameter
     await iapConnection.buyNonConsumable(purchaseParam: purchaseParam);
   }
 
@@ -70,10 +79,20 @@ class AppPurchases extends ChangeNotifier {
       if (purchaseDetails.error!.message ==
           "BillingResponse.itemAlreadyOwned") {
         _registerPurchaseLocally(noSongLimitId);
+        Fluttertoast.showToast(
+            msg: LocalizationService.instance
+                .getLocalizedString('item_already_owned'),
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 5,
+            backgroundColor: Color.fromRGBO(216, 150, 20, 0.8),
+            textColor: Colors.white,
+            fontSize: defaultFontSize);
       }
     }
 
-    if (purchaseDetails.status == PurchaseStatus.purchased) {
+    if (purchaseDetails.status == PurchaseStatus.purchased ||
+        purchaseDetails.status == PurchaseStatus.restored) {
       _registerPurchaseLocally(purchaseDetails.productID);
     }
 

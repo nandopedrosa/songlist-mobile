@@ -7,6 +7,19 @@ class LocalizationStrings {
       "You have already upgraded for the Pro Version of Songlist Plus and you can add as many songs as you want.\n\nThank you for the support!",
       "Você já fez o upgrade para a versão Pro do Songlist Plus e agora pode adicionar quantas músicas quiser.\n\nMuito obrigado pelo suporte!"
     ],
+    'restore_purchase': ["Restore purchase", "Restaurar compra"],
+    'restore_purchase_text': [
+      "If you have already purchased the Pro Version of Songlist Plus and are using a new device, you can also restore your purchase.",
+      "Se você já comprou a versão Pro do Songlist Plus e trocou de dispositivo, você também pode restaurar a sua compra."
+    ],
+    'item_already_owned': [
+      'You already own this item',
+      'Você já comprou esse item'
+    ],
+    'restore_successful': [
+      'Purchase successfully restored',
+      'Compra restaurada com sucesso'
+    ],
     'tools': ['Tools', 'Ferramentas'],
     'help': ['Help', 'Ajuda'],
     'pro_version': ['Pro Version', 'Versão Pro'],
