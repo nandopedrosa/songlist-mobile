@@ -76,19 +76,21 @@ class AppPurchases extends ChangeNotifier {
   void _handlePurchase(PurchaseDetails purchaseDetails) {
     // Here we handle purchase error, such as Already Owned Product
     if (purchaseDetails.status == PurchaseStatus.error) {
+      String errorMsg = purchaseDetails.error!.message;
       if (purchaseDetails.error!.message ==
           "BillingResponse.itemAlreadyOwned") {
+        errorMsg = LocalizationService.instance
+            .getLocalizedString("item_already_owned");
         _registerPurchaseLocally(noSongLimitId);
-        Fluttertoast.showToast(
-            msg: LocalizationService.instance
-                .getLocalizedString('item_already_owned'),
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 5,
-            backgroundColor: Color.fromRGBO(216, 150, 20, 0.8),
-            textColor: Colors.white,
-            fontSize: defaultFontSize);
       }
+      Fluttertoast.showToast(
+          msg: errorMsg,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 5,
+          backgroundColor: Color.fromRGBO(216, 150, 20, 0.8),
+          textColor: Colors.white,
+          fontSize: defaultFontSize);
     }
 
     if (purchaseDetails.status == PurchaseStatus.purchased ||
