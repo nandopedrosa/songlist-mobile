@@ -5,6 +5,7 @@ import 'package:songlist_mobile/components/common/header.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/main.dart';
 import 'package:songlist_mobile/screens/common/upgrade_screen.dart';
+import 'package:songlist_mobile/service/app_purchases.dart';
 import 'package:songlist_mobile/service/song_service.dart';
 import 'package:songlist_mobile/util/responsive.dart';
 import 'package:songlist_mobile/screens/song/edit_song_screen.dart';
@@ -85,6 +86,35 @@ class NewSongButton extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  void _accessSongScreen(BuildContext context) {
+    // Here we check if the user has the "Pro Version" (no song limit)
+    AppPurchases.checkPurchaseLocally(noSongLimitId).then(
+      (isPurchased) {
+        if (isPurchased) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SonglistPlusMobileApp(
+                activeScreen: EditSongScreen(),
+              ),
+            ),
+          );
+        } else {
+          SongService().getTotalSongs().then((total) {
+            if (total >= freeSongsLimit) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UpgradeScreen(),
+                ),
+              );
+            }
+          });
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
@@ -95,27 +125,7 @@ class NewSongButton extends StatelessWidget {
         ),
       ),
       onPressed: () {
-        SongService().getTotalSongs().then((total) {
-          if (total >= freeSongsLimit) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SonglistPlusMobileApp(
-                  activeScreen: UpgradeScreen(),
-                ),
-              ),
-            );
-          } else {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SonglistPlusMobileApp(
-                  activeScreen: EditSongScreen(),
-                ),
-              ),
-            );
-          }
-        });
+        _accessSongScreen(context);
       },
       icon: Icon(Icons.add),
       label: Text(
