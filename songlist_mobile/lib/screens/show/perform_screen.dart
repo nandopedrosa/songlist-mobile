@@ -81,6 +81,8 @@ class _PerformScreen extends State<PerformScreen> {
   bool isAutoScroll = false;
   ScrollController _scrollController = ScrollController();
   double speedFactor = 20;
+  GlobalKey keyFinal =
+      GlobalKey(); // serve para identificar a posicao do final da tela
 
   // Converts mm:ss format to seconds
   // If no duration is given, we default to 180 seconds
@@ -103,14 +105,19 @@ class _PerformScreen extends State<PerformScreen> {
 
   // Fazemos o scroll proporcional à duração da música (em segundos)
   _scroll(String? songDuration) {
-    _scrollController.jumpTo(0);
-    int durationSeconds = _durationToSeconds(songDuration);
+    _scrollController.jumpTo(0); //antes de cada scroll posicionamos no início
+    int durationSeconds = _durationToSeconds(
+        songDuration); //a velocidade depende da duracao da música
+
+    // o scroll vai até o icone final, após a letra (fix para iOS)
+    RenderBox box = keyFinal.currentContext!.findRenderObject() as RenderBox;
+    Offset pos = box.localToGlobal(Offset.zero);
+    double yFinal = pos.dy;
 
     _scrollController.animateTo(
-      MediaQuery.of(context).size.height, // sempre vai para o fim da tela
+      yFinal, // sempre vai para o fim da tela (ícone)
       duration: Duration(
-        seconds: (durationSeconds * 0.7)
-            .toInt(), // o scroll é 30% mais rápido do que a música
+        seconds: (durationSeconds),
       ),
       curve: Curves.linear,
     );
@@ -125,232 +132,244 @@ class _PerformScreen extends State<PerformScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        child: Column(children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                // It takes 5/6 part of the screen
-                flex: 5,
-                child: SafeArea(
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.only(
-                        top: defaultPadding,
-                        left: defaultPadding,
-                        right: defaultPadding),
-                    child: Column(
-                      children: [
-                        BackHeader(
-                          title: showName,
-                          goBack: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SonglistPlusMobileApp(
-                                  activeScreen: EditShowScreen(
-                                    showId: showId,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          physics: ClampingScrollPhysics(),
+          controller: _scrollController,
+          child: Column(children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  // It takes 5/6 part of the screen
+                  flex: 5,
+                  child: SafeArea(
+                    child: SingleChildScrollView(
+                      padding: EdgeInsets.only(
+                          top: defaultPadding,
+                          left: defaultPadding,
+                          right: defaultPadding),
+                      child: Column(
+                        children: [
+                          BackHeader(
+                            title: showName,
+                            goBack: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SonglistPlusMobileApp(
+                                    activeScreen: EditShowScreen(
+                                      showId: showId,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
-                          },
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(LocalizationService.instance
-                                .getLocalizedString('auto_scroll')),
-                            Switch(
-                              value: isAutoScroll,
-                              onChanged: (_) {
-                                setState(() {
-                                  isAutoScroll = !isAutoScroll;
-                                });
+                              );
+                            },
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(LocalizationService.instance
+                                  .getLocalizedString('auto_scroll')),
+                              Switch(
+                                value: isAutoScroll,
+                                onChanged: (_) {
+                                  setState(() {
+                                    isAutoScroll = !isAutoScroll;
+                                  });
 
-                                if (isAutoScroll) {
-                                  // Pegamos a música atual e sua duração
-                                  Song s = this
-                                      ._dropDownKey
-                                      .currentState!
-                                      .getSelectedItem!;
-                                  _scroll(s.duration);
-                                } else {
-                                  _stopScroll();
-                                }
-                              },
-                              activeTrackColor: Colors.lightGreenAccent,
-                              activeColor: Colors.green,
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                this._decreaseFontSize();
-                              },
-                              icon: SvgPicture.asset(
-                                "assets/icons/decrease-font.svg",
-                                color: increaseAndDecreaseIconColor,
-                                height: increaseAndDecreaseIconHeight,
+                                  if (isAutoScroll) {
+                                    // Pegamos a música atual e sua duração
+                                    Song s = this
+                                        ._dropDownKey
+                                        .currentState!
+                                        .getSelectedItem!;
+                                    _scroll(s.duration);
+                                  } else {
+                                    _stopScroll();
+                                  }
+                                },
+                                activeTrackColor: Colors.lightGreenAccent,
+                                activeColor: Colors.green,
                               ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                this._increaseFontSize();
-                              },
-                              icon: SvgPicture.asset(
-                                "assets/icons/increase-font.svg",
-                                color: increaseAndDecreaseIconColor,
-                                height: increaseAndDecreaseIconHeight,
+                              IconButton(
+                                onPressed: () {
+                                  this._decreaseFontSize();
+                                },
+                                icon: SvgPicture.asset(
+                                  "assets/icons/decrease-font.svg",
+                                  color: increaseAndDecreaseIconColor,
+                                  height: increaseAndDecreaseIconHeight,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: SetlistNavigationButton(
-                                  onPressed: this._previous,
-                                  topPad: 0,
-                                  label: LocalizationService.instance
-                                      .getLocalizedString("previous")),
-                            ),
-                            Expanded(
-                              child: SetlistNavigationButton(
-                                  topPad: 0,
-                                  onPressed: this._next,
-                                  label: LocalizationService.instance
-                                      .getLocalizedString("next")),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: formFieldPadding, right: formFieldPadding),
-                          child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  flex: 5,
-                                  child: Column(
-                                    children: [
-                                      FutureBuilder<List<Song>>(
-                                        future: this.performanceSongsFuture,
-                                        builder: (BuildContext context,
-                                            AsyncSnapshot<List<Song>>
-                                                snapshot) {
-                                          List<Widget> children = [];
-                                          if (snapshot.hasData) {
-                                            this.performanceSongsResolved =
-                                                snapshot.data!;
-                                            children = <Widget>[
-                                              DropdownSearch<Song>(
-                                                emptyBuilder: (context,
-                                                        searchEntry) =>
-                                                    Center(
-                                                        child: Text(LocalizationService
+                              IconButton(
+                                onPressed: () {
+                                  this._increaseFontSize();
+                                },
+                                icon: SvgPicture.asset(
+                                  "assets/icons/increase-font.svg",
+                                  color: increaseAndDecreaseIconColor,
+                                  height: increaseAndDecreaseIconHeight,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: SetlistNavigationButton(
+                                    onPressed: this._previous,
+                                    topPad: 0,
+                                    label: LocalizationService.instance
+                                        .getLocalizedString("previous")),
+                              ),
+                              Expanded(
+                                child: SetlistNavigationButton(
+                                    topPad: 0,
+                                    onPressed: this._next,
+                                    label: LocalizationService.instance
+                                        .getLocalizedString("next")),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                left: formFieldPadding,
+                                right: formFieldPadding),
+                            child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    flex: 5,
+                                    child: Column(
+                                      children: [
+                                        FutureBuilder<List<Song>>(
+                                          future: this.performanceSongsFuture,
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<List<Song>>
+                                                  snapshot) {
+                                            List<Widget> children = [];
+                                            if (snapshot.hasData) {
+                                              this.performanceSongsResolved =
+                                                  snapshot.data!;
+                                              children = <Widget>[
+                                                DropdownSearch<Song>(
+                                                  emptyBuilder: (context,
+                                                          searchEntry) =>
+                                                      Center(
+                                                          child: Text(LocalizationService
+                                                              .instance
+                                                              .getLocalizedString(
+                                                                  "no_songs_found"))),
+                                                  maxHeight: Responsive
+                                                      .getDropdownSearchHeight(
+                                                          context),
+                                                  key: _dropDownKey,
+                                                  compareFn: (i, s) =>
+                                                      i?.isEqual(s!) ?? false,
+                                                  mode: Mode.MENU,
+                                                  items: snapshot.data,
+                                                  selectedItem:
+                                                      snapshot.data![0],
+                                                  itemAsString: (Song? s) => s!
+                                                      .songAsStringWithPosition(),
+                                                  dropdownSearchDecoration:
+                                                      InputDecoration(
+                                                    labelText:
+                                                        LocalizationService
                                                             .instance
                                                             .getLocalizedString(
-                                                                "no_songs_found"))),
-                                                maxHeight: Responsive
-                                                    .getDropdownSearchHeight(
-                                                        context),
-                                                key: _dropDownKey,
-                                                compareFn: (i, s) =>
-                                                    i?.isEqual(s!) ?? false,
-                                                mode: Mode.MENU,
-                                                items: snapshot.data,
-                                                selectedItem: snapshot.data![0],
-                                                itemAsString: (Song? s) => s!
-                                                    .songAsStringWithPosition(),
-                                                dropdownSearchDecoration:
-                                                    InputDecoration(
-                                                  labelText: LocalizationService
-                                                      .instance
-                                                      .getLocalizedString(
-                                                          'setlist'),
-                                                ),
-                                                onChanged: (data) {
-                                                  setState(() {
-                                                    this._updateControllers(
-                                                        data!);
-                                                  });
-                                                },
-                                                showSearchBox: true,
-                                              )
-                                            ];
-                                          }
-                                          return Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.stretch,
-                                            children: children,
-                                          );
-                                        },
-                                      ),
-                                      SizedBox(height: defaultPadding),
-                                      Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Expanded(
-                                            child: TextFormFieldDisabled(
-                                                controller:
-                                                    _songTempoController,
-                                                color: Colors.white54),
-                                          ),
-                                          Expanded(
-                                            child: TextFormFieldDisabled(
-                                                controller: _songKeyController,
-                                                color: Colors.white54),
-                                          ),
-                                          Expanded(
-                                            child: TextFormFieldDisabled(
-                                                controller:
-                                                    _songDurationController,
-                                                color: Colors.white54),
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: TextFormFieldDisabled(
-                                              alignment: TextAlign.start,
-                                              controller: _songTitleController,
-                                              fontSize: defaultFontSize * 2,
-                                              keyBoardType:
-                                                  TextInputType.multiline,
-                                              maxLines: null,
+                                                                'setlist'),
+                                                  ),
+                                                  onChanged: (data) {
+                                                    setState(() {
+                                                      this._updateControllers(
+                                                          data!);
+                                                    });
+                                                  },
+                                                  showSearchBox: true,
+                                                )
+                                              ];
+                                            }
+                                            return Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.stretch,
+                                              children: children,
+                                            );
+                                          },
+                                        ),
+                                        SizedBox(height: defaultPadding),
+                                        Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              child: TextFormFieldDisabled(
+                                                  controller:
+                                                      _songTempoController,
+                                                  color: Colors.white54),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                            Expanded(
+                                              child: TextFormFieldDisabled(
+                                                  controller:
+                                                      _songKeyController,
+                                                  color: Colors.white54),
+                                            ),
+                                            Expanded(
+                                              child: TextFormFieldDisabled(
+                                                  controller:
+                                                      _songDurationController,
+                                                  color: Colors.white54),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: TextFormFieldDisabled(
+                                                alignment: TextAlign.start,
+                                                controller:
+                                                    _songTitleController,
+                                                fontSize: defaultFontSize * 2,
+                                                keyBoardType:
+                                                    TextInputType.multiline,
+                                                maxLines: null,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ]),
-                        ),
-                        if (Responsive.isMobile(context))
-                          SingleColumnLyrics(
-                            songLyricsController: _songLyricsController,
-                            fontSize: this._lyricsFontSizeSingleColumn,
-                          )
-                        else
-                          DoubleColumnLyrics(
-                              firstColumnLyricsController:
-                                  this._firstColumnLyricsController,
-                              secondColumnLyricsController:
-                                  this._secondColumnLyricsController,
-                              fontSize: this._lyricsFontSizeDoubleColumn)
-                      ],
+                                ]),
+                          ),
+                          if (Responsive.isMobile(context))
+                            SingleColumnLyrics(
+                              songLyricsController: _songLyricsController,
+                              fontSize: this._lyricsFontSizeSingleColumn,
+                            )
+                          else
+                            DoubleColumnLyrics(
+                                firstColumnLyricsController:
+                                    this._firstColumnLyricsController,
+                                secondColumnLyricsController:
+                                    this._secondColumnLyricsController,
+                                fontSize: this._lyricsFontSizeDoubleColumn),
+                          Icon(
+                            Icons.remove,
+                            key: keyFinal,
+                          ), // fim das letras - scrollar até aqui
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ]),
+              ],
+            ),
+          ]),
+        ),
       ),
     );
   }
