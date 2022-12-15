@@ -245,11 +245,7 @@ class _ManageSetlistScreen extends State<ManageSetlistScreen> {
                                         Icons.drag_handle,
                                         color: Colors.white,
                                       ),
-                                      title: Text(
-                                        (index + 1).toString() +
-                                            '. ' +
-                                            song.title,
-                                      ),
+                                      title: _getSongTitle(index, song),
                                     ),
                                   );
                                 },
@@ -270,6 +266,15 @@ class _ManageSetlistScreen extends State<ManageSetlistScreen> {
         ),
       ),
     );
+  }
+
+  // Gets the song title with appropriate order and duration
+  Text _getSongTitle(int index, Song song) {
+    String res = (index + 1).toString() + '. ' + song.title;
+    if (song.duration != null && song.duration!.isNotEmpty) {
+      res += " (" + song.duration! + ")";
+    }
+    return Text(res);
   }
 
   void _share(List<Song> songs) {

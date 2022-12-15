@@ -20,6 +20,7 @@ class LocalizationStrings {
       'Purchase successfully restored',
       'Compra restaurada com sucesso'
     ],
+    'auto_scroll': ['Auto-scroll', 'Rolagem automática'],
     'tools': ['Tools', 'Ferramentas'],
     'help': ['Help', 'Ajuda'],
     'pro_version': ['Pro Version', 'Versão Pro'],

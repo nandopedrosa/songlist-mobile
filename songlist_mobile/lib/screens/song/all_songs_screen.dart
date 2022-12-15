@@ -108,6 +108,15 @@ class NewSongButton extends StatelessWidget {
                   builder: (context) => UpgradeScreen(),
                 ),
               );
+            } else {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SonglistPlusMobileApp(
+                    activeScreen: EditSongScreen(),
+                  ),
+                ),
+              );
             }
           });
         }

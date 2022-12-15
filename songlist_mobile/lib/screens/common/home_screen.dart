@@ -136,6 +136,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   builder: (context) => UpgradeScreen(),
                 ),
               );
+            } else {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SonglistPlusMobileApp(
+                    activeScreen: EditSongScreen(),
+                  ),
+                ),
+              );
             }
           });
         }
