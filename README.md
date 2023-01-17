@@ -4,7 +4,7 @@ Songlist Plus is a mobile app for managing songs, set lists, lyrics, chords and 
 
 No more printing tons of sheets of paper and carrying awkward binders to your gigs. Just add all your songs to Songlist Plus and you can easily find them and view lyrics or chords on your device during live performances!
 
-Built with Flutter and SQLite, with external API invocations.
+Built with Flutter and SQLite, with external API invocations. Available both in the Apple and Google Play stores, for iOS/Android phones and tablets. 
 
 ![menu](https://play-lh.googleusercontent.com/DrFOueNNf3Mjq1-p8XeDTDxbcDo8EhWTMCO209r--zFl_RcQ1wwhzwEFXUaqoapZNQ=w2560-h1440-rw) 
 
