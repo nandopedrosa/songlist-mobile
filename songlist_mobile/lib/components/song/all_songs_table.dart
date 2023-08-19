@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/main.dart';
@@ -7,10 +9,11 @@ import 'package:songlist_mobile/service/song_service.dart';
 import 'package:songlist_mobile/util/responsive.dart';
 import '../../util/constants.dart';
 
-// ignore: must_be_immutable
 class AllSongsTable extends StatefulWidget {
-  const AllSongsTable({
+  double songTableFontSize;
+  AllSongsTable({
     Key? key,
+    required this.songTableFontSize,
   }) : super(key: key);
 
   @override
@@ -86,7 +89,10 @@ class _AllSongsTableState extends State<AllSongsTable> {
         ),
         SizedBox(
           width: double.infinity,
-          child: AllSongsFutureBuilder(songs: songs),
+          child: AllSongsFutureBuilder(
+            songs: songs,
+            fontsize: widget.songTableFontSize,
+          ),
         ),
       ],
     );
@@ -107,11 +113,13 @@ class _AllSongsTableState extends State<AllSongsTable> {
 }
 
 class AllSongsFutureBuilder extends StatelessWidget {
-  const AllSongsFutureBuilder({
+  AllSongsFutureBuilder({
     Key? key,
     required this.songs,
+    required this.fontsize,
   }) : super(key: key);
 
+  double fontsize;
   final Future<List<Song>> songs;
 
   @override
@@ -136,12 +144,14 @@ class AllSongsFutureBuilder extends StatelessWidget {
                 PaginatedDataTable(
                   columnSpacing: defaultPadding,
                   headingRowHeight: dataTableHeadingRowHeight,
+                  dataRowMinHeight: Responsive.getTableRowHeight(this.fontsize),
+                  dataRowMaxHeight: Responsive.getTableRowHeight(this.fontsize),
                   showCheckboxColumn: false,
                   //Remove empty rows if the data length is less than rows per page
                   rowsPerPage: snapshot.data!.length > defaultRowsPerPage
                       ? defaultRowsPerPage
                       : snapshot.data!.length,
-                  source: AllSongsData(snapshot.data, context),
+                  source: AllSongsData(snapshot.data, context, this.fontsize),
                   columns: [
                     DataColumn(
                       label: Text(LocalizationService.instance
@@ -165,40 +175,53 @@ class AllSongsFutureBuilder extends StatelessWidget {
 }
 
 class AllSongsData extends DataTableSource {
-  AllSongsData(List<Song>? data, BuildContext tableContext) {
+  AllSongsData(List<Song>? data, BuildContext tableContext, double fontSize) {
     this._data = data;
     this.tableContext = tableContext;
+    this.fontSize = fontSize;
   }
 
   late BuildContext tableContext;
   List<Song>? _data;
+  late double fontSize;
 
   bool get isRowCountApproximate => false;
   int get rowCount => _data!.length;
   int get selectedRowCount => 0;
   DataRow getRow(int index) {
     return DataRow(
-        onSelectChanged: (value) {
-          Navigator.push(
-            tableContext,
-            MaterialPageRoute(
-              builder: (context) => SonglistPlusMobileApp(
-                activeScreen: EditSongScreen(
-                  songId: _data![index].id,
-                ),
+      onSelectChanged: (value) {
+        Navigator.push(
+          tableContext,
+          MaterialPageRoute(
+            builder: (context) => SonglistPlusMobileApp(
+              activeScreen: EditSongScreen(
+                songId: _data![index].id,
               ),
             ),
-          );
-        },
-        cells: [
-          DataCell(Container(
-              width: Responsive.getTableCellWidth(2, tableContext),
-              child: Text(_data![index].title,
-                  style: TextStyle(color: Colors.white70)))),
-          DataCell(Container(
-              width: Responsive.getTableCellWidth(2, tableContext),
-              child: Text(_data![index].artist,
-                  style: TextStyle(color: Colors.white70)))),
-        ]);
+          ),
+        );
+      },
+      cells: [
+        DataCell(
+          Container(
+            width: Responsive.getTableCellWidth(2, tableContext),
+            child: Text(
+              _data![index].title,
+              style: TextStyle(fontSize: this.fontSize, color: Colors.white70),
+            ),
+          ),
+        ),
+        DataCell(
+          Container(
+            width: Responsive.getTableCellWidth(2, tableContext),
+            child: Text(
+              _data![index].artist,
+              style: TextStyle(fontSize: fontSize, color: Colors.white70),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

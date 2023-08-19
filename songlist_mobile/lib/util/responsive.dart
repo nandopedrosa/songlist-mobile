@@ -24,6 +24,17 @@ class Responsive extends StatelessWidget {
     return (screenWidth / numberOfCells) * 0.9;
   }
 
+  //Adjust table cell height based on font size
+  static double getTableRowHeight(double fontSize) {
+    //font-height
+    Map<int, double> sizes = {12: 50, 16: 50, 20: 64, 24: 120};
+    if (sizes.containsKey(fontSize)) {
+      return sizes[fontSize]!;
+    } else {
+      return 50;
+    }
+  }
+
   //Adjust dropdown search height according to the device height
   static double getDropdownSearchHeight(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:songlist_mobile/components/common/toast_message.dart';
 import 'package:songlist_mobile/components/song/all_songs_table.dart';
 import 'package:songlist_mobile/components/common/header.dart';
@@ -27,6 +28,11 @@ class AllSongsScreen extends StatefulWidget {
 
 class _AllSongsScreenState extends State<AllSongsScreen> {
   late bool didDelete;
+  double _fontSizeIncrements = 4;
+  double _songTableFontSize = 16;
+  final double _minFontSize = 12;
+  final double _maxFontSize = 24;
+
   _AllSongsScreenState(bool didDelete) {
     this.didDelete = didDelete;
   }
@@ -59,17 +65,39 @@ class _AllSongsScreenState extends State<AllSongsScreen> {
                 child: Column(
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Padding(
                           padding:
                               const EdgeInsets.only(left: formFieldPadding),
                           child: NewSongButton(),
                         ),
+                        IconButton(
+                          onPressed: () {
+                            this._decreaseFontSize();
+                          },
+                          icon: SvgPicture.asset(
+                            "assets/icons/decrease-font.svg",
+                            colorFilter: ColorFilter.mode(
+                                increaseAndDecreaseIconColor, BlendMode.srcIn),
+                            height: increaseAndDecreaseIconHeight,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            this._increaseFontSize();
+                          },
+                          icon: SvgPicture.asset(
+                            "assets/icons/increase-font.svg",
+                            colorFilter: ColorFilter.mode(
+                                increaseAndDecreaseIconColor, BlendMode.srcIn),
+                            height: increaseAndDecreaseIconHeight,
+                          ),
+                        ),
                       ],
                     ),
                     SizedBox(height: defaultPadding),
-                    AllSongsTable(),
+                    AllSongsTable(songTableFontSize: _songTableFontSize),
                   ],
                 ),
               )
@@ -78,6 +106,22 @@ class _AllSongsScreenState extends State<AllSongsScreen> {
         ),
       ),
     );
+  }
+
+  void _decreaseFontSize() {
+    if (_songTableFontSize > _minFontSize) {
+      setState(() {
+        _songTableFontSize -= _fontSizeIncrements;
+      });
+    }
+  }
+
+  void _increaseFontSize() {
+    if (_songTableFontSize < _maxFontSize) {
+      setState(() {
+        _songTableFontSize += _fontSizeIncrements;
+      });
+    }
   }
 }
 
