@@ -198,7 +198,9 @@ class _PerformScreen extends State<PerformScreen> {
                                 },
                                 icon: SvgPicture.asset(
                                   "assets/icons/decrease-font.svg",
-                                  color: increaseAndDecreaseIconColor,
+                                  colorFilter: ColorFilter.mode(
+                                      increaseAndDecreaseIconColor,
+                                      BlendMode.srcIn),
                                   height: increaseAndDecreaseIconHeight,
                                 ),
                               ),
@@ -208,7 +210,9 @@ class _PerformScreen extends State<PerformScreen> {
                                 },
                                 icon: SvgPicture.asset(
                                   "assets/icons/increase-font.svg",
-                                  color: increaseAndDecreaseIconColor,
+                                  colorFilter: ColorFilter.mode(
+                                      increaseAndDecreaseIconColor,
+                                      BlendMode.srcIn),
                                   height: increaseAndDecreaseIconHeight,
                                 ),
                               ),

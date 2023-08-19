@@ -31,7 +31,7 @@ class _RecentShowsGridState extends State<RecentShowsGrid> {
               Text(
                   LocalizationService.instance
                       .getLocalizedString('recent_shows'),
-                  style: Theme.of(context).textTheme.subtitle1!),
+                  style: Theme.of(context).textTheme.titleMedium!),
               Padding(
                 padding: EdgeInsets.only(left: defaultPadding),
                 child: ElevatedButton.icon(

@@ -1,4 +1,4 @@
-import 'package:songlist_mobile/controllers/MenuController.dart';
+import 'package:songlist_mobile/controllers/CustomMenuController.dart';
 import 'package:songlist_mobile/util/constants.dart';
 import 'package:songlist_mobile/util/responsive.dart';
 import 'package:flutter/material.dart';
@@ -31,11 +31,11 @@ class Header extends StatelessWidget {
             IconButton(
                 icon: Icon(Icons.menu),
                 onPressed: () {
-                  context.read<MenuController>().controlMenu(scaffoldKey);
+                  context.read<CustomMenuController>().controlMenu(scaffoldKey);
                 }),
           Text(
             this.title,
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.titleLarge,
           ),
           if (!Responsive.isMobile(context))
             Spacer(flex: Responsive.isDesktop(context) ? 2 : 1),

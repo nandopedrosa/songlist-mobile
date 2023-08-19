@@ -51,14 +51,14 @@ class RecentShowCard extends StatelessWidget {
                   "${show.getNumberOfSongs} Songs",
                   style: Theme.of(context)
                       .textTheme
-                      .caption!
+                      .bodySmall!
                       .copyWith(color: Colors.white70),
                 ),
                 Text(
                   show.duration,
                   style: Theme.of(context)
                       .textTheme
-                      .caption!
+                      .bodySmall!
                       .copyWith(color: Colors.white70),
                 ),
               ],

@@ -40,7 +40,7 @@ class _ToolsScreen extends State<ToolsScreen> {
                             LocalizationService.instance
                                 .getLocalizedString("export_songs"),
                             textAlign: TextAlign.start,
-                            style: Theme.of(context).textTheme.subtitle1!,
+                            style: Theme.of(context).textTheme.titleMedium!,
                           ),
                           IconButton(
                             icon: const Icon(Icons.arrow_forward_ios),
@@ -65,7 +65,7 @@ class _ToolsScreen extends State<ToolsScreen> {
                             LocalizationService.instance
                                 .getLocalizedString("import_songs"),
                             textAlign: TextAlign.start,
-                            style: Theme.of(context).textTheme.subtitle1!,
+                            style: Theme.of(context).textTheme.titleMedium!,
                           ),
                           IconButton(
                             icon: const Icon(Icons.arrow_forward_ios),

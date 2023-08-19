@@ -50,7 +50,7 @@ class _ImportDatabaseScreen extends State<ImportDatabaseScreen> {
                           child: Text(
                             LocalizationService.instance.getLocalizedString(
                                 "import_database_disclaimer"),
-                            style: Theme.of(context).textTheme.subtitle1!,
+                            style: Theme.of(context).textTheme.titleMedium!,
                           ),
                         ),
                       ],

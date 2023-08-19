@@ -245,6 +245,7 @@ class LocalizationStrings {
     "upgrade_question": [
       "Would you like to upgrade?",
       "Gostaria de fazer o upgrade?"
-    ]
+    ],
+    "invalid_url": ["Invalid URL", "URL inválida"],
   };
 }

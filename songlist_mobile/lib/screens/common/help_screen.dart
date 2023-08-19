@@ -85,7 +85,7 @@ class HelpText extends StatelessWidget {
             Expanded(
               child: Text(
                 LocalizationService.instance.getLocalizedString(textKey),
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             )
           else

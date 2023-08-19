@@ -69,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         textAlign: TextAlign.start,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .subtitle1!,
+                                            .titleMedium!,
                                       ),
                                       Padding(
                                         padding: EdgeInsets.only(

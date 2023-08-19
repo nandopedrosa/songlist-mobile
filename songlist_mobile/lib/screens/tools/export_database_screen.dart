@@ -55,7 +55,7 @@ class _ExportDatabaseScreen extends State<ExportDatabaseScreen> {
                             child: Text(
                               LocalizationService.instance.getLocalizedString(
                                   "export_database_disclaimer"),
-                              style: Theme.of(context).textTheme.subtitle1!,
+                              style: Theme.of(context).textTheme.titleMedium!,
                             ),
                           ),
                         ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 import 'package:songlist_mobile/components/common/delete_button.dart';
 import 'package:songlist_mobile/components/common/modal_dialog.dart';
 import 'package:songlist_mobile/components/common/save_button.dart';
@@ -120,7 +120,7 @@ class _EditShowForm extends State<EditShowForm> {
           child: Text(
             LocalizationService.instance.getLocalizedString("when"),
             textAlign: TextAlign.start,
-            style: Theme.of(context).textTheme.subtitle1!,
+            style: Theme.of(context).textTheme.titleMedium!,
           ),
         ),
         Padding(
@@ -181,7 +181,7 @@ class _EditShowForm extends State<EditShowForm> {
                 Text(
                   LocalizationService.instance.getLocalizedString("setlist"),
                   textAlign: TextAlign.start,
-                  style: Theme.of(context).textTheme.subtitle1!,
+                  style: Theme.of(context).textTheme.titleMedium!,
                 ),
               if (this.showId != null)
                 IconButton(
@@ -305,21 +305,40 @@ class _EditShowForm extends State<EditShowForm> {
   }
 
   // Shows then "When" date picker
-  void _showDatePicker(BuildContext context) {
-    DatePicker.showDateTimePicker(context,
-        minTime: DateTime.now(),
-        maxTime: DateTime.now().add(const Duration(days: 365 * 5)),
-        onConfirm: (date) {
-      setState(() {
-        this._whenLabelController.text = LocalizationService.instance
-            .getFullLocalizedDateAndTime(date.toString())!;
-        this._whenController.text = date.toString();
-      });
-    },
-        currentTime: DateTime.now(),
-        locale: LocalizationService.instance.getPreferredLanguage() == 'en'
-            ? LocaleType.en
-            : LocaleType.pt);
+  void _showDatePicker(BuildContext context) async {
+    DateTime? dateTime = await showOmniDateTimePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(
+        const Duration(days: 1000),
+      ),
+      is24HourMode: true,
+      minutesInterval: 10,
+      borderRadius: const BorderRadius.all(Radius.circular(16)),
+      constraints: const BoxConstraints(
+        maxWidth: 350,
+        maxHeight: 650,
+      ),
+      transitionBuilder: (context, anim1, anim2, child) {
+        return FadeTransition(
+          opacity: anim1.drive(
+            Tween(
+              begin: 0,
+              end: 1,
+            ),
+          ),
+          child: child,
+        );
+      },
+      transitionDuration: const Duration(milliseconds: 200),
+      barrierDismissible: true,
+    );
+    setState(() {
+      this._whenLabelController.text = LocalizationService.instance
+          .getFullLocalizedDateAndTime(dateTime.toString())!;
+      this._whenController.text = dateTime.toString();
+    });
   }
 
   void saveOrUpdateShow() {

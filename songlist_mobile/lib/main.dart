@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:songlist_mobile/controllers/MenuController.dart';
+import 'package:songlist_mobile/controllers/CustomMenuController.dart';
 import 'package:songlist_mobile/screens/common/home_screen.dart';
 import 'package:songlist_mobile/screens/common/main_screen.dart';
 import 'package:songlist_mobile/service/app_purchases.dart';
@@ -32,7 +32,7 @@ class _SonglistPlusMobileAppState extends State<SonglistPlusMobileApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => MenuController(),
+          create: (_) => CustomMenuController(),
         ),
         ChangeNotifierProvider<AppPurchases>(
           create: (context) => AppPurchases(),

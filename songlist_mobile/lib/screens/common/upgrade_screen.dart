@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:songlist_mobile/components/common/header.dart';
 import 'package:songlist_mobile/components/common/side_menu.dart';
-import 'package:songlist_mobile/controllers/MenuController.dart';
+import 'package:songlist_mobile/controllers/CustomMenuController.dart';
 import 'package:songlist_mobile/localization/localization_service.dart';
 import 'package:songlist_mobile/models/purchasable_product.dart';
 import 'package:songlist_mobile/screens/common/help_screen.dart';
@@ -24,7 +24,7 @@ class _UpgradeScreen extends State<UpgradeScreen> {
         listOfProducts.firstWhere((p) => p.id == noSongLimitId);
 
     return Scaffold(
-      key: context.read<MenuController>().scaffoldKey,
+      key: context.read<CustomMenuController>().scaffoldKey,
       drawer: SideMenu(),
       body: SafeArea(
         child: Row(

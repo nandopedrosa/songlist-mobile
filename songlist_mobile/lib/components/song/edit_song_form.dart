@@ -118,7 +118,7 @@ class _EditSongForm extends State<EditSongForm> {
                 LocalizationService.instance
                         .getLocalizedString("import_lyrics_chords") +
                     " ?",
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               IconButton(
                 icon: const Icon(Icons.arrow_forward_ios),
@@ -318,13 +318,8 @@ class _EditSongForm extends State<EditSongForm> {
   // Validates import lyrics URL
   bool isValidUrl(String songUrl) {
     if (songUrl.isEmpty) return false;
-
-    for (var site in supportedLyricsOrChordsWebsites) {
-      //the list is defined in the constants file
-      if (songUrl.toLowerCase().indexOf(site) != -1) return true;
-    }
-
-    return false;
+    bool isValid = Uri.tryParse(songUrl)?.hasAbsolutePath ?? false;
+    return isValid;
   }
 
   //Imports a song lyrics from the web API
@@ -348,20 +343,26 @@ class _EditSongForm extends State<EditSongForm> {
             );
             this._importLyrics(this._urlControler.text).then(
               (value) {
-                this._lyricsController.text = value.body.toString();
-
-                ToastMessage.showSuccessToast(
-                    LocalizationService.instance
-                        .getLocalizedString("lyrics_imported"),
-                    context);
-                Navigator.of(context, rootNavigator: true)
-                    .pop(); // Close the dialog
+                String res = value.body.toString();
+                if (res == 'not-supported') {
+                  ToastMessage.showErrorToast(
+                      LocalizationService.instance
+                          .getLocalizedString("website_not_supported"),
+                      context);
+                } else {
+                  this._lyricsController.text = res;
+                  ToastMessage.showSuccessToast(
+                      LocalizationService.instance
+                          .getLocalizedString("lyrics_imported"),
+                      context);
+                  Navigator.of(context, rootNavigator: true)
+                      .pop(); // Close the dialog
+                }
               },
             );
           } else {
             ToastMessage.showErrorToast(
-                LocalizationService.instance
-                    .getLocalizedString("website_not_supported"),
+                LocalizationService.instance.getLocalizedString("invalid_url"),
                 context);
           }
         } else {
@@ -376,14 +377,7 @@ class _EditSongForm extends State<EditSongForm> {
   //Calls the web api
   Future<http.Response> _importLyrics(String songUrl) {
     String songUrl = this._urlControler.text;
-    String serviceRoute = "";
-
-    if (songUrl.toLowerCase().indexOf("letras.mus.br") != -1) {
-      serviceRoute = letrasServiceRoute;
-    } else if ((songUrl.toLowerCase().indexOf("lyricsfreak.com") != -1)) {
-      serviceRoute = lyricsFreakServiceRoute;
-    }
-    String fullUrl = importLyricsOrChordsApiBaseUrl + serviceRoute + songUrl;
+    String fullUrl = importLyricsOrChordsApiBaseUrl + songUrl;
     return http.get(Uri.parse(fullUrl));
   }
 }

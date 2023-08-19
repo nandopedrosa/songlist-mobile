@@ -25,12 +25,5 @@ const increaseAndDecreaseIconHeight = 24.0;
 const Color increaseAndDecreaseIconColor = Colors.white70;
 const int defaultTextFieldMaxLength = 64;
 
-//Importing lyrics and chords
-const List<String> supportedLyricsOrChordsWebsites = [
-  'lyricsfreak.com',
-  'letras.mus.br'
-];
 const String importLyricsOrChordsApiBaseUrl =
-    "https://songlist-plus-mobile-api.herokuapp.com/";
-const String letrasServiceRoute = "import-from-letras?url=";
-const String lyricsFreakServiceRoute = "import-from-freak?url=";
+    "https://songlist-plus-mobile-api.herokuapp.com/import?url=";

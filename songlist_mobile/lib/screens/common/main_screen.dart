@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:songlist_mobile/components/common/side_menu.dart';
-import 'package:songlist_mobile/controllers/MenuController.dart';
+import 'package:songlist_mobile/controllers/CustomMenuController.dart';
 import 'package:songlist_mobile/util/responsive.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 
@@ -37,7 +37,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: context.read<MenuController>().scaffoldKey,
+      key: context.read<CustomMenuController>().scaffoldKey,
       drawer: SideMenu(),
       body: SafeArea(
         child: Row(
